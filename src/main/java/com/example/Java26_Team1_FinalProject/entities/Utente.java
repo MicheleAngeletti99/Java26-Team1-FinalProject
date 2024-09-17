@@ -3,19 +3,17 @@ package com.example.Java26_Team1_FinalProject.entities;
 
 import jakarta.persistence.*;
 
-@Entity
-@Table(name = "utente")
-/* utilizzo @Inheritance per la gestione dell'ereditarietà tra le entità, typeJoined per creare due tabelle
-separate ma comunque collegate fra loro
- */
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
+
 public class Utente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(unique = true)
     private String email;
+
     private String password;
     private String contattoTelefonico;
 

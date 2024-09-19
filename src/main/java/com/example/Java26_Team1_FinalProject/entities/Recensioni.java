@@ -1,26 +1,26 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table
 
-public class Recensioni extends Utente {
+public class Recensioni {
+    @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
+    private Long id;
     private  Integer voti;
-    private Integer percentualiVoti;
-    private Integer percentualeVotiTotali;
     private String citta;
     private  String nome;
+    private String descrizione;
 
     public Recensioni(){}
 
-    public Recensioni(Integer voti, Integer percentualiVoti, Integer percentualeVotiTotali, String citta, String nome) {
+    public Recensioni(Integer voti,  String citta, String nome, String descrizione) {
         this.voti = voti;
-        this.percentualiVoti = percentualiVoti;
-        this.percentualeVotiTotali = percentualeVotiTotali;
         this.citta = citta;
         this.nome = nome;
+        this.descrizione = descrizione;
 
     }
 
@@ -32,21 +32,6 @@ public class Recensioni extends Utente {
         this.voti = voti;
     }
 
-    public Integer getPercentualiVoti() {
-        return percentualiVoti;
-    }
-
-    public void setPercentualiVoti(Integer percentualiVoti) {
-        this.percentualiVoti = percentualiVoti;
-    }
-
-    public Integer getPercentualeVotiTotali() {
-        return percentualeVotiTotali;
-    }
-
-    public void setPercentualeVotiTotali(Integer percentualeVotiTotali) {
-        this.percentualeVotiTotali = percentualeVotiTotali;
-    }
 
     public String getCitta() {
         return citta;
@@ -62,5 +47,13 @@ public class Recensioni extends Utente {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
     }
 }

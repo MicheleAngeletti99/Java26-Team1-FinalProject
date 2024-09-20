@@ -1,6 +1,7 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
@@ -18,8 +19,11 @@ public class Albergo extends Utente {
     private LocalDateTime orarioCheckIn;
     private LocalDateTime orarioCheckOut;
     private String citta;
-    // deve mettere una lista di Recenzioni
-    private List<String> recenzioni;
+    // deve mettere una lista di Recensioni
+    @OneToMany
+    private List<Recensione> recensioni;
+    @OneToMany
+    private List<Prenotazione> prenotazioni;
     private Double ratingMedio;
 
     // costruttore vuoto
@@ -28,8 +32,10 @@ public class Albergo extends Utente {
     }
 
     // costruttore con tutti i field
-    public Albergo(String email, String password, String contattoTelefonico, String nome, Integer numeroDiCamere, List<String> services, Boolean cancellazionePrenotazioneGratuita, LocalDateTime orarioCheckIn, LocalDateTime orarioCheckOut, String citta, List<String> recenzioni, Double ratingMedio) {
-        super(email, password, contattoTelefonico);
+    public Albergo(Long id, String email, String password, String contattoTelefonico, String nome, Integer numeroDiCamere,
+                   List<String> services, Boolean cancellazionePrenotazioneGratuita, LocalDateTime orarioCheckIn,
+                   LocalDateTime orarioCheckOut, String citta, List<Recensione> recensioni, List<Prenotazione> prenotazioni, Double ratingMedio) {
+        super(id, email, password, contattoTelefonico);
         this.nome = nome;
         this.numeroDiCamere = numeroDiCamere;
         this.services = services;
@@ -37,7 +43,8 @@ public class Albergo extends Utente {
         this.orarioCheckIn = orarioCheckIn;
         this.orarioCheckOut = orarioCheckOut;
         this.citta = citta;
-        this.recenzioni = recenzioni;
+        this.recensioni = recensioni;
+        this.prenotazioni = prenotazioni;
         this.ratingMedio = ratingMedio;
     }
 
@@ -96,20 +103,27 @@ public class Albergo extends Utente {
         this.citta = citta;
     }
 
-    public List<String> getRecenzioni() {
-        return recenzioni;
+    public List<Recensione> getRecensioni() {
+        return recensioni;
     }
 
-    public void setRecenzioni(List<String> recenzioni) {
-        this.recenzioni = recenzioni;
+    public void setRecensioni(List<Recensione> recensioni) {
+        this.recensioni = recensioni;
     }
 
     public Double getRatingMedio() {
         return ratingMedio;
     }
 
-    public void setRatingMedio(Double
-                                       ratingMedio) {
+    public List<Prenotazione> getPrenotazioni() {
+        return prenotazioni;
+    }
+
+    public void setPrenotazioni(List<Prenotazione> prenotazioni) {
+        this.prenotazioni = prenotazioni;
+    }
+
+    public void setRatingMedio(Double ratingMedio) {
         this.ratingMedio = ratingMedio;
     }
 }

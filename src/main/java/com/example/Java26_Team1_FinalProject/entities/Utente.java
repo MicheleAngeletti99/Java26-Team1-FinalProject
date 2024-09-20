@@ -4,7 +4,6 @@ package com.example.Java26_Team1_FinalProject.entities;
 import jakarta.persistence.*;
 
 @MappedSuperclass
-
 public class Utente {
 
     @Id
@@ -19,7 +18,8 @@ public class Utente {
 
     public Utente() {}
 
-    public Utente(String email, String password, String contattoTelefonico) {
+    public Utente(Long id, String email, String password, String contattoTelefonico) {
+        this.id = id;
         this.email = email;
         this.password = password;
         this.contattoTelefonico = contattoTelefonico;

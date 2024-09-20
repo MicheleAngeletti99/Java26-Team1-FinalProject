@@ -1,6 +1,7 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.util.List;
@@ -16,18 +17,22 @@ public class Ente extends Utente{
     private String linkWeb;
     private String recensione;
     private Long ratingAVG;
+    @OneToMany
+    private List<Recensione> recensioni;
 
     //Costruttori
     public Ente(){}
 
-    public Ente(String email, String password, String contattoTelefonico, String nome, List<String> servizi, String citta, String linkWeb, String recensione, Long ratingAVG) {
-        super(email, password, contattoTelefonico);
+    public Ente(Long id, String email, String password, String contattoTelefonico, String nome, List<String> servizi, String citta,
+                String linkWeb, String recensione, Long ratingAVG, List<Recensione> recensioni) {
+        super(id, email, password, contattoTelefonico);
         this.nome = nome;
         this.servizi = servizi;
         this.citta = citta;
         this.linkWeb = linkWeb;
         this.recensione = recensione;
         this.ratingAVG = ratingAVG;
+        this.recensioni = recensioni;
     }
 
     //Getter and Setter
@@ -77,5 +82,13 @@ public class Ente extends Utente{
 
     public void setRatingAVG(Long ratingAVG) {
         this.ratingAVG = ratingAVG;
+    }
+
+    public List<Recensione> getRecensioni() {
+        return recensioni;
+    }
+
+    public void setRecensioni(List<Recensione> recensioni) {
+        this.recensioni = recensioni;
     }
 }

@@ -39,7 +39,7 @@ public class ClienteService {
             /*                           !!DA CONTROLLARE!!
                           se per la modifica delle liste va bene come scrivvo sotto
               (in teoria dovremmo toccare solo un elemento all'interno delle liste, non tutta la lista)
-              
+
                                 !! DA VALUTARE METODI PER OGNI LISTA!!
 
             clienteToUpdate.setCarteDiPagamento(cliente.getCarteDiPagamento());

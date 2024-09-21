@@ -36,9 +36,11 @@ public class ClienteService {
             clienteToUpdate.setDataDiNascita(cliente.getDataDiNascita());
             clienteToUpdate.setLivelloAbbonamento(cliente.getLivelloAbbonamento());
 
-            /*          !!DA CONTROLLARE!! se per la modifica delle liste va bene così
-              (in teoria dovremmo modificare un elemento all'interno delle liste, non tutta la lista)
-                        !! DA VALUTARE METODI PER OGNI LISTA (ADD , FIND , UPDATE , DELETE) !!
+            /*                           !!DA CONTROLLARE!!
+                          se per la modifica delle liste va bene come scrivvo sotto
+              (in teoria dovremmo toccare solo un elemento all'interno delle liste, non tutta la lista)
+              
+                                !! DA VALUTARE METODI PER OGNI LISTA!!
 
             clienteToUpdate.setCarteDiPagamento(cliente.getCarteDiPagamento());
             clienteToUpdate.setPrenotazioni(cliente.getPrenotazioni());
@@ -52,13 +54,13 @@ public class ClienteService {
         }
     }
 
-    public Optional<Cliente> deleteClienteById(Long id){
+    public boolean deleteClienteById(Long id){
         Optional<Cliente> optionalCliente = clienteRepository.findById(id);
         if (optionalCliente.isPresent()){
             clienteRepository.deleteById(id);
-            return optionalCliente;
+            return true;
         } else {
-            return Optional.empty();
+            return false;
         }
     }
 }

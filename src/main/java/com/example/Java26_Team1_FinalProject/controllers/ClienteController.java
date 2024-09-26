@@ -1,6 +1,8 @@
 package com.example.Java26_Team1_FinalProject.controllers;
 
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
+import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
+import com.example.Java26_Team1_FinalProject.entities.Recensione;
 import com.example.Java26_Team1_FinalProject.services.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -69,7 +71,7 @@ public class ClienteController {
      * @param cliente l'oggetto Cliente da creare e salvare.
      * @return il cliente creato e una risposta con codice 201 (Created).
      */
-    @PostMapping("/new/client")
+    @PostMapping("/new-client")
     @Operation(summary = "Crea un nuovo cliente", description = "Aggiunge un nuovo cliente nel database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Cliente creato correttamente e salvato nel database"),
@@ -130,6 +132,138 @@ public class ClienteController {
         } else {
             // Restituisce 404 Not Found se il cliente non è stato trovato
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Aggiunge una nuova recensione alla lista di recensioni di un cliente specifico.
+     *
+     * @param idCliente l'ID del cliente al quale si desidera aggiungere la recensione
+     * @param recensione recensione l'oggetto Recensione da aggiungere
+     * @return un ResponseEntity che rappresenta la risposta HTTP.
+     */
+    @PostMapping("/{cliente-id}/recensione")
+    @Operation(summary = "aggiunge una recensione", description = "aggiunge una recensione alla lista delle recensioni")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Il cliente ha inserito la recensione"),
+            @ApiResponse(responseCode = "404", description = "ID del cliente non trovato, non è possibile inserire recensione")
+    })
+    public ResponseEntity<Cliente> addRecensione(@PathVariable Long idCliente, @RequestBody Recensione recensione){
+        Optional<Cliente> clienteOptional = clienteService.addRecensione(idCliente, recensione);
+        if (clienteOptional.isPresent()){
+            return ResponseEntity.ok(clienteOptional.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Rimuove una recensione specifica dalla lista di recensioni di un cliente specifico.
+     *
+     * @param idCliente idCliente l'ID del cliente da cui si desidera rimuovere la recensione.
+     * @param idRecensione idRecensione l'ID della recensione da rimuovere.
+     * @return un ResponseEntity che rappresenta la risposta HTTP.
+     */
+    @DeleteMapping("/{clienteId}/rimuovi-recensione/{recensioneId}")
+    @Operation(summary = "rimuove una recensione", description = "rimuove una recensione dalla lista di recensioni")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "La recensione è stata eliminata correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID non trovato")
+    })
+    public ResponseEntity<Void> deleteRecensione(@PathVariable Long idCliente, @PathVariable Long idRecensione){
+        boolean removed = clienteService.deleteRensione(idCliente,idRecensione);
+        if (removed){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Aggiunge una carta di pagamento al cliente specificato.
+     *
+     * @param idCliente l'ID del cliente a cui aggiungere la carta di pagamento
+     * @param carta la carta di pagamento da aggiungere
+     * @return ResponseEntity con lo stato dell'operazione (200 OK se aggiunta con successo, 404 Not Found se il cliente non esiste)
+     */
+    @PostMapping("/{idCliente}/carte-di-pagamento")
+    @Operation(summary = "aggiunge una carta di pagamento", description = "aggiunge una carta di pagamento alla lista delle carte")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "la carta è stata aggiunta correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID cliente non trovato, carta non aggiunta")
+    })
+    public ResponseEntity<String> addCartaDiPagamento(@PathVariable Long idCliente, @RequestBody String carta){
+        boolean isAdded = clienteService.addCartaDiPagamento(idCliente,carta);
+        if (isAdded){
+            return ResponseEntity.ok("Carta di pagamento aggiunta con successo");
+        }else {
+            return ResponseEntity.notFound().build();
+        }
+
+
+    }
+
+    /**
+     * Rimuove una carta di pagamento dal cliente specificato.
+     *
+     * @param idCliente l'ID del cliente da cui rimuovere la carta di pagamento
+     * @param carta la carta di pagamento da rimuovere
+     * @return ResponseEntity con lo stato dell'operazione (200 OK se rimossa con successo, 404 Not Found se il cliente non esiste)
+     */
+    @DeleteMapping("/{idCliente}/carte-di-pagamento")
+    @Operation(summary = "rimuove le carte di pagamento", description = "rimuove la carta di pagamento dalla lista delle carte")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "la carta è stata rimossa correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID cliente non trovato, carta non rimossa")
+    })
+    public ResponseEntity<String> removeCartaDiPagamento(@PathVariable Long idCliente, @RequestBody String carta) {
+        boolean isRemoved = clienteService.deleteCartaDiPagamento(idCliente, carta);
+        if (isRemoved) {
+            return ResponseEntity.ok("Carta di pagamento rimossa con successo.");
+        } else {
+            return ResponseEntity.notFound().build(); // 404 Not Found se la carta non è stata trovata o il cliente non esiste
+        }
+    }
+
+    /**
+     * Aggiunge una prenotazione al cliente specificato.
+     *
+     * @param idCliente l'ID del cliente al quale aggiungere la prenotazione
+     * @param prenotazione la prenotazione da aggiungere
+     * @return ResponseEntity con il cliente aggiornato e lo stato dell'operazione (200 OK se aggiunta con successo, 404 Not Found se il cliente non esiste)
+     */
+    @PostMapping("/{idCliente}/prenotazioni")
+    @Operation(summary = "aggiunge una prenotazione", description = "aggiunge una prenotazione alla lista delle prenotazioni")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "la prenotazione è stata aggiunta correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID cliente non trovato, prenotazione non aggiunta")
+    })
+    public ResponseEntity<Cliente> addPrenotazione(@PathVariable Long idCliente, @RequestBody Prenotazione prenotazione) {
+        Optional<Cliente> updatedCliente = clienteService.addPrenotazione(idCliente, prenotazione);
+        if (updatedCliente.isPresent()) {
+            return ResponseEntity.ok(updatedCliente.get());
+        } else {
+            return ResponseEntity.notFound().build(); // 404 Not Found se il cliente non esiste
+        }
+    }
+
+    /**
+     * Rimuove una prenotazione dal cliente specificato.
+     *
+     * @param idCliente l'ID del cliente da cui rimuovere la prenotazione
+     * @param idPrenotazione l'ID della prenotazione da rimuovere
+     * @return ResponseEntity con lo stato dell'operazione (200 OK se rimossa con successo, 404 Not Found se il cliente o la prenotazione non esiste)
+     */
+    @DeleteMapping("/{idCliente}/prenotazioni/{idPrenotazione}")
+    @Operation(summary = "rimuove una prenotazione", description = "rimuove una prenotazione dalla lista delle prenotazioni")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "la prenotazione è stata rimossa correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID cliente non trovato, prenotazione non rimossa")
+    })
+    public ResponseEntity<String> removePrenotazione(@PathVariable Long idCliente, @PathVariable Long idPrenotazione) {
+        boolean isRemoved = clienteService.deletePrenotazione(idCliente, idPrenotazione);
+        if (isRemoved) {
+            return ResponseEntity.ok("Prenotazione rimossa con successo.");
+        } else {
+            return ResponseEntity.notFound().build(); // 404 Not Found se la prenotazione non è stata trovata o il cliente non esiste
         }
     }
 }

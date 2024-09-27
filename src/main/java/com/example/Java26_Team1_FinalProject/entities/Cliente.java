@@ -17,7 +17,7 @@ public class Cliente extends Utente{
     private String livelloAbbonamento;
     @OneToMany
     private List<Prenotazione> prenotazioni;
-    @OneToMany
+
     private List<Recensione> recensioni;
 
     public Cliente() {}

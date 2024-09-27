@@ -21,6 +21,9 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
+    @Autowired
+    private PrenotazioneService prenotazioneService;
+
     /**
      * Restituisce una lista di tutti i clienti nel database.
      *
@@ -103,89 +106,34 @@ public class ClienteService {
     // ==== METODI PER LE LISTE ====
 
     /**
-     * Permette ad un cliente di aggiungere una recensione.
-     *
-     * @param idCliente  l'ID del cliente che al quale si desidera aggiungere una recensione.
-     * @param recensione la recensione da aggiungere.
-     * @return un Optional contenente il cliente aggiornato, oppure un Optional vuoto se il cliente non esiste.
-     */
-    public Optional<Cliente> addRecensione(Long idCliente, Recensione recensione) {
-        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
-        if (optionalCliente.isPresent()) {
-            Cliente cliente = optionalCliente.get();
-            cliente.getRecensioni().add(recensione);
-            recensione.setCliente(cliente);
-            clienteRepository.save(cliente);
-            return Optional.of(cliente);
-        }
-        return Optional.empty();
-    }
-
-    /**
-     * Rimuove una recensione dalla lista delle recensioni di un cliente.
-     * Restituisce true se la recensione è stata rimossa con successo, false altrimenti.
-     *
-     * @param clienteId    l'ID del cliente da cui rimuovere la recensione.
-     * @param recensioneId l'ID della recensione da rimuovere.
-     * @return true se la recensione è stata rimossa, false altrimenti.
-     */
-    public boolean deleteRensione(Long clienteId, Long recensioneId) {
-        Optional<Cliente> optionalCliente = clienteRepository.findById(clienteId);
-        if (optionalCliente.isPresent()) {
-            Cliente cliente = optionalCliente.get();
-            Optional<Recensione> optionalRecenzioneToRemove = cliente.getRecensioni().stream()
-                    .filter(recensione -> recensione.getId().equals(recensioneId))
-                    .findFirst();
-            if (optionalRecenzioneToRemove.isPresent()) {
-                Recensione recensioneToRemove = optionalRecenzioneToRemove.get();
-                cliente.getRecensioni().remove(recensioneToRemove);
-                clienteRepository.save(cliente);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Permette ad un cliente di aggiungere una prenotazione.
      *
      * @param idCliente    l'ID del cliente al quale si desidera aggiungere una prenotazione.
      * @param prenotazione la prenotazione da aggiungere.
      * @return Optional del cliente con la prenotazione aggiunta alla sua lista, empty se il cliente non esiste.
      */
-    public Optional<Cliente> addPrenotazione(Long idCliente, Prenotazione prenotazione) {
+    public boolean addPrenotazione(Long idCliente, Prenotazione prenotazione) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
         if (optionalCliente.isPresent()) {
-            Cliente cliente = optionalCliente.get();
-            cliente.getPrenotazioni().add(prenotazione);
-            prenotazione.setCliente(cliente);
-            clienteRepository.save(cliente);
-            return Optional.of(cliente);
+            prenotazione.setCliente(optionalCliente.get());
+            prenotazioneService.create(prenotazione);
+            return true;
+        }else {
+            return false;
         }
-        return Optional.empty();
     }
 
     /**
-     * Rimuove una recensione dalla liste delle recensioni di un cliente.
-     * Restituisce true se la recensione è stata rimossa con successo, false altrimenti.
+     * Permette di rimuovere una prenotazione per ID.
      *
-     * @param idCliente      l'ID del cliente da cui rimuovere la recensione.
-     * @param prenotazioneId l'ID della prenotazione da eliminare.
-     * @return true se la recensione è stata rimossa, false altrimenti.
+     * @param prenotazioneId l'ID della prenotazione da rimuovere.
+     * @return true se la prenotazione è stata rimossa, false se la prenotazione non esiste.
      */
-    public boolean deletePrenotazione(Long idCliente, Long prenotazioneId) {
-        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
-        if (optionalCliente.isPresent()) {
-            Cliente cliente = optionalCliente.get();
-            Optional<Prenotazione> optionalPrenotazioneToRemove = cliente.getPrenotazioni().stream()
-                    .filter(prenotazione -> prenotazione.getId().equals(prenotazioneId))
-                    .findFirst();
-            if (optionalPrenotazioneToRemove.isPresent()) {
-                Prenotazione prenotazioneToRemove = optionalPrenotazioneToRemove.get();
-                cliente.getPrenotazioni().remove(prenotazioneToRemove);
-                clienteRepository.save(cliente);
-                return true;
-            }
+    public boolean removePrenotazione(Long prenotazioneId) {
+        Optional<Prenotazione> optionalPrenotazione = prenotazioneService.readById(prenotazioneId);
+        if (optionalPrenotazione.isPresent()) {
+            prenotazioneService.deleteById(prenotazioneId);
+            return true;
         }
         return false;
     }

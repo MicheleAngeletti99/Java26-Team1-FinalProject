@@ -1,62 +1,53 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
+import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
 import jakarta.persistence.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table
 public class Prenotazione {
-
+    // Chiave primaria
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
-
-    @ManyToOne
-    @JoinColumn(name = "id_albergo")
-    private Albergo albergo;
-
+    // Campi
     private Integer numeroPersone;
     private Date dataArrivo;
     private Date dataPartenza;
-    private String serviziRichiesti;
+    private List<Integer> serviziRichiestiIds;
+    // chiavi esterne
+    @ManyToOne
+    @JoinColumn(name = "id_cliente")
+    private Cliente cliente;
+    @ManyToOne
+    @JoinColumn(name = "id_albergo")
+    private Albergo albergo;
+    @ManyToOne
+    @JoinColumn(name = "id_ente")
+    private Ente ente;
 
+    // Costruttore senza argomenti e con tutti gli argomenti
     public Prenotazione() {
     }
 
-    public Prenotazione(Long id, Cliente cliente, Albergo albergo, Integer numeroPersone,
-                        Date dataArrivo, Date dataPartenza, String serviziRichiesti) {
+    public Prenotazione(Long id, Integer numeroPersone, Date dataArrivo, Date dataPartenza, List<Integer> serviziRichiestiIds,
+                        Cliente cliente, Albergo albergo, Ente ente) {
         this.id = id;
-        this.cliente = cliente;
-        this.albergo = albergo;
         this.numeroPersone = numeroPersone;
         this.dataArrivo = dataArrivo;
         this.dataPartenza = dataPartenza;
-        this.serviziRichiesti = serviziRichiesti;
+        this.serviziRichiestiIds = serviziRichiestiIds;
+        this.cliente = cliente;
+        this.albergo = albergo;
+        this.ente = ente;
     }
 
+    // Getters e setters
     public Long getId() {
         return id;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Albergo getAlbergo() {
-        return albergo;
-    }
-
-    public void setAlbergo(Albergo albergo) {
-        this.albergo = albergo;
     }
 
     public Integer getNumeroPersone() {
@@ -83,11 +74,35 @@ public class Prenotazione {
         this.dataPartenza = dataPartenza;
     }
 
-    public String getServiziRichiesti() {
-        return serviziRichiesti;
+    public List<Integer> getServiziRichiestiIds() {
+        return serviziRichiestiIds;
     }
 
-    public void setServiziRichiesti(String serviziRichiesti) {
-        this.serviziRichiesti = serviziRichiesti;
+    public void setServiziRichiestiIds(List<Integer> serviziRichiestiIds) {
+        this.serviziRichiestiIds = serviziRichiestiIds;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public Albergo getAlbergo() {
+        return albergo;
+    }
+
+    public void setAlbergo(Albergo albergo) {
+        this.albergo = albergo;
+    }
+
+    public Ente getEnte() {
+        return ente;
+    }
+
+    public void setEnte(Ente ente) {
+        this.ente = ente;
     }
 }

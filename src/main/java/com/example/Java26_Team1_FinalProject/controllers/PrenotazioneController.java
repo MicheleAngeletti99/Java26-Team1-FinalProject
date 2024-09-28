@@ -129,38 +129,6 @@ public class PrenotazioneController {
         }
     }
 
-    @Operation(summary = "Mette in relazione una prenotazione e un cliente.", description = "Quando gli si dà l'id di una prenotazione e l'id di un cliente li mette in relazione senza sovrascrivere un possibile cliente già in relazione con la prenotazione data.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "La prenotazione è in relazione con il cliente dato oppure, se presente, con il cliente con cui era già in relazione."),
-            @ApiResponse(responseCode = "404", description = "L'id della prenotazione o l'id del cliente non sono tra quelli nel database.")
-    })
-    @PutMapping("{idPrenotazione}/associate-cliente/{idCliente}")
-    public ResponseEntity<Prenotazione> associateCliente(Long idPrenotazione, Long idCliente) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneService.associateCliente(idPrenotazione, idCliente);
-        // controllo se il metodo del service è andato a buon fine
-        if (optionalPrenotazione.isPresent()) {
-            return ResponseEntity.ok().body(optionalPrenotazione.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @Operation(summary = "Mette in relazione una prenotazione e un cliente.", description = "Quando gli si dà l'id di una prenotazione e l'id di un cliente li mette in relazione sovrascrivendo un possibile cliente già in relazione con la prenotazione data.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "La prenotazione è in relazione con il cliente dato."),
-            @ApiResponse(responseCode = "404", description = "L'id della prenotazione o l'id del cliente non sono tra quelli nel database.")
-    })
-    @PutMapping("{idPrenotazione}/associate-cliente-forced/{idCliente}")
-    public ResponseEntity<Prenotazione> changeAssociatedCliente(Long idPrenotazione, Long idCliente) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneService.changeAssociatedCliente(idPrenotazione, idCliente);
-        // controllo se il metodo del service è andato a buon fine
-        if (optionalPrenotazione.isPresent()) {
-            return ResponseEntity.ok().body(optionalPrenotazione.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @Operation(summary = "Mette in relazione una prenotazione e un albergo.", description = "Quando gli si dà l'id di una prenotazione e l'id di un albergo li mette in relazione senza sovrascrivere un possibile albergo già in relazione con la prenotazione data.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "La prenotazione è in relazione con l'albergo dato oppure, se presente, con l'albergo con cui era già in relazione."),

@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name = "prenotazioni")
 public class Prenotazione {
     // Chiave primaria
     @Id
@@ -18,6 +18,7 @@ public class Prenotazione {
     private Date dataArrivo;
     private Date dataPartenza;
     private List<Integer> serviziRichiestiIds;
+    private boolean isActive = true; // campo per l'eliminazione logica
     // chiavi esterne
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -80,6 +81,14 @@ public class Prenotazione {
 
     public void setServiziRichiestiIds(List<Integer> serviziRichiestiIds) {
         this.serviziRichiestiIds = serviziRichiestiIds;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public Cliente getCliente() {

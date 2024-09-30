@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
+import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -13,15 +14,11 @@ public class Albergo extends Utente {
     // i field
     private String nome;
     private Integer numeroDiCamere;
-    // deve mettere una lista di Servizi
-    private List<String> services;
+    private List<Integer> services;
     private Boolean cancellazionePrenotazioneGratuita;
     private LocalDateTime orarioCheckIn;
     private LocalDateTime orarioCheckOut;
     private String citta;
-    // deve mettere una lista di Recensioni
-    @OneToMany
-    private List<Recensione> recensioni;
     @OneToMany
     private List<Prenotazione> prenotazioni;
     private Double ratingMedio;
@@ -33,8 +30,8 @@ public class Albergo extends Utente {
 
     // costruttore con tutti i field
     public Albergo(Long id, String email, String password, String contattoTelefonico, String nome, Integer numeroDiCamere,
-                   List<String> services, Boolean cancellazionePrenotazioneGratuita, LocalDateTime orarioCheckIn,
-                   LocalDateTime orarioCheckOut, String citta, List<Recensione> recensioni, List<Prenotazione> prenotazioni, Double ratingMedio) {
+                   List<Integer> services, Boolean cancellazionePrenotazioneGratuita, LocalDateTime orarioCheckIn,
+                   LocalDateTime orarioCheckOut, String citta,List<Prenotazione> prenotazioni, Double ratingMedio) {
         super(id, email, password, contattoTelefonico);
         this.nome = nome;
         this.numeroDiCamere = numeroDiCamere;
@@ -43,7 +40,6 @@ public class Albergo extends Utente {
         this.orarioCheckIn = orarioCheckIn;
         this.orarioCheckOut = orarioCheckOut;
         this.citta = citta;
-        this.recensioni = recensioni;
         this.prenotazioni = prenotazioni;
         this.ratingMedio = ratingMedio;
     }
@@ -63,11 +59,11 @@ public class Albergo extends Utente {
        this.numeroDiCamere = numeroDiCamere;
     }
 
-    public List<String> getServices() {
+    public List<Integer> getServices() {
         return services;
     }
 
-    public void setServices(List<String> services) {
+    public void setServices(List<Integer> services) {
         this.services = services;
     }
 
@@ -101,14 +97,6 @@ public class Albergo extends Utente {
 
     public void setCitta(String citta) {
         this.citta = citta;
-    }
-
-    public List<Recensione> getRecensioni() {
-        return recensioni;
-    }
-
-    public void setRecensioni(List<Recensione> recensioni) {
-        this.recensioni = recensioni;
     }
 
     public Double getRatingMedio() {

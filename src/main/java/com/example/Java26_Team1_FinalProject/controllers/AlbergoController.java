@@ -1,7 +1,12 @@
 package com.example.Java26_Team1_FinalProject.controllers;
 
 import com.example.Java26_Team1_FinalProject.entities.Albergo;
+import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
+import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
 import com.example.Java26_Team1_FinalProject.services.AlbergoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,4 +65,45 @@ public class AlbergoController {
           return ResponseEntity.notFound().build();
     }
 
+    // Post per aggiungere un Prenotazione dalla lista specificato dal Albergo
+    @PostMapping("/prenotazione/{idAlbergo}/{idPrenotazione}")
+    @Operation(summary = "aggiunge una prenotazione", description = "aggiunge una prenotazione alla lista delle prenotazioni")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "la prenotazione è stata aggiunta correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID albergo non trovato, prenotazione non aggiunta")
+    })
+    public ResponseEntity<String> aggiungerePrenotazione(@PathVariable Long idAlbergo, @PathVariable Long idPrenotazione){
+        albergoService.addPrenotazione(idAlbergo,idPrenotazione);
+        return ResponseEntity.ok().build();
+    }
+    //DELETE per eliminare un Prenotazione dalla lista
+    @DeleteMapping("/prenotazione/{idAlbergo}/{idPrenotazione}")
+    @Operation(summary = "rimuove una prenotazione", description = "rimuove una prenotazione dalla lista delle prenotazioni")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "la prenotazione è stata rimossa correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID albergo non trovato, prenotazione non rimossa")
+    })
+    public ResponseEntity<String> eliminarePrenotazione(@PathVariable Long idAlbergo,@PathVariable Long idPrenotazione ){
+       albergoService.removePrenotazione(idAlbergo, idPrenotazione);
+        return ResponseEntity.ok().build();
+    }
+
+    // POST per aggiungere un servizio alla lista specificato dal Albergo
+    @PostMapping("/servizi/{idAlbergo}/{servizio}")
+    public ResponseEntity<String> aggiungiServizi(@PathVariable Long  idAlbergo,@PathVariable Integer  servizio){
+       boolean addServizio =  albergoService.aggiungiServizio(idAlbergo,servizio);
+       if(addServizio){
+           return ResponseEntity.ok().build();
+       }
+        return ResponseEntity.status(404).body("operazione ERRATO");
+    }
+    // DELETE per rimuovere un servizio  specificato dal Albergo
+    @DeleteMapping("/servizi/{idAlbergo}/{servizio}")
+    public ResponseEntity<String>  rimuoviServizio(@PathVariable Long idAlbergo,@PathVariable Integer servizio){
+        boolean rimuoviServizio = albergoService.eliminaServizio(idAlbergo,servizio);
+        if(rimuoviServizio){
+            return  ResponseEntity.ok().build();
+        }
+        return ResponseEntity.status(404).build();
+    }
 }

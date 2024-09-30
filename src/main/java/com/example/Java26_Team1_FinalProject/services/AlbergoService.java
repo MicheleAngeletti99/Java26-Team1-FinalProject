@@ -13,6 +13,8 @@ public class AlbergoService {
     // parametri
     @Autowired
     private AlbergoRepository albergoRepository;
+    @Autowired
+    private PrenotazioneService prenotazioneService;
 
     // I METODI
     // metodo per aggiungere albergo
@@ -49,12 +51,48 @@ public class AlbergoService {
                     albergoDaModificare.setOrarioCheckOut(albergo.getOrarioCheckOut());
                     albergoDaModificare.setCitta(albergoDaModificare.getCitta());
                     albergoDaModificare.setRatingMedio(albergo.getRatingMedio());
-                    /* non avevo mezzo le liste:
-                      recensione, prenotazione e services
-                     */
+                    albergoDaModificare.setServices(albergo.getServices());
+                    albergoDaModificare.setPrenotazioni(albergo.getPrenotazioni());
                     albergoRepository.save(albergoDaModificare);
                     return Optional.of(albergoDaModificare);
                 }
                  return Optional.empty();
+    }
+
+    // METODI PER LE LISTE
+
+    // metodo per aggiungere prenotazione alla lista
+    // collegare prenotazione a albergo o scollegarla
+    public void addPrenotazione(Long albergoId, Long idPrenotazione){
+       prenotazioneService.associateAlbergo(albergoId,idPrenotazione);
+    }
+    // metodo per rimuovere prenotazione dalla lista
+    // collega dal albergo 1 alla albergo 2
+    public void removePrenotazione(Long albergoId,Long idPrenotazione){
+        prenotazioneService.changeAssociatedAlbergo(albergoId,idPrenotazione);
+    }
+
+    // metodo per aggiungere servizi alla lista
+    public boolean aggiungiServizio(Long id, Integer servizi){
+        Optional<Albergo> albergoOptional = albergoRepository.findById(id);
+        if(albergoOptional.isPresent()){
+           Albergo albergo = albergoOptional.get();
+           albergo.getServices().add(servizi);
+           albergoRepository.save(albergo);
+           return true;
+        }
+        return false;
+
+    }
+    // metodo per eliminare un servizio dalla lista
+    public boolean eliminaServizio(Long idAlbergo, Integer servizio ){
+        Optional<Albergo> albergoOptional = albergoRepository.findById(idAlbergo);
+        if(albergoOptional.isPresent()){
+            Albergo albergo = albergoOptional.get();
+            albergo.getServices().remove(servizio);
+            albergoRepository.save(albergo);
+            return true;
+        }
+        return false;
     }
 }

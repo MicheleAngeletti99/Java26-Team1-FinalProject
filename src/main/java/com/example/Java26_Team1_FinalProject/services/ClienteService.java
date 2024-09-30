@@ -112,14 +112,14 @@ public class ClienteService {
      * @param prenotazione la prenotazione da aggiungere.
      * @return Optional del cliente con la prenotazione aggiunta alla sua lista, empty se il cliente non esiste.
      */
-    public boolean addPrenotazione(Long idCliente, Prenotazione prenotazione) {
+    public Optional<Prenotazione> addPrenotazione(Long idCliente, Prenotazione prenotazione) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
         if (optionalCliente.isPresent()) {
             prenotazione.setCliente(optionalCliente.get());
-            prenotazioneService.create(prenotazione);
-            return true;
+            Prenotazione savedPrenotazione = prenotazioneService.create(prenotazione);
+            return Optional.of(savedPrenotazione);
         }else {
-            return false;
+            return Optional.empty();
         }
     }
 
@@ -145,15 +145,15 @@ public class ClienteService {
      * @param carta     la carta di pagamento da aggiungere
      * @return true se la carta è stata aggiunta con successo, false se il cliente non esiste
      */
-    public boolean addCartaDiPagamento(Long idCliente, String carta) {
+    public Optional<Cliente> addCartaDiPagamento(Long idCliente, String carta) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
         if (optionalCliente.isPresent()) {
             Cliente cliente = optionalCliente.get();
             cliente.getCarteDiPagamento().add(carta);
-            clienteRepository.save(cliente);
-            return true;
+            Cliente savedCliente = clienteRepository.save(cliente);
+            return Optional.of(savedCliente);
         }
-        return false;
+        return Optional.empty();
     }
 
     /**

@@ -12,31 +12,21 @@ public class Recensione {
     private String citta;
     private  String nome;
     private String descrizione;
-
-    @ManyToOne
-    @JoinColumn(name = "id_cliente")
-    private Cliente cliente;
-
-    @ManyToOne
-    @JoinColumn(name = "id_albergo")
-    private Albergo albergo;
-
-    @ManyToOne
-    @JoinColumn(name = "id_ente")
-    private Ente ente;
+    @OneToOne
+    @JoinColumn(name = "id_prenotazione")
+    private Prenotazione prenotazione;
 
     public Recensione() {
     }
 
-    public Recensione(Long id, Integer voti, String citta, String nome, String descrizione, Cliente cliente, Albergo albergo, Ente ente) {
+    public Recensione(Long id, Integer voti, String citta, String nome, String descrizione, Prenotazione prenotazione) {
         this.id = id;
         this.voti = voti;
         this.citta = citta;
         this.nome = nome;
         this.descrizione = descrizione;
-        this.cliente = cliente;
-        this.albergo = albergo;
-        this.ente = ente;
+        this.prenotazione = prenotazione;
+
     }
 
     public Long getId() {
@@ -75,27 +65,11 @@ public class Recensione {
         this.descrizione = descrizione;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+    public Prenotazione getPrenotazione() {
+        return prenotazione;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public Albergo getAlbergo() {
-        return albergo;
-    }
-
-    public void setAlbergo(Albergo albergo) {
-        this.albergo = albergo;
-    }
-
-    public Ente getEnte() {
-        return ente;
-    }
-
-    public void setEnte(Ente ente) {
-        this.ente = ente;
+    public void setPrenotazione(Prenotazione prenotazione) {
+        this.prenotazione = prenotazione;
     }
 }

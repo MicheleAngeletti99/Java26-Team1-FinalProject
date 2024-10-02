@@ -1,9 +1,7 @@
 package com.example.Java26_Team1_FinalProject.controllers;
-import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Recensione;
 import com.example.Java26_Team1_FinalProject.services.RecensioneService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,7 +80,7 @@ public class RecensioneController {
 
     /**
      * Aggiorna la recensione esistente tramite il suo ID.
-     * Se la recensionee viene trovata, aggiorna le sue informazioni, altrimenti restituisce 404.
+     * Se la recensione viene trovata, aggiorna le sue informazioni, altrimenti restituisce 404.
      *
      * @param id  l'ID della recensione da aggiornare.
      * @param recensione la recensione con le nuove informazioni da aggiornare.
@@ -100,7 +98,7 @@ public class RecensioneController {
         if (optionalRecensione.isPresent()) {
             return ResponseEntity.ok(optionalRecensione.get());
         }
-        // Restituisce 404 se il cliente non è stato trovato
+        // Restituisce 404 se la recensione non è stato trovato
         return ResponseEntity.notFound().build();
     }
     /**
@@ -123,7 +121,7 @@ public class RecensioneController {
         if (deletedRecensioneById) {
             return ResponseEntity.noContent().build();
         } else {
-            // Restituisce 404 Not Found se il cliente non è stato trovato
+            // Restituisce 404 Not Found se la recensione non è stata trovata
             return ResponseEntity.notFound().build();
         }
     }

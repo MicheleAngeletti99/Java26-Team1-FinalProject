@@ -1,6 +1,5 @@
 package com.example.Java26_Team1_FinalProject.services;
 
-import com.example.Java26_Team1_FinalProject.entities.Albergo;
 import com.example.Java26_Team1_FinalProject.entities.Ente;
 import com.example.Java26_Team1_FinalProject.repositories.EnteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,11 +45,10 @@ public class EnteServices {
             enteDaModificare.setCitta(ente.getCitta());
             enteDaModificare.setLinkWeb(ente.getLinkWeb());
             enteDaModificare.setRecensione(ente.getRecensione());
-            enteDaModificare.setServizi(ente.getServizi());
+            enteDaModificare.setServiziEnumIds(ente.getServiziEnumIds());
             enteDaModificare.setRatingAVG(ente.getRatingAVG());
 
-            enteRepository.save(enteDaModificare);
-            return Optional.of(enteDaModificare);
+            return Optional.of(enteRepository.save(enteDaModificare));
         }
         return Optional.empty();
     }

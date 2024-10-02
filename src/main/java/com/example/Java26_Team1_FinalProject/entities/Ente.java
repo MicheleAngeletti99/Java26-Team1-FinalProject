@@ -12,27 +12,27 @@ public class Ente extends Utente{
 
     //Parametri
     private String nome;
-    private List<String> servizi;
+    private List<Integer> serviziEnumIds;
     private String citta;
     private String linkWeb;
     private String recensione;
     private Long ratingAVG;
     @OneToMany
-    private List<Recensione> recensioni;
+    private List<Prenotazione> prenotazioni;
 
     //Costruttori
     public Ente(){}
 
-    public Ente(Long id, String email, String password, String contattoTelefonico, String nome, List<String> servizi, String citta,
-                String linkWeb, String recensione, Long ratingAVG, List<Recensione> recensioni) {
+    public Ente(Long id, String email, String password, String contattoTelefonico, String nome, List<Integer> serviziEnumIds, String citta,
+                String linkWeb, String recensione, Long ratingAVG, List<Prenotazione> prenotazioni) {
         super(id, email, password, contattoTelefonico);
         this.nome = nome;
-        this.servizi = servizi;
+        this.serviziEnumIds = serviziEnumIds;
         this.citta = citta;
         this.linkWeb = linkWeb;
         this.recensione = recensione;
         this.ratingAVG = ratingAVG;
-        this.recensioni = recensioni;
+        this.prenotazioni = prenotazioni;
     }
 
     //Getter and Setter
@@ -44,12 +44,12 @@ public class Ente extends Utente{
         this.nome = nome;
     }
 
-    public List<String> getServizi() {
-        return servizi;
+    public List<Integer> getServiziEnumIds() {
+        return serviziEnumIds;
     }
 
-    public void setServizi(List<String> servizi) {
-        this.servizi = servizi;
+    public void setServiziEnumIds(List<Integer> serviziEnumIds) {
+        this.serviziEnumIds = serviziEnumIds;
     }
 
     public String getCitta() {
@@ -84,11 +84,11 @@ public class Ente extends Utente{
         this.ratingAVG = ratingAVG;
     }
 
-    public List<Recensione> getRecensioni() {
-        return recensioni;
+    public List<Prenotazione> getPrenotazioni() {
+        return prenotazioni;
     }
 
-    public void setRecensioni(List<Recensione> recensioni) {
-        this.recensioni = recensioni;
+    public void setPrenotazioni(List<Prenotazione> prenotazioni) {
+        this.prenotazioni = prenotazioni;
     }
 }

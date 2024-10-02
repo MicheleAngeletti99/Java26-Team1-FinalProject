@@ -1,6 +1,4 @@
 package com.example.Java26_Team1_FinalProject.controllers;
-
-import com.example.Java26_Team1_FinalProject.entities.Albergo;
 import com.example.Java26_Team1_FinalProject.entities.Ente;
 import com.example.Java26_Team1_FinalProject.services.EnteServices;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +55,16 @@ public class EnteController {
             return ResponseEntity.ok(enteOptional.get());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/prenotazione-ente/{idPrenotazione}/{idEnte}")
+    public ResponseEntity<String> aggiungerePrenotazione(@PathVariable Long idPrenotazione,@PathVariable Long idEnte){
+        enteServices.addPrenotazione(idPrenotazione,idEnte);
+        return ResponseEntity.ok().build();
+    }
+    @PostMapping("/prenotazione-ente/{idPrenotazione{idEnte}}")
+    public void removePrenotazione(@PathVariable Long idPrenotazione,@PathVariable Long idEnte){
+        enteServices.removePrenotazione(idPrenotazione,idEnte);
     }
 
 }

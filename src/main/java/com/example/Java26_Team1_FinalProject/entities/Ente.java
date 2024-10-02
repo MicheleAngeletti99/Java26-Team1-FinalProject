@@ -5,6 +5,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Table
@@ -23,8 +24,9 @@ public class Ente extends Utente{
     //Costruttori
     public Ente(){}
 
-    public Ente(Long id, String email, String password, String contattoTelefonico, String nome, List<Integer> serviziEnumIds, String citta,
-                String linkWeb, String recensione, Long ratingAVG, List<Prenotazione> prenotazioni) {
+    public Ente(Long id, String email, String password, String contattoTelefonico,
+                String nome, List<Integer> serviziEnumIds, String citta, String linkWeb,
+                String recensione, Long ratingAVG, List<Prenotazione> prenotazioni) {
         super(id, email, password, contattoTelefonico);
         this.nome = nome;
         this.serviziEnumIds = serviziEnumIds;
@@ -91,4 +93,6 @@ public class Ente extends Utente{
     public void setPrenotazioni(List<Prenotazione> prenotazioni) {
         this.prenotazioni = prenotazioni;
     }
+
+    public void deletePrenotazione(Optional<Prenotazione> prenotazione){this.prenotazioni.remove(prenotazione);}
 }

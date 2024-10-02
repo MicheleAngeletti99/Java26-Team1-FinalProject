@@ -1,8 +1,4 @@
 package com.example.Java26_Team1_FinalProject.services;
-
-
-import com.example.Java26_Team1_FinalProject.entities.Cliente;
-import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
 import com.example.Java26_Team1_FinalProject.entities.Recensione;
 import com.example.Java26_Team1_FinalProject.repositories.RecensioniRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +30,7 @@ public class RecensioneService {
     /**
      * Legge tutte le recensioni salvate nel database.
      *
-     * @return una List con le recensionee.
+     * @return una List con le recensione.
      */
 
     public List<Recensione> elencoRecensioni(){
@@ -44,8 +40,8 @@ public class RecensioneService {
     /**
      * Trova una recensione in base al suo ID.
      *
-     * @param id l'ID del cliente da cercare.
-     * @return un Optional che contiene il cliente se trovato, altrimenti vuoto.
+     * @param id l'ID della recensione da cercare.
+     * @return un Optional che contiene la recensione se trovato, altrimenti vuoto.
      */
     public Optional<Recensione> getRecensioniById(Long id){
         return recensioniRepository.findById(id);
@@ -56,7 +52,7 @@ public class RecensioneService {
      * Se la recensione viene trovata, aggiorna i suoi dati e restituisce la recensione aggiornata.
      *
      * @param id      l'ID della recensione da aggiornare.
-     * @param recensione l'oggetto Cliente con le nuove informazioni.
+     * @param recensione l'oggetto recensione con le nuove informazioni.
      * @return un Optional contenente la recensione aggiornato se trovato, altrimenti vuoto.
      */
 

@@ -18,20 +18,20 @@ public class EnteController {
     private EnteServices enteServices;
 
     //get per prendere la lsita di enti
-    @GetMapping("/elencoEnti")
+    @GetMapping("/elenco-enti")
     public ResponseEntity<List<Ente>> elencoEnti(){
         return ResponseEntity.ok(enteServices.elencoEnti());
     }
 
     //post per creare un ente
-    @PostMapping("/newEnte")
+    @PostMapping("/new-ente")
     public ResponseEntity<Ente> newEnte(@RequestBody Ente ente){
         Ente addEnte = enteServices.addEnte(ente);
         return ResponseEntity.ok(addEnte);
     }
 
     //delete del ente
-    @DeleteMapping("/eliminareEnte/{id}")
+    @DeleteMapping("/eliminare-ente/{id}")
     public ResponseEntity<Void> eliminareEnte(@PathVariable Long id){
         boolean rimuoviAlbergo = enteServices.deleteEnte(id);
         if(rimuoviAlbergo){
@@ -41,10 +41,19 @@ public class EnteController {
     }
 
     //modifica ente
-    @PutMapping("/modificaEnte/{id}")
+    @PutMapping("/modifica-ente/{id}")
     public ResponseEntity<Ente> modificaEnte(@PathVariable Long id, @RequestBody Ente ente){
         Optional<Ente> enteOptional = enteServices.modificaEnte(id,ente);
         if (enteOptional.isPresent()){
+            return ResponseEntity.ok(enteOptional.get());
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/ente/{id}")
+    public ResponseEntity<Ente> getEnteById(@PathVariable Long id){
+        Optional<Ente> enteOptional = enteServices.getEnteById(id);
+        if(enteOptional.isPresent()) {
             return ResponseEntity.ok(enteOptional.get());
         }
         return ResponseEntity.notFound().build();

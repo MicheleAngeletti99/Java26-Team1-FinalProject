@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.services;
 
+import com.example.Java26_Team1_FinalProject.entities.Albergo;
 import com.example.Java26_Team1_FinalProject.entities.Ente;
 import com.example.Java26_Team1_FinalProject.repositories.EnteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,11 @@ public class EnteServices {
     public List<Ente> elencoEnti(){
         return enteRepository.findAll();
     }
+    //ritorna ente by id
+    public Optional<Ente> getEnteById(Long id){
+        return enteRepository.findById(id);
+    }
+
     //crea un nuovo ente
     public Ente addEnte(Ente ente){
         return enteRepository.save(ente);

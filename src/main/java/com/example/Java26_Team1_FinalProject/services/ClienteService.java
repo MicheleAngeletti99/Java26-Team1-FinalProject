@@ -75,10 +75,9 @@ public class ClienteService {
             clienteToUpdate.setPrenotazioni(cliente.getPrenotazioni());
             clienteToUpdate.setRecensioni(cliente.getRecensioni());
 
-            //salva il cliente aggiornato nel database
-            clienteRepository.save(clienteToUpdate);
+            //ritorna e salva il cliente aggiornato nel database
+            return Optional.of(clienteRepository.save(clienteToUpdate));
 
-            return Optional.of(clienteToUpdate);
         } else {
             //restituisce un Optional vuoto se il cliente non è stato trovato
             return Optional.empty();
@@ -150,8 +149,8 @@ public class ClienteService {
         if (optionalCliente.isPresent()) {
             Cliente cliente = optionalCliente.get();
             cliente.getCarteDiPagamento().add(carta);
-            Cliente savedCliente = clienteRepository.save(cliente);
-            return Optional.of(savedCliente);
+
+            return Optional.of(clienteRepository.save(cliente));
         }
         return Optional.empty();
     }

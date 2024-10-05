@@ -77,13 +77,13 @@ public class AlbergoController {
         return ResponseEntity.ok().build();
     }
     //DELETE per eliminare un Prenotazione dalla lista
-    @DeleteMapping("/prenotazione/{idAlbergo}/{idPrenotazione}")
+    @DeleteMapping("/prenotazione/{idPrenotazione}/{idAlbergo}")
     @Operation(summary = "rimuove una prenotazione", description = "rimuove una prenotazione dalla lista delle prenotazioni")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "la prenotazione è stata rimossa correttamente"),
             @ApiResponse(responseCode = "404", description = "ID albergo non trovato, prenotazione non rimossa")
     })
-    public ResponseEntity<String> eliminarePrenotazione(@PathVariable Long idAlbergo,@PathVariable Long idPrenotazione ){
+    public ResponseEntity<String> eliminarePrenotazione(@PathVariable Long idPrenotazione, @PathVariable Long idAlbergo){
        albergoService.removePrenotazione(idAlbergo, idPrenotazione);
         return ResponseEntity.ok().build();
     }

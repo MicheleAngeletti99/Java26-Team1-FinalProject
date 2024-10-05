@@ -53,8 +53,7 @@ public class AlbergoService {
                     albergoDaModificare.setRatingMedio(albergo.getRatingMedio());
                     albergoDaModificare.setServices(albergo.getServices());
                     albergoDaModificare.setPrenotazioni(albergo.getPrenotazioni());
-                    albergoRepository.save(albergoDaModificare);
-                    return Optional.of(albergoDaModificare);
+                    return Optional.of( albergoRepository.save(albergoDaModificare));
                 }
                  return Optional.empty();
     }
@@ -67,8 +66,8 @@ public class AlbergoService {
        prenotazioneService.associateAlbergo(albergoId,idPrenotazione);
     }
     // metodo per rimuovere prenotazione dalla lista
-    // collega dal albergo 1 alla albergo 2
-    public void removePrenotazione(Long albergoId,Long idPrenotazione){
+    // uso il metodo del classe prenotazione per rimuovere un prenotazione
+    public void removePrenotazione(Long idPrenotazione,Long albergoId){
         prenotazioneService.changeAssociatedAlbergo(albergoId,idPrenotazione);
     }
 

@@ -18,12 +18,10 @@ public class Cliente extends Utente{
     @OneToMany
     private List<Prenotazione> prenotazioni;
 
-    private List<Recensione> recensioni;
-
     public Cliente() {}
 
     public Cliente(Long id, String email, String password, String contattoTelefonico, String nomeCliente, String cognomeCliente,
-                   Date dataDiNascita, List<String> carteDiPagamento, String livelloAbbonamento,List<Prenotazione> prenotazioni,List<Recensione> recensioni) {
+                   Date dataDiNascita, List<String> carteDiPagamento, String livelloAbbonamento,List<Prenotazione> prenotazioni) {
         super(id, email, password, contattoTelefonico);
         this.nomeCliente = nomeCliente;
         this.cognomeCliente = cognomeCliente;
@@ -31,7 +29,6 @@ public class Cliente extends Utente{
         this.carteDiPagamento = carteDiPagamento;
         this.livelloAbbonamento = livelloAbbonamento;
         this.prenotazioni = prenotazioni;
-        this.recensioni = recensioni;
     }
 
     public String getNomeCliente() {
@@ -80,13 +77,5 @@ public class Cliente extends Utente{
 
     public void setPrenotazioni(List<Prenotazione> prenotazioni) {
         this.prenotazioni = prenotazioni;
-    }
-
-    public List<Recensione> getRecensioni() {
-        return recensioni;
-    }
-
-    public void setRecensioni(List<Recensione> recensioni) {
-        this.recensioni = recensioni;
     }
 }

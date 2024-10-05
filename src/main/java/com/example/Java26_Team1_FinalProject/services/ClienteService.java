@@ -73,7 +73,6 @@ public class ClienteService {
             clienteToUpdate.setLivelloAbbonamento(cliente.getLivelloAbbonamento());
             clienteToUpdate.setCarteDiPagamento(cliente.getCarteDiPagamento());
             clienteToUpdate.setPrenotazioni(cliente.getPrenotazioni());
-            clienteToUpdate.setRecensioni(cliente.getRecensioni());
 
             //ritorna e salva il cliente aggiornato nel database
             return Optional.of(clienteRepository.save(clienteToUpdate));

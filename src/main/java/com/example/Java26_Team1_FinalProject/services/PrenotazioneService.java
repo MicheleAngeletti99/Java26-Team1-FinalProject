@@ -151,38 +151,6 @@ public class PrenotazioneService {
     // Metodi per le relazioni
 
     /**
-     * Mette in relazione una prenotazione e un albergo.
-     *
-     * @param idPrenotazione l'id della prenotazione da mettere in relazione.
-     * @param idAlbergo      l'id dell'albergo da mettere in relazione.
-     * @return un Optional con la prenotazione data con associato l'albergo dato, se c'era già un albergo associato non viene sovrascritto,
-     * un Optional vuoto se uno dei due id non è stato trovato.
-     */
-    public Optional<Prenotazione> associateAlbergo(Long idPrenotazione, Long idAlbergo) {
-        Optional<Prenotazione> optionalPrenotazione = readById(idPrenotazione);
-        Optional<Albergo> optionalAlbergo = albergoService.getAlbergoById(idAlbergo);
-
-        if (optionalPrenotazione.isPresent() && optionalAlbergo.isPresent()) {
-            Prenotazione updatePrenotazione = optionalPrenotazione.get();
-            Albergo relationAlbergo = optionalAlbergo.get();
-            // verifico che non ci sia un albergo associato
-            if (updatePrenotazione.getAlbergo() == null) {
-                // associo l'albergo alla prenotazione
-                updatePrenotazione.setAlbergo(relationAlbergo);
-                // faccio l'update nel database e ritorno un Optional
-                Prenotazione savedPrenotazione = prenotazioneRepository.save(updatePrenotazione);
-                return Optional.of(savedPrenotazione);
-            } else {
-                // se c'è gia un albergo associato non lo sovrascrivo
-                return Optional.of(updatePrenotazione);
-            }
-        } else {
-            // se non ho trovato entrambi gli id ritorno un Optional vuoto
-            return Optional.empty();
-        }
-    }
-
-    /**
      * Mette in relazione una prenotazione e un ente.
      *
      * @param idPrenotazione l'id della prenotazione da mettere in relazione.

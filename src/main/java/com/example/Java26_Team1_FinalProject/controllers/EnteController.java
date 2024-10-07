@@ -32,7 +32,7 @@ public class EnteController {
     @PostMapping("/new-ente")
     @Operation(summary = "Crea un nuovo ente", description = "Aggiunge un nuovo ente nel database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Ente creato correttamente e salvato nel database"),
+            @ApiResponse(responseCode = "200", description = "Ente creato correttamente e salvato nel database"),
             @ApiResponse(responseCode = "400", description = "Richiesta non valida")
     })
     public ResponseEntity<Ente> newEnte(@RequestBody Ente ente){

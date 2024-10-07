@@ -52,7 +52,7 @@ public class AlbergoController {
     @PostMapping("/newalbergo")
     @Operation(summary = "Crea un nuovo albergo", description = "Aggiunge un nuovo albergo nel database")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Albergo creato correttamente e salvato nel database"),
+            @ApiResponse(responseCode = "200", description = "Albergo creato correttamente e salvato nel database"),
             @ApiResponse(responseCode = "400", description = "Richiesta non valida")
     })
     public ResponseEntity<Albergo> newAlbergo(@RequestBody Albergo albergo){

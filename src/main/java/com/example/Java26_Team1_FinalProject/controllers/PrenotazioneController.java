@@ -129,22 +129,6 @@ public class PrenotazioneController {
         }
     }
 
-    @Operation(summary = "Mette in relazione una prenotazione e un albergo.", description = "Quando gli si dà l'id di una prenotazione e l'id di un albergo li mette in relazione senza sovrascrivere un possibile albergo già in relazione con la prenotazione data.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "La prenotazione è in relazione con l'albergo dato oppure, se presente, con l'albergo con cui era già in relazione."),
-            @ApiResponse(responseCode = "404", description = "L'id della prenotazione o l'id dell'albergo non sono tra quelli nel database.")
-    })
-    @PutMapping("{idPrenotazione}/associate-albergo/{idAlbergo}")
-    public ResponseEntity<Prenotazione> associateAlbergo(Long idPrenotazione, Long idAlbergo) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneService.associateAlbergo(idPrenotazione, idAlbergo);
-        // controllo se il metodo del service è andato a buon fine
-        if (optionalPrenotazione.isPresent()) {
-            return ResponseEntity.ok().body(optionalPrenotazione.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
     @Operation(summary = "Mette in relazione una prenotazione e un ente.", description = "Quando gli si dà l'id di una prenotazione e l'id di un ente li mette in relazione senza sovrascrivere un possibile ente già in relazione con la prenotazione data.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "La prenotazione è in relazione con l'ente dato oppure, se presente, con l'ente con cui era già in relazione."),
@@ -161,12 +145,12 @@ public class PrenotazioneController {
         }
     }
 
-    @Operation(summary = "Mette in relazione una prenotazione e un ente.", description = "Quando gli si dà l'id di una prenotazione e l'id di un ente li mette in relazione sovrascrivendo un possibile ente già in relazione con la prenotazione data.")
+    @Operation(summary = "Cambia l'ente in relazione con una prenotazione.", description = "Quando gli si dà l'id di una prenotazione e l'id di un ente li mette in relazione sovrascrivendo un possibile ente già in relazione con la prenotazione data.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "La prenotazione è in relazione con l'ente dato."),
             @ApiResponse(responseCode = "404", description = "L'id della prenotazione o l'id dell'ente non sono tra quelli nel database.")
     })
-    @PutMapping("{idPrenotazione}/associate-ente-forced/{idEnte}")
+    @PutMapping("{idPrenotazione}/change-associated-ente/{idEnte}")
     public ResponseEntity<Prenotazione> changeAssociatedEnte(Long idPrenotazione, Long idEnte) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneService.changeAssociatedEnte(idPrenotazione, idEnte);
         // controllo se il metodo del service è andato a buon fine

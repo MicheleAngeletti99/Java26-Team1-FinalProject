@@ -41,10 +41,12 @@ public class EnteServices {
         Optional<Ente> enteOptional = enteRepository.findById(id);
         if(enteOptional.isPresent()){
             Ente enteDaModificare = enteOptional.get();
+            enteDaModificare.setEmail(ente.getEmail());
+            enteDaModificare.setPassword(ente.getPassword());
+            enteDaModificare.setContattoTelefonico(ente.getContattoTelefonico());
             enteDaModificare.setNome(ente.getNome());
             enteDaModificare.setCitta(ente.getCitta());
             enteDaModificare.setLinkWeb(ente.getLinkWeb());
-            enteDaModificare.setRecensione(ente.getRecensione());
             enteDaModificare.setServiziEnumIds(ente.getServiziEnumIds());
             enteDaModificare.setRatingAVG(ente.getRatingAVG());
 

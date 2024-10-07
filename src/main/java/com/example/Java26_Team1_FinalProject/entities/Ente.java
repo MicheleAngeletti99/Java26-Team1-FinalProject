@@ -16,7 +16,6 @@ public class Ente extends Utente{
     private List<Integer> serviziEnumIds;
     private String citta;
     private String linkWeb;
-    private String recensione;
     private Long ratingAVG;
     @OneToMany
     private List<Prenotazione> prenotazioni;
@@ -26,13 +25,12 @@ public class Ente extends Utente{
 
     public Ente(Long id, String email, String password, String contattoTelefonico,
                 String nome, List<Integer> serviziEnumIds, String citta, String linkWeb,
-                String recensione, Long ratingAVG, List<Prenotazione> prenotazioni) {
+                Long ratingAVG, List<Prenotazione> prenotazioni) {
         super(id, email, password, contattoTelefonico);
         this.nome = nome;
         this.serviziEnumIds = serviziEnumIds;
         this.citta = citta;
         this.linkWeb = linkWeb;
-        this.recensione = recensione;
         this.ratingAVG = ratingAVG;
         this.prenotazioni = prenotazioni;
     }
@@ -68,14 +66,6 @@ public class Ente extends Utente{
 
     public void setLinkWeb(String linkWeb) {
         this.linkWeb = linkWeb;
-    }
-
-    public String getRecensione() {
-        return recensione;
-    }
-
-    public void setRecensione(String recensione) {
-        this.recensione = recensione;
     }
 
     public Long getRatingAVG() {

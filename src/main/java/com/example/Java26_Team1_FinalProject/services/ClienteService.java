@@ -71,6 +71,9 @@ public class ClienteService {
             Cliente clienteToUpdate = existingCliente.get();
 
             //aggiorna i campi del cliente
+            clienteToUpdate.setEmail(cliente.getEmail());
+            clienteToUpdate.setPassword(cliente.getPassword());
+            clienteToUpdate.setContattoTelefonico(cliente.getContattoTelefonico());
             clienteToUpdate.setNomeCliente(cliente.getNomeCliente());
             clienteToUpdate.setCognomeCliente(cliente.getCognomeCliente());
             clienteToUpdate.setDataDiNascita(cliente.getDataDiNascita());

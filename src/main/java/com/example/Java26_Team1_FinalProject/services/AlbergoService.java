@@ -42,12 +42,15 @@ public class AlbergoService {
         Optional<Albergo> optionalAlbergo = albergoRepository.findById(id);
                 if(optionalAlbergo.isPresent()){
                     Albergo albergoDaModificare = optionalAlbergo.get();
+                    albergoDaModificare.setEmail(albergo.getEmail());
+                    albergoDaModificare.setPassword(albergo.getPassword());
+                    albergoDaModificare.setContattoTelefonico(albergo.getContattoTelefonico());
                     albergoDaModificare.setNome(albergo.getNome());
                     albergoDaModificare.setNumeroDiCamere(albergo.getNumeroDiCamere());
                     albergoDaModificare.setCancellazionePrenotazioneGratuita(albergo.getCancellazionePrenotazioneGratuita());
                     albergoDaModificare.setOrarioCheckIn(albergo.getOrarioCheckIn());
                     albergoDaModificare.setOrarioCheckOut(albergo.getOrarioCheckOut());
-                    albergoDaModificare.setCitta(albergoDaModificare.getCitta());
+                    albergoDaModificare.setCitta(albergo.getCitta());
                     albergoDaModificare.setRatingMedio(albergo.getRatingMedio());
                     albergoDaModificare.setServices(albergo.getServices());
                     albergoDaModificare.setPrenotazioni(albergo.getPrenotazioni());

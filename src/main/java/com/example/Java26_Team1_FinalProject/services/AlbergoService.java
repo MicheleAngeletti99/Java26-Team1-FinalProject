@@ -13,8 +13,6 @@ public class AlbergoService {
     // parametri
     @Autowired
     private AlbergoRepository albergoRepository;
-    @Autowired
-    private PrenotazioneService prenotazioneService;
 
     // I METODI
     // metodo per aggiungere albergo
@@ -59,17 +57,6 @@ public class AlbergoService {
     }
 
     // METODI PER LE LISTE
-
-    // metodo per aggiungere prenotazione alla lista
-    // collegare prenotazione a albergo o scollegarla
-    public void addPrenotazione(Long albergoId, Long idPrenotazione){
-       prenotazioneService.associateAlbergo(albergoId,idPrenotazione);
-    }
-    // metodo per rimuovere prenotazione dalla lista
-    // uso il metodo del classe prenotazione per rimuovere un prenotazione
-    public void removePrenotazione(Long idPrenotazione,Long albergoId){
-        prenotazioneService.changeAssociatedAlbergo(albergoId,idPrenotazione);
-    }
 
     // metodo per aggiungere servizi alla lista
     public boolean aggiungiServizio(Long id, Integer servizi){

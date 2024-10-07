@@ -186,14 +186,14 @@ public class ClienteController {
      * @param prenotazione la prenotazione da aggiungere
      * @return ResponseEntity con il cliente aggiornato e lo stato dell'operazione (200 OK se aggiunta con successo, 404 Not Found se il cliente non esiste)
      */
-    @PostMapping("/{idCliente}/prenotazioni")
+    @PostMapping("/{idCliente}/prenotazioni/{idAlbergo}")
     @Operation(summary = "aggiunge una prenotazione", description = "aggiunge una prenotazione alla lista delle prenotazioni")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "la prenotazione è stata aggiunta correttamente"),
             @ApiResponse(responseCode = "404", description = "ID cliente non trovato, prenotazione non aggiunta")
     })
-    public ResponseEntity<Prenotazione> addPrenotazione(@PathVariable Long idCliente, @RequestBody Prenotazione prenotazione) {
-        Optional<Prenotazione> addedPrenotazione = clienteService.addPrenotazione(idCliente, prenotazione);
+    public ResponseEntity<Prenotazione> addPrenotazione(@PathVariable Long idCliente, @PathVariable Long idAlbergo, @RequestBody Prenotazione prenotazione) {
+        Optional<Prenotazione> addedPrenotazione = clienteService.addPrenotazione(idCliente, idAlbergo, prenotazione);
         if (addedPrenotazione.isPresent()) {
             return ResponseEntity.status(HttpStatus.CREATED).body(addedPrenotazione.get());
         } else {
@@ -202,23 +202,23 @@ public class ClienteController {
     }
 
     /**
-     * Rimuove una prenotazione dal cliente specificato.
+     * Rimuove una prenotazione specificatoa
      *
      * @param idPrenotazione l'ID della prenotazione da rimuovere
-     * @return ResponseEntity con lo stato dell'operazione (200 OK se rimossa con successo, 404 Not Found se il cliente o la prenotazione non esiste)
+     * @return ResponseEntity con lo stato dell'operazione (200 OK se rimossa con successo, 404 Not Found se la prenotazione non esiste)
      */
-    @DeleteMapping("/{idCliente}/prenotazioni/{idPrenotazione}")
+    @DeleteMapping("/prenotazioni/{idPrenotazione}")
     @Operation(summary = "rimuove una prenotazione", description = "rimuove una prenotazione dalla lista delle prenotazioni")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "la prenotazione è stata rimossa correttamente"),
-            @ApiResponse(responseCode = "404", description = "ID cliente non trovato, prenotazione non rimossa")
+            @ApiResponse(responseCode = "404", description = "ID prenotazione non trovato")
     })
     public ResponseEntity<Void> removePrenotazione(@PathVariable Long idPrenotazione) {
         boolean isRemoved = clienteService.removePrenotazione(idPrenotazione);
         if (isRemoved) {
             return ResponseEntity.noContent().build();
         } else {
-            return ResponseEntity.notFound().build(); // 404 Not Found se la prenotazione non è stata trovata o il cliente non esiste
+            return ResponseEntity.notFound().build(); // 404 Not Found se la prenotazione non è stata trovata
         }
     }
 }

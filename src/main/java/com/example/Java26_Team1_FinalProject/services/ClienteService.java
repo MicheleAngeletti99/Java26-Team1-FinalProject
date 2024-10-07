@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.services;
 
+import com.example.Java26_Team1_FinalProject.entities.Albergo;
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
 import com.example.Java26_Team1_FinalProject.entities.Recensione;
@@ -23,6 +24,9 @@ public class ClienteService {
 
     @Autowired
     private PrenotazioneService prenotazioneService;
+
+    @Autowired
+    private AlbergoService albergoService;
 
     /**
      * Restituisce una lista di tutti i clienti nel database.
@@ -107,13 +111,16 @@ public class ClienteService {
      * Permette ad un cliente di aggiungere una prenotazione.
      *
      * @param idCliente    l'ID del cliente al quale si desidera aggiungere una prenotazione.
+     * @param idAlbergo    l'ID dell'albergo al quale si desidera prenotare.
      * @param prenotazione la prenotazione da aggiungere.
      * @return Optional del cliente con la prenotazione aggiunta alla sua lista, empty se il cliente non esiste.
      */
-    public Optional<Prenotazione> addPrenotazione(Long idCliente, Prenotazione prenotazione) {
+    public Optional<Prenotazione> addPrenotazione(Long idCliente, Long idAlbergo, Prenotazione prenotazione) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
-        if (optionalCliente.isPresent()) {
+        Optional<Albergo> optionalAlbergo = albergoService.getAlbergoById(idAlbergo);
+        if (optionalCliente.isPresent() && optionalAlbergo.isPresent()) {
             prenotazione.setCliente(optionalCliente.get());
+            prenotazione.setAlbergo(optionalAlbergo.get());
             Prenotazione savedPrenotazione = prenotazioneService.create(prenotazione);
             return Optional.of(savedPrenotazione);
         }else {

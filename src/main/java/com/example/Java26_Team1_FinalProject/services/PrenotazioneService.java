@@ -21,11 +21,9 @@ public class PrenotazioneService {
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
     @Autowired
-    private ClienteRepository clienteRepository;
+    private AlbergoService albergoService;
     @Autowired
-    private AlbergoRepository albergoRepository;
-    @Autowired
-    private EnteRepository enteRepository;
+    private EnteServices enteServices;
 
     // Metodi per il crud di base
 
@@ -116,7 +114,7 @@ public class PrenotazioneService {
      * @return un Optional con la prenotazione aggiornata se l'id è stato trovato, altrimenti un Optional vuoto.
      */
     public Optional<Prenotazione> addServizio(Long idPrenotazione, Integer idServizio) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
+        Optional<Prenotazione> optionalPrenotazione = readById(idPrenotazione);
         if (optionalPrenotazione.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();
             // aggiungo il servizio alla prenotazione
@@ -137,7 +135,7 @@ public class PrenotazioneService {
      * @return un Optional con la prenotazione aggiornata se l'id è stato trovato, altrimenti un Optional vuoto.
      */
     public Optional<Prenotazione> removeServizio(Long idPrenotazione, Integer idServizio) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
+        Optional<Prenotazione> optionalPrenotazione = readById(idPrenotazione);
         if (optionalPrenotazione.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();
             // rimuovo il servizio dalla prenotazione
@@ -161,8 +159,8 @@ public class PrenotazioneService {
      * un Optional vuoto se uno dei due id non è stato trovato.
      */
     public Optional<Prenotazione> associateAlbergo(Long idPrenotazione, Long idAlbergo) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
-        Optional<Albergo> optionalAlbergo = albergoRepository.findById(idAlbergo);
+        Optional<Prenotazione> optionalPrenotazione = readById(idPrenotazione);
+        Optional<Albergo> optionalAlbergo = albergoService.getAlbergoById(idAlbergo);
 
         if (optionalPrenotazione.isPresent() && optionalAlbergo.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();
@@ -185,32 +183,6 @@ public class PrenotazioneService {
     }
 
     /**
-     * Mette in relazione una prenotazione con un nuovo albergo.
-     *
-     * @param idPrenotazione l'id della prenotazione da mettere in relazione.
-     * @param idAlbergo      l'id dell'albergo da mettere in relazione.
-     * @return un Optional con la prenotazione data con associato l'albergo dato, sovrascrive il possibile albergo già associato,
-     * un Optional vuoto se uno dei due id non è stato trovato.
-     */
-    public Optional<Prenotazione> changeAssociatedAlbergo(Long idPrenotazione, Long idAlbergo) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
-        Optional<Albergo> optionalAlbergo = albergoRepository.findById(idAlbergo);
-
-        if (optionalPrenotazione.isPresent() && optionalAlbergo.isPresent()) {
-            Prenotazione updatePrenotazione = optionalPrenotazione.get();
-            Albergo relationAlbergo = optionalAlbergo.get();
-            // associo l'albergo alla prenotazione
-            updatePrenotazione.setAlbergo(relationAlbergo);
-            // faccio l'update nel database e ritorno un Optional
-            Prenotazione savedPrenotazione = prenotazioneRepository.save(updatePrenotazione);
-            return Optional.of(savedPrenotazione);
-        } else {
-            // se non ho trovato entrambi gli id ritorno un Optional vuoto
-            return Optional.empty();
-        }
-    }
-
-    /**
      * Mette in relazione una prenotazione e un ente.
      *
      * @param idPrenotazione l'id della prenotazione da mettere in relazione.
@@ -220,7 +192,7 @@ public class PrenotazioneService {
      */
     public Optional<Prenotazione> associateEnte(Long idPrenotazione, Long idEnte) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
-        Optional<Ente> optionalEnte = enteRepository.findById(idEnte);
+        Optional<Ente> optionalEnte = enteServices.getEnteById(idEnte);
 
         if (optionalPrenotazione.isPresent() && optionalEnte.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();
@@ -252,7 +224,7 @@ public class PrenotazioneService {
      */
     public Optional<Prenotazione> changeAssociatedEnte(Long idPrenotazione, Long idEnte) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
-        Optional<Ente> optionalEnte = enteRepository.findById(idEnte);
+        Optional<Ente> optionalEnte = enteServices.getEnteById(idEnte);
 
         if (optionalPrenotazione.isPresent() && optionalEnte.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();

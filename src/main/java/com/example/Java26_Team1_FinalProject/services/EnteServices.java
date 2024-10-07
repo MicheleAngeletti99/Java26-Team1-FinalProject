@@ -13,8 +13,6 @@ public class EnteServices {
 
     @Autowired
     private EnteRepository enteRepository;
-    @Autowired
-    private PrenotazioneService prenotazioneService;
 
     //ritorna elenco enti
     public List<Ente> elencoEnti(){
@@ -54,13 +52,6 @@ public class EnteServices {
         }
         return Optional.empty();
     }
-    //aggiungere una prenotazione dalla lista
-    public void addPrenotazione(Long idPrenotazione,Long idEnte){
-        prenotazioneService.associateEnte(idPrenotazione,idEnte);
-    }
-    //rimuovere una prenotazione dallla lista
-    public void removePrenotazione(Long idPrenotazione,Long idEnte){
-        enteRepository.getReferenceById(idEnte).deletePrenotazione(prenotazioneService.readById(idPrenotazione));
-    }
+
 
 }

@@ -65,8 +65,7 @@ public class RecensioneService {
             recensioneDaModificare.setCitta(recensione.getCitta());
             recensioneDaModificare.setDescrizione(recensione.getDescrizione());
 
-            recensioniRepository.save(recensioneDaModificare);
-            return Optional.of(recensioneDaModificare);
+            return Optional.of(recensioniRepository.save(recensioneDaModificare));
         }
         return Optional.empty();
     }

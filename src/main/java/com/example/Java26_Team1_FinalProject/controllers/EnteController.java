@@ -57,14 +57,5 @@ public class EnteController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/prenotazione-ente/{idPrenotazione}/add/{idEnte}")
-    public ResponseEntity<String> aggiungerePrenotazione(@PathVariable Long idPrenotazione,@PathVariable Long idEnte){
-        enteServices.addPrenotazione(idPrenotazione,idEnte);
-        return ResponseEntity.ok().build();
-    }
-    @PostMapping("/prenotazione-ente/{idPrenotazione}/remove/{idEnte}")
-    public void removePrenotazione(@PathVariable Long idPrenotazione,@PathVariable Long idEnte){
-        enteServices.removePrenotazione(idPrenotazione,idEnte);
-    }
 
 }

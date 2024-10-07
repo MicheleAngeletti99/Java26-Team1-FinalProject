@@ -93,6 +93,4 @@ public class Ente extends Utente{
     public void setPrenotazioni(List<Prenotazione> prenotazioni) {
         this.prenotazioni = prenotazioni;
     }
-
-    public void deletePrenotazione(Optional<Prenotazione> prenotazione){this.prenotazioni.remove(prenotazione);}
 }

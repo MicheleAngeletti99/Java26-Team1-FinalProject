@@ -65,29 +65,6 @@ public class AlbergoController {
           return ResponseEntity.notFound().build();
     }
 
-    // Post per aggiungere un Prenotazione dalla lista specificato dal Albergo
-    @PostMapping("/prenotazione/{idAlbergo}/{idPrenotazione}")
-    @Operation(summary = "aggiunge una prenotazione", description = "aggiunge una prenotazione alla lista delle prenotazioni")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "la prenotazione è stata aggiunta correttamente"),
-            @ApiResponse(responseCode = "404", description = "ID albergo non trovato, prenotazione non aggiunta")
-    })
-    public ResponseEntity<String> aggiungerePrenotazione(@PathVariable Long idAlbergo, @PathVariable Long idPrenotazione){
-        albergoService.addPrenotazione(idAlbergo,idPrenotazione);
-        return ResponseEntity.ok().build();
-    }
-    //DELETE per eliminare un Prenotazione dalla lista
-    @DeleteMapping("/prenotazione/{idPrenotazione}/{idAlbergo}")
-    @Operation(summary = "rimuove una prenotazione", description = "rimuove una prenotazione dalla lista delle prenotazioni")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "la prenotazione è stata rimossa correttamente"),
-            @ApiResponse(responseCode = "404", description = "ID albergo non trovato, prenotazione non rimossa")
-    })
-    public ResponseEntity<String> eliminarePrenotazione(@PathVariable Long idPrenotazione, @PathVariable Long idAlbergo){
-       albergoService.removePrenotazione(idAlbergo, idPrenotazione);
-        return ResponseEntity.ok().build();
-    }
-
     // POST per aggiungere un servizio alla lista specificato dal Albergo
     @PostMapping("/servizi/{idAlbergo}/{servizio}")
     public ResponseEntity<String> aggiungiServizi(@PathVariable Long  idAlbergo,@PathVariable Integer  servizio){

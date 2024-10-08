@@ -3,8 +3,9 @@ package com.example.Java26_Team1_FinalProject.services;
 import com.example.Java26_Team1_FinalProject.entities.Albergo;
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
-import com.example.Java26_Team1_FinalProject.entities.Recensione;
+import com.example.Java26_Team1_FinalProject.repositories.AlbergoRepository;
 import com.example.Java26_Team1_FinalProject.repositories.ClienteRepository;
+import com.example.Java26_Team1_FinalProject.repositories.PrenotazioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +24,10 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private PrenotazioneService prenotazioneService;
+    private PrenotazioneRepository prenotazioneRepository;
 
     @Autowired
-    private AlbergoService albergoService;
+    private AlbergoRepository albergoRepository;
 
     /**
      * Restituisce una lista di tutti i clienti nel database.
@@ -120,11 +121,11 @@ public class ClienteService {
      */
     public Optional<Prenotazione> addPrenotazione(Long idCliente, Long idAlbergo, Prenotazione prenotazione) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
-        Optional<Albergo> optionalAlbergo = albergoService.getAlbergoById(idAlbergo);
+        Optional<Albergo> optionalAlbergo = albergoRepository.findById(idAlbergo);
         if (optionalCliente.isPresent() && optionalAlbergo.isPresent()) {
             prenotazione.setCliente(optionalCliente.get());
             prenotazione.setAlbergo(optionalAlbergo.get());
-            Prenotazione savedPrenotazione = prenotazioneService.create(prenotazione);
+            Prenotazione savedPrenotazione = prenotazioneRepository.save(prenotazione);
             return Optional.of(savedPrenotazione);
         }else {
             return Optional.empty();
@@ -138,9 +139,9 @@ public class ClienteService {
      * @return true se la prenotazione è stata rimossa, false se la prenotazione non esiste.
      */
     public boolean removePrenotazione(Long prenotazioneId) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneService.readById(prenotazioneId);
+        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findById(prenotazioneId);
         if (optionalPrenotazione.isPresent()) {
-            prenotazioneService.deleteById(prenotazioneId);
+            prenotazioneRepository.logicDeleteById(prenotazioneId);
             return true;
         }
         return false;

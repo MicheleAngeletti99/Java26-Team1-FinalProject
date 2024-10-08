@@ -1,12 +1,7 @@
 package com.example.Java26_Team1_FinalProject.services;
 
-import com.example.Java26_Team1_FinalProject.entities.Albergo;
-import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Ente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
-import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
-import com.example.Java26_Team1_FinalProject.repositories.AlbergoRepository;
-import com.example.Java26_Team1_FinalProject.repositories.ClienteRepository;
 import com.example.Java26_Team1_FinalProject.repositories.EnteRepository;
 import com.example.Java26_Team1_FinalProject.repositories.PrenotazioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +16,7 @@ public class PrenotazioneService {
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
     @Autowired
-    private AlbergoService albergoService;
-    @Autowired
-    private EnteServices enteServices;
+    private EnteRepository enteRepository;
 
     // Metodi per il crud di base
 
@@ -52,7 +45,7 @@ public class PrenotazioneService {
      * Cerca una prenotazione tra quelle nel database.
      *
      * @param id l'id della prenotazione da cercare, deve non essere null.
-     * @return un'Optional con la prenotazione in caso sia presente, altrimenti un Optional vuoto.
+     * @return un Optional con la prenotazione in caso sia presente, altrimenti un Optional vuoto.
      */
     public Optional<Prenotazione> readById(Long id) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(id);
@@ -68,7 +61,7 @@ public class PrenotazioneService {
      *
      * @param id l'id della prenotazione da aggiornare, deve non essere null.
      * @param prenotazione una prenotazione contenente i nuovi dati, deve non essere null.
-     * @return un'Optional con la prenotazione aggiornata se l'id è stato trovato, altrimenti un Optional vuoto.
+     * @return un Optional con la prenotazione aggiornata se l'id è stato trovato, altrimenti un Optional vuoto.
      */
     public Optional<Prenotazione> updateById(Long id, Prenotazione prenotazione) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(id);
@@ -95,13 +88,7 @@ public class PrenotazioneService {
      * @param id l'id della prenotazione da eliminare, deve non essere null.
      */
     public void deleteById(Long id) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(id);
-        if (optionalPrenotazione.isPresent()) {
-            Prenotazione deletePrenotazione = optionalPrenotazione.get();
-            // faccio l'update di isActive e salvo nel database
-            deletePrenotazione.setActive(false);
-            prenotazioneRepository.save(deletePrenotazione);
-        }
+        prenotazioneRepository.logicDeleteById(id);
     }
 
     // Metodi per le liste
@@ -160,7 +147,7 @@ public class PrenotazioneService {
      */
     public Optional<Prenotazione> associateEnte(Long idPrenotazione, Long idEnte) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
-        Optional<Ente> optionalEnte = enteServices.getEnteById(idEnte);
+        Optional<Ente> optionalEnte = enteRepository.findById(idEnte);
 
         if (optionalPrenotazione.isPresent() && optionalEnte.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();
@@ -192,7 +179,7 @@ public class PrenotazioneService {
      */
     public Optional<Prenotazione> changeAssociatedEnte(Long idPrenotazione, Long idEnte) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
-        Optional<Ente> optionalEnte = enteServices.getEnteById(idEnte);
+        Optional<Ente> optionalEnte = enteRepository.findById(idEnte);
 
         if (optionalPrenotazione.isPresent() && optionalEnte.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();

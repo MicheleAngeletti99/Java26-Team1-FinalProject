@@ -2,9 +2,11 @@ package com.example.Java26_Team1_FinalProject.repositories;
 
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,6 +19,8 @@ public interface PrenotazioneRepository extends JpaRepository<Prenotazione, Long
      *
      * @param id l'id della prenotazione da cancellare, deve non essere null.
      */
+    @Modifying // indica che il metodo va a modificare i dati del database
+    @Transactional // indica che il metodo viene fatto in una transazione, se la transazione va a buon fine i cambiamenti vengono salvati nel database
     @Query(value = "update prenotazioni set is_active = false where id = :id", nativeQuery = true)
     void logicDeleteById(@Param("id") Long id);
 

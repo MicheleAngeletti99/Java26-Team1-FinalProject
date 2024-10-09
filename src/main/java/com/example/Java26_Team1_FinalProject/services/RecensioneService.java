@@ -1,5 +1,7 @@
 package com.example.Java26_Team1_FinalProject.services;
+import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
 import com.example.Java26_Team1_FinalProject.entities.Recensione;
+import com.example.Java26_Team1_FinalProject.repositories.PrenotazioneRepository;
 import com.example.Java26_Team1_FinalProject.repositories.RecensioniRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,8 @@ public class RecensioneService {
 
     @Autowired
     private RecensioniRepository recensioniRepository;
+    @Autowired
+    private PrenotazioneRepository prenotazioneRepository;
     /**
      * Crea una nuova prenotazione nel database.
      *
@@ -23,8 +27,13 @@ public class RecensioneService {
      * @return la recensione creata, non è mai null.
      */
 
-    public Recensione aggiungiRecensione(Recensione newRecensione){
-        return recensioniRepository.save(newRecensione);
+    public Optional<Recensione> aggiungiRecensione(Long idPrenotazione, Recensione newRecensione){
+        Optional<Prenotazione> prenotazioneOptional = prenotazioneRepository.findActiveById(idPrenotazione);
+        if (prenotazioneOptional.isPresent()) {
+            newRecensione.setPrenotazione(prenotazioneOptional.get());
+            return Optional.of(recensioniRepository.save(newRecensione));
+        }
+        return Optional.empty();
     }
 
     /**
@@ -60,9 +69,7 @@ public class RecensioneService {
         Optional<Recensione> optionalRecensione = recensioniRepository.findById(id);
         if (optionalRecensione.isPresent()) {
             Recensione recensioneDaModificare = optionalRecensione.get();
-            recensioneDaModificare.setNome(recensione.getNome());
             recensioneDaModificare.setVoti(recensione.getVoti());
-            recensioneDaModificare.setCitta(recensione.getCitta());
             recensioneDaModificare.setDescrizione(recensione.getDescrizione());
 
             return Optional.of(recensioniRepository.save(recensioneDaModificare));

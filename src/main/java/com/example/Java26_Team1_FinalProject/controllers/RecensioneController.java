@@ -65,17 +65,20 @@ public class RecensioneController {
      * @param recensione l'oggetto Cliente da creare e salvare.
      * @return la recensione creata e una risposta con codice 201 (Created).
      */
-    @PostMapping("/new-recensione")
+    @PostMapping("{idPrenotazione}/new-recensione")
     @Operation(summary = "Crea una nuova recensione", description = "Aggiunge una nuova recensione nel database")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Recensione creata correttamente e salvata nel database"),
             @ApiResponse(responseCode = "400", description = "Richiesta non valida")
     })
-    public ResponseEntity<Recensione> createRecensione(@RequestBody Recensione recensione) {
+    public ResponseEntity<Recensione> createRecensione(@PathVariable Long idPrenotazione, @RequestBody Recensione recensione) {
         //salva nel DB una nuova recensione
-        Recensione nuovaRecensione = recensioneService.aggiungiRecensione(recensione);
-        //la responce sarà 201 CREATED
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuovaRecensione);
+        Optional<Recensione> nuovaRecensione = recensioneService.aggiungiRecensione(idPrenotazione,recensione);
+        if (nuovaRecensione.isPresent()) {
+            //la responce sarà 201 CREATED
+            return ResponseEntity.status(HttpStatus.CREATED).body(nuovaRecensione.get());
+        }
+        return ResponseEntity.badRequest().build();
     }
 
     /**

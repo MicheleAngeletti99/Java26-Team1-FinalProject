@@ -9,8 +9,6 @@ public class Recensione {
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
     private  Integer voti;
-    private String citta;
-    private  String nome;
     private String descrizione;
     @OneToOne
     @JoinColumn(name = "id_prenotazione")
@@ -19,11 +17,9 @@ public class Recensione {
     public Recensione() {
     }
 
-    public Recensione(Long id, Integer voti, String citta, String nome, String descrizione, Prenotazione prenotazione) {
+    public Recensione(Long id, Integer voti, String descrizione, Prenotazione prenotazione) {
         this.id = id;
         this.voti = voti;
-        this.citta = citta;
-        this.nome = nome;
         this.descrizione = descrizione;
         this.prenotazione = prenotazione;
 
@@ -39,22 +35,6 @@ public class Recensione {
 
     public void setVoti(Integer voti) {
         this.voti = voti;
-    }
-
-    public String getCitta() {
-        return citta;
-    }
-
-    public void setCitta(String citta) {
-        this.citta = citta;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getDescrizione() {

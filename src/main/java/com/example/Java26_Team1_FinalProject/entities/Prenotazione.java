@@ -3,6 +3,7 @@ package com.example.Java26_Team1_FinalProject.entities;
 import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -15,10 +16,12 @@ public class Prenotazione {
     private Long id;
     // Campi
     private Integer numeroPersone;
-    private Date dataArrivo;
-    private Date dataPartenza;
+    private LocalDateTime dataArrivo;
+    private LocalDateTime dataPartenza;
     private List<Integer> serviziRichiestiIds;
     private boolean isActive = true; // campo per l'eliminazione logica
+    private boolean confermaPagamento = false;
+    private Double costoTotale = 0.00;
     // chiavi esterne
     @ManyToOne
     @JoinColumn(name = "id_cliente")
@@ -34,7 +37,7 @@ public class Prenotazione {
     public Prenotazione() {
     }
 
-    public Prenotazione(Long id, Integer numeroPersone, Date dataArrivo, Date dataPartenza, List<Integer> serviziRichiestiIds,
+    public Prenotazione(Long id, Integer numeroPersone, LocalDateTime dataArrivo, LocalDateTime dataPartenza, List<Integer> serviziRichiestiIds,
                         Cliente cliente, Albergo albergo, Ente ente) {
         this.id = id;
         this.numeroPersone = numeroPersone;
@@ -59,19 +62,19 @@ public class Prenotazione {
         this.numeroPersone = numeroPersone;
     }
 
-    public Date getDataArrivo() {
+    public LocalDateTime getDataArrivo() {
         return dataArrivo;
     }
 
-    public void setDataArrivo(Date dataArrivo) {
+    public void setDataArrivo(LocalDateTime dataArrivo) {
         this.dataArrivo = dataArrivo;
     }
 
-    public Date getDataPartenza() {
+    public LocalDateTime getDataPartenza() {
         return dataPartenza;
     }
 
-    public void setDataPartenza(Date dataPartenza) {
+    public void setDataPartenza(LocalDateTime dataPartenza) {
         this.dataPartenza = dataPartenza;
     }
 
@@ -89,6 +92,22 @@ public class Prenotazione {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    public boolean isConfermaPagamento() {
+        return confermaPagamento;
+    }
+
+    public void setConfermaPagamento(boolean confermaPagamento) {
+        this.confermaPagamento = confermaPagamento;
+    }
+
+    public Double getCostoTotale() {
+        return costoTotale;
+    }
+
+    public void setCostoTotale(Double costoTotale) {
+        this.costoTotale = costoTotale;
     }
 
     public Cliente getCliente() {

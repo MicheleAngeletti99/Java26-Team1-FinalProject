@@ -194,4 +194,30 @@ public class PrenotazioneService {
             return Optional.empty();
         }
     }
+
+    //metodo per conferma pagamento
+    public boolean confermaPagamento(Long idPrenotazione){
+        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
+        if (optionalPrenotazione.isPresent()){
+            Prenotazione prenotazione = optionalPrenotazione.get();
+            if (prenotazione.isConfermaPagamento()){
+                return false;
+            } else {
+                prenotazione.setConfermaPagamento(true);
+                prenotazioneRepository.save(prenotazione);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //metodo per aggiornare il prezzo
+//    private void aggiornaPrezzo (Prenotazione prenotazione){
+//        Double prezzoPersona = prenotazione.getAlbergo().getPrezzoPersona();
+//        Integer dataArrivo = prenotazione.getDataArrivo().getDayOfYear();
+//        Integer dataPartenza = prenotazione.getDataPartenza().getDayOfYear();
+//        Integer numeroPersone = prenotazione.getNumeroPersone();
+//        Double totaleAlloggio = (dataPartenza - dataArrivo) * prezzoPersona * numeroPersone;
+//
+//    }
 }

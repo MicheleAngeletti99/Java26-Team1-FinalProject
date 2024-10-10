@@ -19,6 +19,7 @@ public class Albergo extends Utente {
     private LocalDateTime orarioCheckIn;
     private LocalDateTime orarioCheckOut;
     private String citta;
+    private Double prezzoPersona;
     @OneToMany
     private List<Prenotazione> prenotazioni;
     private Double ratingMedio;
@@ -30,7 +31,7 @@ public class Albergo extends Utente {
 
     // costruttore con tutti i field
     public Albergo(Long id, String email, String password, String contattoTelefonico, String nome, Integer numeroDiCamere,
-                   List<Integer> services, Boolean cancellazionePrenotazioneGratuita, LocalDateTime orarioCheckIn,
+                   Double prezzoPersona, List<Integer> services, Boolean cancellazionePrenotazioneGratuita, LocalDateTime orarioCheckIn,
                    LocalDateTime orarioCheckOut, String citta,List<Prenotazione> prenotazioni, Double ratingMedio) {
         super(id, email, password, contattoTelefonico);
         this.nome = nome;
@@ -40,6 +41,7 @@ public class Albergo extends Utente {
         this.orarioCheckIn = orarioCheckIn;
         this.orarioCheckOut = orarioCheckOut;
         this.citta = citta;
+        this.prezzoPersona = prezzoPersona;
         this.prenotazioni = prenotazioni;
         this.ratingMedio = ratingMedio;
     }
@@ -97,6 +99,14 @@ public class Albergo extends Utente {
 
     public void setCitta(String citta) {
         this.citta = citta;
+    }
+
+    public Double getPrezzoPersona() {
+        return prezzoPersona;
+    }
+
+    public void setPrezzoPersona(Double prezzoPersona) {
+        this.prezzoPersona = prezzoPersona;
     }
 
     public Double getRatingMedio() {

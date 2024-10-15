@@ -1,9 +1,12 @@
 package com.example.Java26_Team1_FinalProject.services;
 
 import com.example.Java26_Team1_FinalProject.entities.Albergo;
+import com.example.Java26_Team1_FinalProject.entities.CartaDiPagamento;
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
+import com.example.Java26_Team1_FinalProject.enums.CircuitoCartaDiPagamentoEnum;
 import com.example.Java26_Team1_FinalProject.repositories.AlbergoRepository;
+import com.example.Java26_Team1_FinalProject.repositories.CartaDiPagamentoRepository;
 import com.example.Java26_Team1_FinalProject.repositories.ClienteRepository;
 import com.example.Java26_Team1_FinalProject.repositories.PrenotazioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +31,9 @@ public class ClienteService {
 
     @Autowired
     private AlbergoRepository albergoRepository;
+
+    @Autowired
+    private CartaDiPagamentoRepository cartaDiPagamentoRepository;
 
     /**
      * Restituisce una lista di tutti i clienti nel database.
@@ -151,16 +157,19 @@ public class ClienteService {
      * Permette a un cliente di aggiungere una carta di pagamento.
      *
      * @param idCliente l'ID del cliente al quale si desidera aggiungere la carta
-     * @param carta     la carta di pagamento da aggiungere
+     * @param idCarta     la carta di pagamento da aggiungere
      * @return true se la carta è stata aggiunta con successo, false se il cliente non esiste
      */
-    public Optional<Cliente> addCartaDiPagamento(Long idCliente, String carta) {
+    public Optional<Cliente> addCartaDiPagamento(Long idCliente, Long idCarta) {
         Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
-        if (optionalCliente.isPresent()) {
+        Optional<CartaDiPagamento> cartaOptional = cartaDiPagamentoRepository.findById(idCarta);
+        if (optionalCliente.isPresent() && cartaOptional.isPresent()) {
             Cliente cliente = optionalCliente.get();
+            CartaDiPagamento carta = cartaOptional.get();
+            carta.setCliente(cliente);
             cliente.getCarteDiPagamento().add(carta);
-
-            return Optional.of(clienteRepository.save(cliente));
+            clienteRepository.save(cliente);
+            return Optional.of(cliente);
         }
         return Optional.empty();
     }

@@ -1,8 +1,11 @@
 package com.example.Java26_Team1_FinalProject.controllers;
 
+import com.example.Java26_Team1_FinalProject.entities.CartaDiPagamento;
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
 import com.example.Java26_Team1_FinalProject.entities.Recensione;
+import com.example.Java26_Team1_FinalProject.enums.CircuitoCartaDiPagamentoEnum;
+import com.example.Java26_Team1_FinalProject.services.CartaDiPagamentoService;
 import com.example.Java26_Team1_FinalProject.services.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -28,6 +31,9 @@ public class ClienteController {
     // Inietta il servizio ClienteService per accedere ai metodi che gestiscono le operazioni del cliente
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private CartaDiPagamentoService cartaDiPagamentoService;
 
     /**
      * Restituisce una lista di tutti i clienti presenti nel database.
@@ -139,22 +145,22 @@ public class ClienteController {
      * Aggiunge una carta di pagamento al cliente specificato.
      *
      * @param idCliente l'ID del cliente a cui aggiungere la carta di pagamento
-     * @param carta la carta di pagamento da aggiungere
+     * @param idCarta la carta di pagamento da aggiungere
      * @return ResponseEntity con lo stato dell'operazione (200 OK se aggiunta con successo, 404 Not Found se il cliente non esiste)
      */
-    @PostMapping("/{idCliente}/carte-di-pagamento")
+    @PostMapping("/{idCliente}/add-carta/{idCarta}")
     @Operation(summary = "aggiunge una carta di pagamento", description = "aggiunge una carta di pagamento alla lista delle carte")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "la carta è stata aggiunta correttamente"),
             @ApiResponse(responseCode = "404", description = "ID cliente non trovato, carta non aggiunta")
     })
-    public ResponseEntity<Cliente> addCartaDiPagamento(@PathVariable Long idCliente, @RequestBody String carta){
-        Optional<Cliente> clienteOpt = clienteService.addCartaDiPagamento(idCliente,carta);
-        if (clienteOpt.isPresent()){
-            return ResponseEntity.status(HttpStatus.CREATED).body(clienteOpt.get());
-        }else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Cliente> addCartaDiPagamento(@PathVariable Long idCliente, @PathVariable Long idCarta){
+        //Aggiunge la carta al cliente se presente
+        Optional<Cliente> clienteOptional = clienteService.addCartaDiPagamento(idCliente, idCarta);
+        if (clienteOptional.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+        return ResponseEntity.ok().body(clienteOptional.get());
     }
 
     /**

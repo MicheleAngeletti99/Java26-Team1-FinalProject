@@ -1,9 +1,12 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import com.example.Java26_Team1_FinalProject.enums.LivelloAbbonamentoEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 
@@ -13,15 +16,20 @@ public class Cliente extends Utente{
     private String nomeCliente;
     private String cognomeCliente;
     private Date dataDiNascita;
-    private List<String> carteDiPagamento;
-    private String livelloAbbonamento;
+
+    @OneToMany
+    private List<CartaDiPagamento> carteDiPagamento;
+
+    @Enumerated(EnumType.STRING)
+    private LivelloAbbonamentoEnum livelloAbbonamento;
+
     @OneToMany
     private List<Prenotazione> prenotazioni;
 
     public Cliente() {}
 
     public Cliente(Long id, String email, String password, String contattoTelefonico, String nomeCliente, String cognomeCliente,
-                   Date dataDiNascita, List<String> carteDiPagamento, String livelloAbbonamento,List<Prenotazione> prenotazioni) {
+                   Date dataDiNascita, List<CartaDiPagamento> carteDiPagamento, LivelloAbbonamentoEnum livelloAbbonamento,List<Prenotazione> prenotazioni) {
         super(id, email, password, contattoTelefonico);
         this.nomeCliente = nomeCliente;
         this.cognomeCliente = cognomeCliente;
@@ -55,19 +63,19 @@ public class Cliente extends Utente{
         this.dataDiNascita = dataDiNascita;
     }
 
-    public List<String> getCarteDiPagamento() {
+    public List<CartaDiPagamento> getCarteDiPagamento() {
         return carteDiPagamento;
     }
 
-    public void setCarteDiPagamento(List<String> carteDiPagamento) {
+    public void setCarteDiPagamento(List<CartaDiPagamento> carteDiPagamento) {
         this.carteDiPagamento = carteDiPagamento;
     }
 
-    public String getLivelloAbbonamento() {
+    public LivelloAbbonamentoEnum getLivelloAbbonamento() {
         return livelloAbbonamento;
     }
 
-    public void setLivelloAbbonamento(String livelloAbbonamento) {
+    public void setLivelloAbbonamento(LivelloAbbonamentoEnum livelloAbbonamento) {
         this.livelloAbbonamento = livelloAbbonamento;
     }
 

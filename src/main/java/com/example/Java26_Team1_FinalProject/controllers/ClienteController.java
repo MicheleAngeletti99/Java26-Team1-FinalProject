@@ -1,10 +1,7 @@
 package com.example.Java26_Team1_FinalProject.controllers;
 
-import com.example.Java26_Team1_FinalProject.entities.CartaDiPagamento;
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
-import com.example.Java26_Team1_FinalProject.entities.Recensione;
-import com.example.Java26_Team1_FinalProject.enums.CircuitoCartaDiPagamentoEnum;
 import com.example.Java26_Team1_FinalProject.services.CartaDiPagamentoService;
 import com.example.Java26_Team1_FinalProject.services.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;

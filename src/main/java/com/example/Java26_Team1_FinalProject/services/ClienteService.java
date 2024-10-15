@@ -4,7 +4,6 @@ import com.example.Java26_Team1_FinalProject.entities.Albergo;
 import com.example.Java26_Team1_FinalProject.entities.CartaDiPagamento;
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
-import com.example.Java26_Team1_FinalProject.enums.CircuitoCartaDiPagamentoEnum;
 import com.example.Java26_Team1_FinalProject.repositories.AlbergoRepository;
 import com.example.Java26_Team1_FinalProject.repositories.CartaDiPagamentoRepository;
 import com.example.Java26_Team1_FinalProject.repositories.ClienteRepository;
@@ -154,23 +153,32 @@ public class ClienteService {
     }
 
     /**
-     * Permette a un cliente di aggiungere una carta di pagamento.
+     * Aggiunge una carta di pagamento a un cliente specifico.
      *
-     * @param idCliente l'ID del cliente al quale si desidera aggiungere la carta
-     * @param idCarta     la carta di pagamento da aggiungere
-     * @return true se la carta è stata aggiunta con successo, false se il cliente non esiste
+     * @param idCliente l'ID del cliente a cui si desidera associare la carta di pagamento
+     * @param idCarta l'ID della carta di pagamento da aggiungere al cliente
+     * @return un Optional contenente il cliente aggiornato se sia il cliente che la carta esistono,
+     *         altrimenti un Optional vuoto
      */
     public Optional<Cliente> addCartaDiPagamento(Long idCliente, Long idCarta) {
+        // Cerca il cliente nel database tramite l'ID fornito
         Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
+        // Cerca la carta di pagamento nel database tramite l'ID fornito
         Optional<CartaDiPagamento> cartaOptional = cartaDiPagamentoRepository.findById(idCarta);
+        // Se il cliente e la carta sono presenti
         if (optionalCliente.isPresent() && cartaOptional.isPresent()) {
             Cliente cliente = optionalCliente.get();
             CartaDiPagamento carta = cartaOptional.get();
+            // Associa la carta di pagamento al cliente
             carta.setCliente(cliente);
+            // Aggiunge la carta alla lista di carte del cliente
             cliente.getCarteDiPagamento().add(carta);
+            // Salva il cliente aggiornato nel database
             clienteRepository.save(cliente);
+            // Restituisce il cliente aggiornato all'interno di un Optional
             return Optional.of(cliente);
         }
+        // Restituisce un Optional vuoto se il cliente o la carta non esistono
         return Optional.empty();
     }
 

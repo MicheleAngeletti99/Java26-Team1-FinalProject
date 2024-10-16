@@ -20,7 +20,7 @@ public class Albergo extends Utente {
     private LocalDateTime orarioCheckOut;
     private String citta;
     private Double prezzoPersona;
-    @OneToMany
+    @OneToMany(mappedBy = "albergo")
     private List<Prenotazione> prenotazioni;
     private Double ratingMedio;
 

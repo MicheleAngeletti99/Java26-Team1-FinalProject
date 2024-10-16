@@ -157,7 +157,7 @@ public class ClienteService {
      *
      * @param idCliente l'ID del cliente a cui si desidera associare la carta di pagamento
      * @param idCarta l'ID della carta di pagamento da aggiungere al cliente
-     * @return un Optional contenente il cliente aggiornato se sia il cliente che la carta esistono,
+     * @return il cliente aggiornato se sia il cliente che la carta esistono,
      *         altrimenti un Optional vuoto
      */
     public Optional<Cliente> addCartaDiPagamento(Long idCliente, Long idCarta) {
@@ -171,12 +171,10 @@ public class ClienteService {
             CartaDiPagamento carta = cartaOptional.get();
             // Associa la carta di pagamento al cliente
             carta.setCliente(cliente);
-            // Aggiunge la carta alla lista di carte del cliente
-            cliente.getCarteDiPagamento().add(carta);
-            // Salva il cliente aggiornato nel database
-            clienteRepository.save(cliente);
-            // Restituisce il cliente aggiornato all'interno di un Optional
-            return Optional.of(cliente);
+            // Salva la carta nel database
+            cartaDiPagamentoRepository.save(carta);
+            // Restituisce il cliente aggiornato
+            return clienteRepository.findById(idCliente);
         }
         // Restituisce un Optional vuoto se il cliente o la carta non esistono
         return Optional.empty();

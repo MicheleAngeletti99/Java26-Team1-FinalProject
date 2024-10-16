@@ -17,7 +17,7 @@ public class Ente extends Utente{
     private String citta;
     private String linkWeb;
     private Long ratingAVG;
-    @OneToMany
+    @OneToMany(mappedBy = "ente")
     private List<Prenotazione> prenotazioni;
 
     //Costruttori

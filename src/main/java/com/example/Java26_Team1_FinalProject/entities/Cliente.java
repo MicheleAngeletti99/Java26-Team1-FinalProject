@@ -17,13 +17,13 @@ public class Cliente extends Utente{
     private String cognomeCliente;
     private Date dataDiNascita;
 
-    @OneToMany
+    @OneToMany(mappedBy = "cliente")
     private List<CartaDiPagamento> carteDiPagamento;
 
     @Enumerated(EnumType.STRING)
     private LivelloAbbonamentoEnum livelloAbbonamento;
 
-    @OneToMany
+    @OneToMany(mappedBy = "cliente")
     private List<Prenotazione> prenotazioni;
 
     public Cliente() {}

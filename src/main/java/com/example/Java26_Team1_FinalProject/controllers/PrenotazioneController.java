@@ -1,12 +1,14 @@
 package com.example.Java26_Team1_FinalProject.controllers;
 
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
+import com.example.Java26_Team1_FinalProject.services.ClienteService;
 import com.example.Java26_Team1_FinalProject.services.PrenotazioneService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,8 @@ public class PrenotazioneController {
     // Campi
     @Autowired
     private PrenotazioneService prenotazioneService;
+    @Autowired
+    private ClienteService clienteService;
 
     // Metodi per il crud di base
 
@@ -158,6 +162,50 @@ public class PrenotazioneController {
             return ResponseEntity.ok().body(optionalPrenotazione.get());
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Aggiunge una prenotazione al cliente specificato.
+     *
+     * @param idCliente l'ID del cliente al quale aggiungere la prenotazione
+     * @param idAlbergo l'ID dell'albergo sui cui prenotare
+     * @param idPrenotazione la prenotazione da aggiungere
+     * @return ResponseEntity con il cliente aggiornato e lo stato dell'operazione (200 OK se aggiunta con successo, 404 Not Found se il cliente non esiste)
+     */
+    @PostMapping("/{idCliente}/add-cliente-albergo/{idAlbergo}/prenotazione/{idPrenotazione}")
+    @Operation(summary = "aggiunge una prenotazione", description = "aggiunge una prenotazione alla lista delle prenotazioni")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "la prenotazione è stata aggiunta correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID cliente non trovato, prenotazione non aggiunta")
+    })
+    public ResponseEntity<Prenotazione> addPrenotazione(@PathVariable Long idCliente, @PathVariable Long idAlbergo, @PathVariable Long idPrenotazione) {
+        Optional<Prenotazione> addedPrenotazione = prenotazioneService.addPrenotazione(idCliente, idAlbergo, idPrenotazione);
+        if (addedPrenotazione.isPresent()) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(addedPrenotazione.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    /**
+     * Rimuove una prenotazione specificatoa
+     *
+     * @param idPrenotazione l'ID della prenotazione da rimuovere
+     * @return ResponseEntity con lo stato dell'operazione (200 OK se rimossa con successo, 404 Not Found se la prenotazione non esiste)
+     */
+    @DeleteMapping("/prenotazioni/{idPrenotazione}")
+    @Operation(summary = "rimuove una prenotazione", description = "rimuove una prenotazione dalla lista delle prenotazioni")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "la prenotazione è stata rimossa correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID prenotazione non trovato")
+    })
+    public ResponseEntity<Void> removePrenotazione(@PathVariable Long idPrenotazione) {
+        boolean isRemoved = prenotazioneService.removePrenotazione(idPrenotazione);
+        if (isRemoved) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build(); // 404 Not Found se la prenotazione non è stata trovata
         }
     }
 }

@@ -113,7 +113,7 @@ public class CartaDiPagamentoController {
             @ApiResponse(responseCode = "204", description = "Carta di pagamento eliminata con successo."),
             @ApiResponse(responseCode = "404", description = "Carta di pagamento non trovata.")
     })
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete-carta/{id}")
     public ResponseEntity<Void> deleteCarta(@PathVariable Long id) {
         boolean deletedCartaById = cartaDiPagamentoService.deleteCarta(id);
         if (deletedCartaById) {
@@ -123,6 +123,47 @@ public class CartaDiPagamentoController {
         }
     }
 
+    /**
+     * Aggiunge una carta di pagamento al cliente specificato.
+     *
+     * @param idCliente l'ID del cliente a cui aggiungere la carta di pagamento
+     * @param idCarta   la carta di pagamento da aggiungere
+     * @return ResponseEntity con lo stato dell'operazione (200 OK se aggiunta con successo, 404 Not Found se il cliente non esiste)
+     */
+    @PostMapping("/{idCliente}/add-carta/{idCarta}")
+    @Operation(summary = "aggiunge una carta di pagamento", description = "aggiunge una carta di pagamento alla lista delle carte di un cliente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "la carta è stata aggiunta correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID cliente non trovato, carta non aggiunta")
+    })
+    public ResponseEntity<CartaDiPagamento> addCartaDiPagamento(@PathVariable Long idCliente, @PathVariable Long idCarta){
+        //Aggiunge la carta al cliente se presente
+        Optional<CartaDiPagamento> cartaDiPagamentoOptional = cartaDiPagamentoService.addToClient(idCliente, idCarta);
+        if (cartaDiPagamentoOptional.isPresent()){
+            return ResponseEntity.ok().body(cartaDiPagamentoOptional.get());
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    /**
+     * Rimuove una carta di pagamento dal cliente specificato.
+     *
+     * @param idCarta la carta di pagamento da rimuovere dal cliente
+     * @return ResponseEntity con lo stato dell'operazione (204 OK se rimossa con successo, 404 Not Found se il cliente non esiste)
+     */@Operation(summary = "rimuove la carta di pagamento", description = "rimuove la carta di pagamento dal cliente specifico")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "la carta è stata rimossa correttamente"),
+            @ApiResponse(responseCode = "404", description = "ID cliente non trovato, carta non rimossa")
+    })
+    @DeleteMapping("/delete/{idCarta}")
+    public ResponseEntity<Void> deleteCartaToClient(@PathVariable Long idCarta) {
+        boolean deletedCartaById = cartaDiPagamentoService.deleteCartaToClient(idCarta);
+        if (deletedCartaById) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 
 

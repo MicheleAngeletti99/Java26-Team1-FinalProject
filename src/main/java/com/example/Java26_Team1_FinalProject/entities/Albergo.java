@@ -1,6 +1,7 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
 import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -21,6 +22,7 @@ public class Albergo extends Utente {
     private String citta;
     private Double prezzoPersona;
     @OneToMany(mappedBy = "albergo")
+    @JsonIgnore
     private List<Prenotazione> prenotazioni;
     private Double ratingMedio;
 

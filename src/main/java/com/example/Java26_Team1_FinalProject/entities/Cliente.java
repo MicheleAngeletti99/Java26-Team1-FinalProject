@@ -24,6 +24,7 @@ public class Cliente extends Utente{
     private LivelloAbbonamentoEnum livelloAbbonamento;
 
     @OneToMany(mappedBy = "cliente")
+    @JsonIgnore
     private List<Prenotazione> prenotazioni;
 
     public Cliente() {}

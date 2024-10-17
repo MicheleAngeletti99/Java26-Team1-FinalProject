@@ -1,6 +1,8 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
 import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;

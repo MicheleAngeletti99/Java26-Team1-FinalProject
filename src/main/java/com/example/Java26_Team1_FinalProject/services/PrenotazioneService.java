@@ -1,7 +1,11 @@
 package com.example.Java26_Team1_FinalProject.services;
 
+import com.example.Java26_Team1_FinalProject.entities.Albergo;
+import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Ente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
+import com.example.Java26_Team1_FinalProject.repositories.AlbergoRepository;
+import com.example.Java26_Team1_FinalProject.repositories.ClienteRepository;
 import com.example.Java26_Team1_FinalProject.repositories.EnteRepository;
 import com.example.Java26_Team1_FinalProject.repositories.PrenotazioneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,10 @@ public class PrenotazioneService {
     private PrenotazioneRepository prenotazioneRepository;
     @Autowired
     private EnteRepository enteRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private AlbergoRepository albergoRepository;
 
     // Metodi per il crud di base
 
@@ -211,7 +219,7 @@ public class PrenotazioneService {
         return false;
     }
 
-    //metodo per aggiornare il prezzo
+    //   metodo per aggiornare il prezzo
 //    private void aggiornaPrezzo (Prenotazione prenotazione){
 //        Double prezzoPersona = prenotazione.getAlbergo().getPrezzoPersona();
 //        Integer dataArrivo = prenotazione.getDataArrivo().getDayOfYear();
@@ -220,4 +228,43 @@ public class PrenotazioneService {
 //        Double totaleAlloggio = (dataPartenza - dataArrivo) * prezzoPersona * numeroPersone;
 //
 //    }
+
+    /**
+     * Permette ad un cliente di aggiungere una prenotazione.
+     *
+     * @param idCliente    l'ID del cliente al quale si desidera aggiungere una prenotazione.
+     * @param idAlbergo    l'ID dell'albergo al quale si desidera prenotare.
+     * @param idPrenotazione la prenotazione da aggiungere.
+     * @return Optional del cliente con la prenotazione aggiunta alla sua lista, empty se il cliente non esiste.
+     */
+    public Optional<Prenotazione> addPrenotazione(Long idCliente, Long idAlbergo, Long idPrenotazione) {
+        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
+        Optional<Albergo> optionalAlbergo = albergoRepository.findById(idAlbergo);
+        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findById(idPrenotazione);
+        if (optionalCliente.isPresent() && optionalAlbergo.isPresent() && optionalPrenotazione.isPresent()) {
+            Cliente cliete = optionalCliente.get();
+            Albergo albergo = optionalAlbergo.get();
+            Prenotazione prenotazione = optionalPrenotazione.get();
+            prenotazione.setCliente(cliete);
+            prenotazione.setAlbergo(albergo);
+            return Optional.of(prenotazioneRepository.save(prenotazione));
+        }else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Permette di rimuovere una prenotazione per ID.
+     *
+     * @param prenotazioneId l'ID della prenotazione da rimuovere.
+     * @return true se la prenotazione è stata rimossa, false se la prenotazione non esiste.
+     */
+    public boolean removePrenotazione(Long prenotazioneId) {
+        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findById(prenotazioneId);
+        if (optionalPrenotazione.isPresent()) {
+            prenotazioneRepository.logicDeleteById(prenotazioneId);
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,9 +1,6 @@
 package com.example.Java26_Team1_FinalProject.services;
 
-import com.example.Java26_Team1_FinalProject.entities.Albergo;
-import com.example.Java26_Team1_FinalProject.entities.CartaDiPagamento;
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
-import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
 import com.example.Java26_Team1_FinalProject.repositories.AlbergoRepository;
 import com.example.Java26_Team1_FinalProject.repositories.CartaDiPagamentoRepository;
 import com.example.Java26_Team1_FinalProject.repositories.ClienteRepository;
@@ -112,90 +109,6 @@ public class ClienteService {
             // Restituisce false se il cliente non è stato trovato
             return false;
         }
-    }
-
-    // ==== METODI PER LE LISTE ====
-
-    /**
-     * Permette ad un cliente di aggiungere una prenotazione.
-     *
-     * @param idCliente    l'ID del cliente al quale si desidera aggiungere una prenotazione.
-     * @param idAlbergo    l'ID dell'albergo al quale si desidera prenotare.
-     * @param prenotazione la prenotazione da aggiungere.
-     * @return Optional del cliente con la prenotazione aggiunta alla sua lista, empty se il cliente non esiste.
-     */
-    public Optional<Prenotazione> addPrenotazione(Long idCliente, Long idAlbergo, Prenotazione prenotazione) {
-        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
-        Optional<Albergo> optionalAlbergo = albergoRepository.findById(idAlbergo);
-        if (optionalCliente.isPresent() && optionalAlbergo.isPresent()) {
-            prenotazione.setCliente(optionalCliente.get());
-            prenotazione.setAlbergo(optionalAlbergo.get());
-            Prenotazione savedPrenotazione = prenotazioneRepository.save(prenotazione);
-            return Optional.of(savedPrenotazione);
-        }else {
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Permette di rimuovere una prenotazione per ID.
-     *
-     * @param prenotazioneId l'ID della prenotazione da rimuovere.
-     * @return true se la prenotazione è stata rimossa, false se la prenotazione non esiste.
-     */
-    public boolean removePrenotazione(Long prenotazioneId) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findById(prenotazioneId);
-        if (optionalPrenotazione.isPresent()) {
-            prenotazioneRepository.logicDeleteById(prenotazioneId);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Aggiunge una carta di pagamento a un cliente specifico.
-     *
-     * @param idCliente l'ID del cliente a cui si desidera associare la carta di pagamento
-     * @param idCarta l'ID della carta di pagamento da aggiungere al cliente
-     * @return il cliente aggiornato se sia il cliente che la carta esistono,
-     *         altrimenti un Optional vuoto
-     */
-    public Optional<Cliente> addCartaDiPagamento(Long idCliente, Long idCarta) {
-        // Cerca il cliente nel database tramite l'ID fornito
-        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
-        // Cerca la carta di pagamento nel database tramite l'ID fornito
-        Optional<CartaDiPagamento> cartaOptional = cartaDiPagamentoRepository.findById(idCarta);
-        // Se il cliente e la carta sono presenti
-        if (optionalCliente.isPresent() && cartaOptional.isPresent()) {
-            Cliente cliente = optionalCliente.get();
-            CartaDiPagamento carta = cartaOptional.get();
-            // Associa la carta di pagamento al cliente
-            carta.setCliente(cliente);
-            // Salva la carta nel database
-            cartaDiPagamentoRepository.save(carta);
-            // Restituisce il cliente aggiornato
-            return clienteRepository.findById(idCliente);
-        }
-        // Restituisce un Optional vuoto se il cliente o la carta non esistono
-        return Optional.empty();
-    }
-
-    /**
-     * Permette a un cliente di rimuovere una carta di pagamento.
-     *
-     * @param idCliente l'ID del cliente da cui si desidera rimuovere la carta
-     * @param carta la carta di pagamento da rimuovere
-     * @return true se la carta è stata rimossa con successo, false se la carta non è stata trovata o il cliente non esiste
-     */
-    public boolean deleteCartaDiPagamento(Long idCliente, String carta){
-        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
-        if (optionalCliente.isPresent()){
-            Cliente cliente = optionalCliente.get();
-            cliente.getCarteDiPagamento().remove(carta);
-            clienteRepository.save(cliente);
-            return true;
-        }
-        return false;
     }
 }
 

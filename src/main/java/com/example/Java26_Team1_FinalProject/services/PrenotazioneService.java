@@ -29,18 +29,35 @@ public class PrenotazioneService {
     // Metodi per il crud di base
 
     /**
-     * Crea una nuova prenotazione nel database.
+     * Crea una nuova prenotazione nel database, fatta da un cliente ad un albergo.
      *
-     * @param prenotazione la prenotazione da creare, deve non essere null.
-     * @return la prenotazione creata, non è mai null.
+     * @param prenotazione  la prenotazione da creare, deve non essere null.
+     * @param idCliente     l'id del cliente che sta facendo la prenotazione, deve non essere null.
+     * @param idAlbergo     l'id dell'albergo a cui si vuole prenotare, deve non essere null.
+     * @return un Optional con la prenotazione creata, un Optional vuoto se non sono stati trovati
+     * entrambi gli id nel database.
      */
-    public Prenotazione create(Prenotazione prenotazione) {
-        Prenotazione savedPrenotazione = prenotazioneRepository.save(prenotazione);
-        return savedPrenotazione;
+    public Optional<Prenotazione> create(Prenotazione prenotazione, Long idCliente, Long idAlbergo) {
+        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
+        Optional<Albergo> optionalAlbergo = albergoRepository.findById(idAlbergo);
+        // controllo che il cliente e l'albergo esistano nel database
+        if (optionalCliente.isPresent() && optionalAlbergo.isPresent()) {
+            Cliente cliete = optionalCliente.get();
+            Albergo albergo = optionalAlbergo.get();
+            // associo alla prenotazione il cliente e l'albergo dati
+            prenotazione.setCliente(cliete);
+            prenotazione.setAlbergo(albergo);
+            // salvo la prenotazione nel database e la restituisco con un Optional
+            Prenotazione savedPrenotazione = prenotazioneRepository.save(prenotazione);
+            return Optional.of(savedPrenotazione);
+        }else {
+            // se non trovo sia il cliente che l'albergo ritorno un Optional vuoto
+            return Optional.empty();
+        }
     }
 
     /**
-     * Legge tutte le prenotazioni salvate nel database.
+     * Legge tutte le prenotazioni attive salvate nel database.
      *
      * @return una List con le prenotazioni.
      */
@@ -50,7 +67,7 @@ public class PrenotazioneService {
     }
 
     /**
-     * Cerca una prenotazione tra quelle nel database.
+     * Cerca una prenotazione tra quelle attive nel database.
      *
      * @param id l'id della prenotazione da cercare, deve non essere null.
      * @return un Optional con la prenotazione in caso sia presente, altrimenti un Optional vuoto.
@@ -76,12 +93,16 @@ public class PrenotazioneService {
         if (optionalPrenotazione.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();
             // faccio l'update dei campi della Prenotazione, non di Id
-            updatePrenotazione.setAlbergo(prenotazione.getAlbergo());
-            updatePrenotazione.setCliente(prenotazione.getCliente());
+            updatePrenotazione.setNumeroPersone(prenotazione.getNumeroPersone());
             updatePrenotazione.setDataArrivo(prenotazione.getDataArrivo());
             updatePrenotazione.setDataPartenza(prenotazione.getDataPartenza());
-            updatePrenotazione.setNumeroPersone(prenotazione.getNumeroPersone());
             updatePrenotazione.setServiziRichiestiIds(prenotazione.getServiziRichiestiIds());
+            updatePrenotazione.setActive(prenotazione.isActive());
+            updatePrenotazione.setConfermaPagamento(prenotazione.isConfermaPagamento());
+            updatePrenotazione.setCostoTotale(prenotazione.getCostoTotale());
+            updatePrenotazione.setCliente(prenotazione.getCliente());
+            updatePrenotazione.setAlbergo(prenotazione.getAlbergo());
+            updatePrenotazione.setEnte(prenotazione.getEnte());
             // faccio l'update nel database e ritorno un Optional
             Prenotazione savedPrenotazione = prenotazioneRepository.save(updatePrenotazione);
             return Optional.of(savedPrenotazione);
@@ -98,6 +119,8 @@ public class PrenotazioneService {
     public void deleteById(Long id) {
         prenotazioneRepository.logicDeleteById(id);
     }
+
+    // Metodi per la lettura dei dati
 
     // Metodi per le liste
 
@@ -148,12 +171,12 @@ public class PrenotazioneService {
     /**
      * Mette in relazione una prenotazione e un ente.
      *
-     * @param idPrenotazione l'id della prenotazione da mettere in relazione.
-     * @param idEnte         l'id dell'ente da mettere in relazione.
+     * @param idPrenotazione l'id della prenotazione da mettere in relazione, deve non essere null.
+     * @param idEnte         l'id dell'ente da mettere in relazione, deve non essere null.
      * @return un Optional con la prenotazione data con associato l'ente dato, se c'era già un ente associato non viene sovrascritto,
      * un Optional vuoto se uno dei due id non è stato trovato.
      */
-    public Optional<Prenotazione> associateEnte(Long idPrenotazione, Long idEnte) {
+    public Optional<Prenotazione> addToEnte(Long idPrenotazione, Long idEnte) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
         Optional<Ente> optionalEnte = enteRepository.findById(idEnte);
 
@@ -180,12 +203,12 @@ public class PrenotazioneService {
     /**
      * Mette in relazione una prenotazione con un nuovo ente.
      *
-     * @param idPrenotazione l'id della prenotazione da mettere in relazione.
-     * @param idEnte         l'id dell'ente da mettere in relazione.
+     * @param idPrenotazione l'id della prenotazione da mettere in relazione, deve non essere null.
+     * @param idEnte         l'id dell'ente da mettere in relazione, deve non essere null.
      * @return un Optional con la prenotazione data con associato l'ente dato, sovrascrive il possibile ente già associato,
      * un Optional vuoto se uno dei due id non è stato trovato.
      */
-    public Optional<Prenotazione> changeAssociatedEnte(Long idPrenotazione, Long idEnte) {
+    public Optional<Prenotazione> changeEnte(Long idPrenotazione, Long idEnte) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
         Optional<Ente> optionalEnte = enteRepository.findById(idEnte);
 
@@ -202,6 +225,31 @@ public class PrenotazioneService {
             return Optional.empty();
         }
     }
+
+    /**
+     * Rimuove la relazione tra la prenotazione data e l'ente in relazione con essa.
+     *
+     * @param idPrenotazione l'id della prenotazione da cui togliere la relazione, deve non essere null.
+     * @return un Optional con la prenotazione senza ente associato, un Optional vuoto se la prenotazione
+     * non è stata trovata.
+     */
+    public Optional<Prenotazione> removeEnte(Long idPrenotazione) {
+        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
+
+        if (optionalPrenotazione.isPresent()) {
+            Prenotazione updatePrenotazione = optionalPrenotazione.get();
+            // rimuovo l'ente associato
+            updatePrenotazione.setEnte(null);
+            // faccio l'update nel database e ritorno un Optional
+            Prenotazione savedPrenotazione = prenotazioneRepository.save(updatePrenotazione);
+            return Optional.of(savedPrenotazione);
+        } else {
+            // se non ho trovato la prenotazione ritorno un Optional vuoto
+            return Optional.empty();
+        }
+    }
+
+    // Metodi per il pagamento
 
     //metodo per conferma pagamento
     public boolean confermaPagamento(Long idPrenotazione){
@@ -229,42 +277,4 @@ public class PrenotazioneService {
 //
 //    }
 
-    /**
-     * Permette ad un cliente di aggiungere una prenotazione.
-     *
-     * @param idCliente    l'ID del cliente al quale si desidera aggiungere una prenotazione.
-     * @param idAlbergo    l'ID dell'albergo al quale si desidera prenotare.
-     * @param idPrenotazione la prenotazione da aggiungere.
-     * @return Optional del cliente con la prenotazione aggiunta alla sua lista, empty se il cliente non esiste.
-     */
-    public Optional<Prenotazione> addPrenotazione(Long idCliente, Long idAlbergo, Long idPrenotazione) {
-        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
-        Optional<Albergo> optionalAlbergo = albergoRepository.findById(idAlbergo);
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findById(idPrenotazione);
-        if (optionalCliente.isPresent() && optionalAlbergo.isPresent() && optionalPrenotazione.isPresent()) {
-            Cliente cliete = optionalCliente.get();
-            Albergo albergo = optionalAlbergo.get();
-            Prenotazione prenotazione = optionalPrenotazione.get();
-            prenotazione.setCliente(cliete);
-            prenotazione.setAlbergo(albergo);
-            return Optional.of(prenotazioneRepository.save(prenotazione));
-        }else {
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Permette di rimuovere una prenotazione per ID.
-     *
-     * @param prenotazioneId l'ID della prenotazione da rimuovere.
-     * @return true se la prenotazione è stata rimossa, false se la prenotazione non esiste.
-     */
-    public boolean removePrenotazione(Long prenotazioneId) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findById(prenotazioneId);
-        if (optionalPrenotazione.isPresent()) {
-            prenotazioneRepository.logicDeleteById(prenotazioneId);
-            return true;
-        }
-        return false;
-    }
 }

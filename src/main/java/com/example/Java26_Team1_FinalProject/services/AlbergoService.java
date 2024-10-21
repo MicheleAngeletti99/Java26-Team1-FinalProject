@@ -48,8 +48,7 @@ public class AlbergoService {
                     albergoDaModificare.setNome(albergo.getNome());
                     albergoDaModificare.setNumeroDiCamere(albergo.getNumeroDiCamere());
                     albergoDaModificare.setCancellazionePrenotazioneGratuita(albergo.getCancellazionePrenotazioneGratuita());
-                    albergoDaModificare.setOrarioCheckIn(albergo.getOrarioCheckIn());
-                    albergoDaModificare.setOrarioCheckOut(albergo.getOrarioCheckOut());
+                    albergoDaModificare.setInfoOrari(albergo.getInfoOrari());
                     albergoDaModificare.setCitta(albergo.getCitta());
                     albergoDaModificare.setRatingMedio(albergo.getRatingMedio());
                     albergoDaModificare.setServices(albergo.getServices());

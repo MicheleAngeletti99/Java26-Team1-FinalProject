@@ -17,8 +17,7 @@ public class Albergo extends Utente {
     private Integer numeroDiCamere;
     private List<Integer> services;
     private Boolean cancellazionePrenotazioneGratuita;
-    private LocalDateTime orarioCheckIn;
-    private LocalDateTime orarioCheckOut;
+    private String infoOrari;
     private String citta;
     private Double prezzoPersona;
     @OneToMany(mappedBy = "albergo")
@@ -33,15 +32,13 @@ public class Albergo extends Utente {
 
     // costruttore con tutti i field
     public Albergo(Long id, String email, String password, String contattoTelefonico, String nome, Integer numeroDiCamere,
-                   Double prezzoPersona, List<Integer> services, Boolean cancellazionePrenotazioneGratuita, LocalDateTime orarioCheckIn,
-                   LocalDateTime orarioCheckOut, String citta,List<Prenotazione> prenotazioni, Double ratingMedio) {
+                   Double prezzoPersona, List<Integer> services, Boolean cancellazionePrenotazioneGratuita,String infoOrari, String citta,List<Prenotazione> prenotazioni, Double ratingMedio) {
         super(id, email, password, contattoTelefonico);
         this.nome = nome;
         this.numeroDiCamere = numeroDiCamere;
         this.services = services;
         this.cancellazionePrenotazioneGratuita = cancellazionePrenotazioneGratuita;
-        this.orarioCheckIn = orarioCheckIn;
-        this.orarioCheckOut = orarioCheckOut;
+        this.infoOrari = infoOrari;
         this.citta = citta;
         this.prezzoPersona = prezzoPersona;
         this.prenotazioni = prenotazioni;
@@ -79,20 +76,12 @@ public class Albergo extends Utente {
         this.cancellazionePrenotazioneGratuita = cancellazionePrenotazioneGratuita;
     }
 
-    public LocalDateTime getOrarioCheckIn() {
-        return orarioCheckIn;
+    public String getInfoOrari() {
+        return infoOrari;
     }
 
-    public void setOrarioCheckIn(LocalDateTime orarioCheckIn) {
-        this.orarioCheckIn = orarioCheckIn;
-    }
-
-    public LocalDateTime getOrarioCheckOut() {
-        return orarioCheckOut;
-    }
-
-    public void setOrarioCheckOut(LocalDateTime orarioCheckOut) {
-        this.orarioCheckOut = orarioCheckOut;
+    public void setInfoOrari(String infoOrari) {
+        this.infoOrari = infoOrari;
     }
 
     public String getCitta() {

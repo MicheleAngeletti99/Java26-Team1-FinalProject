@@ -34,6 +34,13 @@ public class Prenotazione {
     @ManyToOne
     @JoinColumn(name = "id_ente")
     private Ente ente;
+//    @ManyToMany
+//    @JoinTable(
+//            name = "prenotazioni_servizi",
+//            joinColumns = @JoinColumn(name = "prenotazioni_id"),
+//            inverseJoinColumns = @JoinColumn(name = "servizi_id")
+//    )
+//    private List<Servizi> servizi;
 
     // Costruttore senza argomenti e con tutti gli argomenti
     public Prenotazione() {

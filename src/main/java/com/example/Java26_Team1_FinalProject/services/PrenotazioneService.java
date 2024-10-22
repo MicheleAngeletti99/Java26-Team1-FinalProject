@@ -38,7 +38,7 @@ public class PrenotazioneService {
      * entrambi gli id nel database.
      */
     public Optional<Prenotazione> create(Prenotazione prenotazione, Long idCliente, Long idAlbergo) {
-        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
+        Optional<Cliente> optionalCliente = clienteRepository.findActiveById(idCliente);
         Optional<Albergo> optionalAlbergo = albergoRepository.findById(idAlbergo);
         // controllo che il cliente e l'albergo esistano nel database
         if (optionalCliente.isPresent() && optionalAlbergo.isPresent()) {

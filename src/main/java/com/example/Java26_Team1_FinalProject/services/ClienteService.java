@@ -32,12 +32,12 @@ public class ClienteService {
     private CartaDiPagamentoRepository cartaDiPagamentoRepository;
 
     /**
-     * Restituisce una lista di tutti i clienti nel database.
+     * Restituisce una lista di tutti i clienti attivi nel database.
      *
      * @return una lista di oggetti Cliente.
      */
     public List<Cliente> getAllClienti() {
-        return clienteRepository.findAll();
+        return clienteRepository.findAllActive();
     }
 
     /**
@@ -47,7 +47,7 @@ public class ClienteService {
      * @return un Optional che contiene il cliente se trovato, altrimenti vuoto.
      */
     public Optional<Cliente> getClienteById(Long id) {
-        return clienteRepository.findById(id);
+        return clienteRepository.findActiveById(id);
     }
 
     /**
@@ -69,7 +69,7 @@ public class ClienteService {
      * @return un Optional contenente il cliente aggiornato se trovato, altrimenti vuoto.
      */
     public Optional<Cliente> updateCliente(Long id, Cliente cliente) {
-        Optional<Cliente> existingCliente = clienteRepository.findById(id);
+        Optional<Cliente> existingCliente = clienteRepository.findActiveById(id);
         if (existingCliente.isPresent()) {
             Cliente clienteToUpdate = existingCliente.get();
 
@@ -83,6 +83,7 @@ public class ClienteService {
             clienteToUpdate.setLivelloAbbonamento(cliente.getLivelloAbbonamento());
             clienteToUpdate.setCarteDiPagamento(cliente.getCarteDiPagamento());
             clienteToUpdate.setPrenotazioni(cliente.getPrenotazioni());
+            clienteToUpdate.setActive(cliente.isActive());
 
             //ritorna e salva il cliente aggiornato nel database
             return Optional.of(clienteRepository.save(clienteToUpdate));
@@ -100,10 +101,10 @@ public class ClienteService {
      * @return true se il cliente è stato eliminato, false altrimenti.
      */
     public boolean deleteClienteById(Long id) {
-        Optional<Cliente> optionalCliente = clienteRepository.findById(id);
+        Optional<Cliente> optionalCliente = clienteRepository.findActiveById(id);
         if (optionalCliente.isPresent()) {
             //elimina il cliente se trovato
-            clienteRepository.deleteById(id);
+            clienteRepository.logicDeleteById(id);
             return true;
         } else {
             // Restituisce false se il cliente non è stato trovato

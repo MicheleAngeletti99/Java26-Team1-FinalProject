@@ -16,11 +16,11 @@ public class EnteServices {
 
     //ritorna elenco enti
     public List<Ente> elencoEnti(){
-        return enteRepository.findAll();
+        return enteRepository.findAllActive();
     }
     //ritorna ente by id
     public Optional<Ente> getEnteById(Long id){
-        return enteRepository.findById(id);
+        return enteRepository.findActiveById(id);
     }
 
     //crea un nuovo ente
@@ -29,16 +29,16 @@ public class EnteServices {
     }
     //eliminare un Ente per id
     public boolean deleteEnte(Long id){
-        Optional<Ente> enteOptional = enteRepository.findById(id);
+        Optional<Ente> enteOptional = enteRepository.findActiveById(id);
         if(enteOptional.isPresent()){
-            enteRepository.deleteById(id);
+            enteRepository.logicDeleteById(id);
             return true;
         }
         return false;
     }
     //modificare un ente
     public Optional<Ente> modificaEnte(Long id, Ente ente){
-        Optional<Ente> enteOptional = enteRepository.findById(id);
+        Optional<Ente> enteOptional = enteRepository.findActiveById(id);
         if(enteOptional.isPresent()){
             Ente enteDaModificare = enteOptional.get();
             enteDaModificare.setEmail(ente.getEmail());
@@ -49,6 +49,8 @@ public class EnteServices {
             enteDaModificare.setLinkWeb(ente.getLinkWeb());
             enteDaModificare.setServiziEnumIds(ente.getServiziEnumIds());
             enteDaModificare.setRatingAVG(ente.getRatingAVG());
+            enteDaModificare.setActive(ente.isActive());
+            enteDaModificare.setPrenotazioni(ente.getPrenotazioni());
 
             return Optional.of(enteRepository.save(enteDaModificare));
         }

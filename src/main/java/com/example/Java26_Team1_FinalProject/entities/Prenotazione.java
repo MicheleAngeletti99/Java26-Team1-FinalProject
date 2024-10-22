@@ -21,6 +21,7 @@ public class Prenotazione {
     private LocalDateTime dataArrivo;
     private LocalDateTime dataPartenza;
     private List<Integer> serviziRichiestiIds;
+    @Column(name = "is_active")
     private boolean isActive = true; // campo per l'eliminazione logica
     private boolean confermaPagamento = false;
     private Double costoTotale = 0.00;

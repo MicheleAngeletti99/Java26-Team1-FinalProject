@@ -21,15 +21,15 @@ public class ServiziServices {
     }
     // eliminare un servizio
     public Optional<Servizi> eliminareServizio(Long id){
-        Optional<Servizi> serviziOptional = serviziRepository.findById(id);
+        Optional<Servizi> serviziOptional = serviziRepository.findActiveById(id);
         if (serviziOptional.isPresent()){
-            serviziRepository.deleteById(id);
+            serviziRepository.logicDeleteById(id);
         }
         return Optional.empty();
     }
     // modificare un servizio
     public Optional<Servizi> modificareServizi(Long id, Servizi servizio){
-        Optional<Servizi> serviziOptional = serviziRepository.findById(id);
+        Optional<Servizi> serviziOptional = serviziRepository.findActiveById(id);
         if (serviziOptional.isPresent()){
             Servizi updatedServizio = serviziOptional.get();
             updatedServizio.setName(servizio.getName());
@@ -37,6 +37,7 @@ public class ServiziServices {
             updatedServizio.setPrenotazioni(servizio.getPrenotazioni());
             updatedServizio.setAlbergo(servizio.getAlbergo());
             updatedServizio.setEnte(servizio.getEnte());
+            updatedServizio.setActive(servizio.isActive());
             return Optional.of(serviziRepository.save(updatedServizio));
         }
         return Optional.empty();
@@ -44,12 +45,12 @@ public class ServiziServices {
     // visualizzare un servizio tramite ID
     // perche nel albergo avevo fatto solo albergorepository.findbyid() e non salvato su un optional
     public Optional<Servizi> visualizzaServizio(Long id){
-        Optional<Servizi> serviziOptional = serviziRepository.findById(id);
+        Optional<Servizi> serviziOptional = serviziRepository.findActiveById(id);
         return serviziOptional;
     }
     // visualizzare il elenco di servizi
     public List<Servizi> elencoServizi(){
-        return serviziRepository.findAll();
+        return serviziRepository.findAllActive();
     }
 
 }

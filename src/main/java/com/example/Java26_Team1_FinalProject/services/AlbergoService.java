@@ -21,25 +21,25 @@ public class AlbergoService {
     }
     // metodo per rimuovere albergo
     public boolean rimuovereAlbergo(Long id){
-        Optional<Albergo> optionalAlbergo = albergoRepository.findById(id);
+        Optional<Albergo> optionalAlbergo = albergoRepository.findActiveById(id);
         if(optionalAlbergo.isPresent()){
-            albergoRepository.deleteById(id);
+            albergoRepository.logicDeleteById(id);
             return true;
         }
         return false;
     }
     // metodo per visualizzare il elenco di albergi
     public List<Albergo> elencoAlberghi(){
-        return albergoRepository.findAll();
+        return albergoRepository.findAllActive();
     }
 
     // metodo per visualizzare un albergo
     public Optional<Albergo> getAlbergoById(Long id){
-        return albergoRepository.findById(id);
+        return albergoRepository.findActiveById(id);
     }
     // metodo per modifica albergo
     public Optional<Albergo> modificareAlbergo(Long id,Albergo albergo){
-        Optional<Albergo> optionalAlbergo = albergoRepository.findById(id);
+        Optional<Albergo> optionalAlbergo = albergoRepository.findActiveById(id);
                 if(optionalAlbergo.isPresent()){
                     Albergo albergoDaModificare = optionalAlbergo.get();
                     albergoDaModificare.setEmail(albergo.getEmail());
@@ -53,6 +53,7 @@ public class AlbergoService {
                     albergoDaModificare.setRatingMedio(albergo.getRatingMedio());
                     albergoDaModificare.setServices(albergo.getServices());
                     albergoDaModificare.setPrenotazioni(albergo.getPrenotazioni());
+                    albergoDaModificare.setActive(albergo.isActive());
                     return Optional.of( albergoRepository.save(albergoDaModificare));
                 }
                  return Optional.empty();

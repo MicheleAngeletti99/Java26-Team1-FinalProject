@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -17,6 +18,8 @@ public class Ente extends Utente{
     private String citta;
     private String linkWeb;
     private Long ratingAVG;
+    @Column(name = "is_active")
+    private boolean isActive = true; // campo per l'eliminazione logica
     @OneToMany(mappedBy = "ente")
     private List<Prenotazione> prenotazioni;
 
@@ -74,6 +77,14 @@ public class Ente extends Utente{
 
     public void setRatingAVG(Long ratingAVG) {
         this.ratingAVG = ratingAVG;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public List<Prenotazione> getPrenotazioni() {

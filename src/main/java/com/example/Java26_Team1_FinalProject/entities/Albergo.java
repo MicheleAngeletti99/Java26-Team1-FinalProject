@@ -2,6 +2,7 @@ package com.example.Java26_Team1_FinalProject.entities;
 
 import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -24,6 +25,8 @@ public class Albergo extends Utente {
     @JsonIgnore
     private List<Prenotazione> prenotazioni;
     private Double ratingMedio;
+    @Column(name = "is_active")
+    private boolean isActive = true; // campo per l'eliminazione logica
 
     // costruttore vuoto
    public Albergo(){
@@ -114,5 +117,13 @@ public class Albergo extends Utente {
 
     public void setRatingMedio(Double ratingMedio) {
         this.ratingMedio = ratingMedio;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

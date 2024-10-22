@@ -13,6 +13,8 @@ public class Servizi {
     private Long id;
     private String name;
     private Double prezzo;
+    @Column(name = "is_active")
+    private boolean isActive = true; // campo per l'eliminazione logica
     @ManyToOne
     @JoinColumn(name = "id_albergo")
     private Albergo albergo;
@@ -54,6 +56,14 @@ public class Servizi {
 
     public void setPrezzo(Double prezzo) {
         this.prezzo = prezzo;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 
     public Albergo getAlbergo() {

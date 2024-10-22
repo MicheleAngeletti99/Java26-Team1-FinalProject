@@ -38,7 +38,7 @@ public class PrenotazioneService {
      * entrambi gli id nel database.
      */
     public Optional<Prenotazione> create(Prenotazione prenotazione, Long idCliente, Long idAlbergo) {
-        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
+        Optional<Cliente> optionalCliente = clienteRepository.findActiveById(idCliente);
         Optional<Albergo> optionalAlbergo = albergoRepository.findActiveById(idAlbergo);
         // controllo che il cliente e l'albergo esistano nel database
         if (optionalCliente.isPresent() && optionalAlbergo.isPresent()) {
@@ -178,7 +178,7 @@ public class PrenotazioneService {
      */
     public Optional<Prenotazione> addToEnte(Long idPrenotazione, Long idEnte) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
-        Optional<Ente> optionalEnte = enteRepository.findActiveById(idEnte);
+        Optional<Ente> optionalEnte = enteRepository.findById(idEnte);
 
         if (optionalPrenotazione.isPresent() && optionalEnte.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();
@@ -210,7 +210,7 @@ public class PrenotazioneService {
      */
     public Optional<Prenotazione> changeEnte(Long idPrenotazione, Long idEnte) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
-        Optional<Ente> optionalEnte = enteRepository.findActiveById(idEnte);
+        Optional<Ente> optionalEnte = enteRepository.findById(idEnte);
 
         if (optionalPrenotazione.isPresent() && optionalEnte.isPresent()) {
             Prenotazione updatePrenotazione = optionalPrenotazione.get();

@@ -16,6 +16,8 @@ public class Cliente extends Utente{
     private String nomeCliente;
     private String cognomeCliente;
     private Date dataDiNascita;
+    @Column(name = "is_active")
+    private boolean isActive = true; // campo per l'eliminazione logica
 
     @OneToMany(mappedBy = "cliente")
     private List<CartaDiPagamento> carteDiPagamento;
@@ -86,5 +88,13 @@ public class Cliente extends Utente{
 
     public void setPrenotazioni(List<Prenotazione> prenotazioni) {
         this.prenotazioni = prenotazioni;
+    }
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
     }
 }

@@ -97,7 +97,7 @@ public class CartaDiPagamentoService {
      */
     public Optional<CartaDiPagamento> addToClient(Long idCliente, Long idCarta) {
         // Cerca il cliente nel database tramite l'ID fornito
-        Optional<Cliente> optionalCliente = clienteRepository.findById(idCliente);
+        Optional<Cliente> optionalCliente = clienteRepository.findActiveById(idCliente);
         // Cerca la carta di pagamento nel database tramite l'ID fornito
         Optional<CartaDiPagamento> cartaOptional = cartaDiPagamentoRepository.findById(idCarta);
         // Se il cliente e la carta sono presenti

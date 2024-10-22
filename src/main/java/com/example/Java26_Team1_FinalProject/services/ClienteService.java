@@ -103,6 +103,8 @@ public class ClienteService {
     public boolean deleteClienteById(Long id) {
         Optional<Cliente> optionalCliente = clienteRepository.findActiveById(id);
         if (optionalCliente.isPresent()) {
+            //elimina le carte di pagamento collegate al cliente
+            cartaDiPagamentoRepository.deleteByCliente(id);
             //elimina il cliente se trovato
             clienteRepository.logicDeleteById(id);
             return true;

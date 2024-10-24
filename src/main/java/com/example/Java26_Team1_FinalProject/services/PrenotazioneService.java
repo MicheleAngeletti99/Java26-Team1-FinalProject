@@ -96,7 +96,7 @@ public class PrenotazioneService {
             updatePrenotazione.setNumeroPersone(prenotazione.getNumeroPersone());
             updatePrenotazione.setDataArrivo(prenotazione.getDataArrivo());
             updatePrenotazione.setDataPartenza(prenotazione.getDataPartenza());
-            updatePrenotazione.setServiziRichiestiIds(prenotazione.getServiziRichiestiIds());
+            updatePrenotazione.setServizi(prenotazione.getServizi());
             updatePrenotazione.setActive(prenotazione.isActive());
             updatePrenotazione.setConfermaPagamento(prenotazione.isConfermaPagamento());
             updatePrenotazione.setCostoTotale(prenotazione.getCostoTotale());
@@ -122,49 +122,6 @@ public class PrenotazioneService {
 
     // Metodi per la lettura dei dati
 
-    // Metodi per le liste
-
-    /**
-     * Aggiunge un servizio alla lista di servizi richiesti in una prenotazione.
-     *
-     * @param idPrenotazione l'id della prenotazione a cui aggiungere il servizio.
-     * @param idServizio     l'id del servizio da aggiungere alla lista.
-     * @return un Optional con la prenotazione aggiornata se l'id è stato trovato, altrimenti un Optional vuoto.
-     */
-    public Optional<Prenotazione> addServizio(Long idPrenotazione, Integer idServizio) {
-        Optional<Prenotazione> optionalPrenotazione = readById(idPrenotazione);
-        if (optionalPrenotazione.isPresent()) {
-            Prenotazione updatePrenotazione = optionalPrenotazione.get();
-            // aggiungo il servizio alla prenotazione
-            updatePrenotazione.getServiziRichiestiIds().add(idServizio);
-            // faccio l'update nel database e ritorno un Optional
-            Prenotazione savedPrenotazione = prenotazioneRepository.save(updatePrenotazione);
-            return Optional.of(savedPrenotazione);
-        } else {
-            return Optional.empty();
-        }
-    }
-
-    /**
-     * Rimouve un servizio dalla lista di servizi richiesti in una prenotazione.
-     *
-     * @param idPrenotazione l'id della prenotazione a cui rimuovere il servizio.
-     * @param idServizio     l'id del servizio da rimuovere dalla lista.
-     * @return un Optional con la prenotazione aggiornata se l'id è stato trovato, altrimenti un Optional vuoto.
-     */
-    public Optional<Prenotazione> removeServizio(Long idPrenotazione, Integer idServizio) {
-        Optional<Prenotazione> optionalPrenotazione = readById(idPrenotazione);
-        if (optionalPrenotazione.isPresent()) {
-            Prenotazione updatePrenotazione = optionalPrenotazione.get();
-            // rimuovo il servizio dalla prenotazione
-            updatePrenotazione.getServiziRichiestiIds().remove(idServizio);
-            // faccio l'update nel database e ritorno un Optional
-            Prenotazione savedPrenotazione = prenotazioneRepository.save(updatePrenotazione);
-            return Optional.of(savedPrenotazione);
-        } else {
-            return Optional.empty();
-        }
-    }
 
     // Metodi per le relazioni
 

@@ -1,8 +1,6 @@
 package com.example.Java26_Team1_FinalProject.controllers;
 
 import com.example.Java26_Team1_FinalProject.entities.Albergo;
-import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
-import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
 import com.example.Java26_Team1_FinalProject.services.AlbergoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -89,32 +87,4 @@ public class AlbergoController {
           return ResponseEntity.notFound().build();
     }
 
-    // POST per aggiungere un servizio alla lista specificato dal Albergo
-    @PostMapping("/servizi/{idAlbergo}/{servizio}")
-    @Operation(summary = "Aggiunge un servizio all'albergo", description = "Aggiunge un servizio alla lista dei servizi messi a disposizione dall'albergo di cui viene fornito l'id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Servizio aggiunto correttamente alla lista dell'albergo"),
-            @ApiResponse(responseCode = "404", description = "ID non presente nel database")
-    })
-    public ResponseEntity<String> aggiungiServizi(@PathVariable Long  idAlbergo,@PathVariable Integer  servizio){
-       boolean addServizio =  albergoService.aggiungiServizio(idAlbergo,servizio);
-       if(addServizio){
-           return ResponseEntity.ok().build();
-       }
-        return ResponseEntity.status(404).body("operazione ERRATO");
-    }
-    // DELETE per rimuovere un servizio  specificato dal Albergo
-    @DeleteMapping("/servizi/{idAlbergo}/{servizio}")
-    @Operation(summary = "Rimuove un servizio all'albergo", description = "Rimuove un servizio dalla lista dei servizi messi a disposizione dall'albergo di cui viene fornito l'id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Servizio rimosso correttamente dalla lista dell'albergo"),
-            @ApiResponse(responseCode = "404", description = "ID non presente nel database")
-    })
-    public ResponseEntity<String>  rimuoviServizio(@PathVariable Long idAlbergo,@PathVariable Integer servizio){
-        boolean rimuoviServizio = albergoService.eliminaServizio(idAlbergo,servizio);
-        if(rimuoviServizio){
-            return  ResponseEntity.ok().build();
-        }
-        return ResponseEntity.status(404).build();
-    }
 }

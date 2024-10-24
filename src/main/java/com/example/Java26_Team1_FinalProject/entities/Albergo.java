@@ -1,13 +1,11 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
-import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -16,7 +14,6 @@ public class Albergo extends Utente {
     // i field
     private String nome;
     private Integer numeroDiCamere;
-    private List<Integer> services;
     private Boolean cancellazionePrenotazioneGratuita;
     private String infoOrari;
     private String citta;
@@ -24,6 +21,8 @@ public class Albergo extends Utente {
     @OneToMany(mappedBy = "albergo")
     @JsonIgnore
     private List<Prenotazione> prenotazioni;
+    @OneToMany(mappedBy = "albergo")
+    private List<Servizi> services;
     private Double ratingMedio;
     @Column(name = "is_active")
     private boolean isActive = true; // campo per l'eliminazione logica
@@ -35,7 +34,7 @@ public class Albergo extends Utente {
 
     // costruttore con tutti i field
     public Albergo(Long id, String email, String password, String contattoTelefonico, String nome, Integer numeroDiCamere,
-                   Double prezzoPersona, List<Integer> services, Boolean cancellazionePrenotazioneGratuita,String infoOrari, String citta,List<Prenotazione> prenotazioni, Double ratingMedio) {
+                   Double prezzoPersona, List<Servizi> services, Boolean cancellazionePrenotazioneGratuita,String infoOrari, String citta,List<Prenotazione> prenotazioni, Double ratingMedio) {
         super(id, email, password, contattoTelefonico);
         this.nome = nome;
         this.numeroDiCamere = numeroDiCamere;
@@ -63,11 +62,11 @@ public class Albergo extends Utente {
        this.numeroDiCamere = numeroDiCamere;
     }
 
-    public List<Integer> getServices() {
+    public List<Servizi> getServices() {
         return services;
     }
 
-    public void setServices(List<Integer> services) {
+    public void setServices(List<Servizi> services) {
         this.services = services;
     }
 

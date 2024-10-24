@@ -59,29 +59,4 @@ public class AlbergoService {
                  return Optional.empty();
     }
 
-    // METODI PER LE LISTE
-
-    // metodo per aggiungere servizi alla lista
-    public boolean aggiungiServizio(Long id, Integer servizi){
-        Optional<Albergo> albergoOptional = albergoRepository.findById(id);
-        if(albergoOptional.isPresent()){
-           Albergo albergo = albergoOptional.get();
-           albergo.getServices().add(servizi);
-           albergoRepository.save(albergo);
-           return true;
-        }
-        return false;
-
-    }
-    // metodo per eliminare un servizio dalla lista
-    public boolean eliminaServizio(Long idAlbergo, Integer servizio ){
-        Optional<Albergo> albergoOptional = albergoRepository.findById(idAlbergo);
-        if(albergoOptional.isPresent()){
-            Albergo albergo = albergoOptional.get();
-            albergo.getServices().remove(servizio);
-            albergoRepository.save(albergo);
-            return true;
-        }
-        return false;
-    }
 }

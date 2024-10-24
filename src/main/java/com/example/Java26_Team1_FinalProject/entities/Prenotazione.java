@@ -1,12 +1,8 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
-import com.example.Java26_Team1_FinalProject.enums.ServizioEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -35,25 +31,25 @@ public class Prenotazione {
     @ManyToOne
     @JoinColumn(name = "id_ente")
     private Ente ente;
-//    @ManyToMany
-//    @JoinTable(
-//            name = "prenotazioni_servizi",
-//            joinColumns = @JoinColumn(name = "prenotazioni_id"),
-//            inverseJoinColumns = @JoinColumn(name = "servizi_id")
-//    )
-//    private List<Servizi> servizi;
+    @ManyToMany
+    @JoinTable(
+            name = "prenotazioni_servizi",
+            joinColumns = @JoinColumn(name = "prenotazioni_id"),
+            inverseJoinColumns = @JoinColumn(name = "servizi_id")
+    )
+    private List<Servizi> servizi;
 
     // Costruttore senza argomenti e con tutti gli argomenti
     public Prenotazione() {
     }
 
-    public Prenotazione(Long id, Integer numeroPersone, LocalDateTime dataArrivo, LocalDateTime dataPartenza, List<Integer> serviziRichiestiIds,
+    public Prenotazione(Long id, Integer numeroPersone, LocalDateTime dataArrivo, LocalDateTime dataPartenza, List<Servizi> servizi,
                         Cliente cliente, Albergo albergo, Ente ente) {
         this.id = id;
         this.numeroPersone = numeroPersone;
         this.dataArrivo = dataArrivo;
         this.dataPartenza = dataPartenza;
-        this.serviziRichiestiIds = serviziRichiestiIds;
+        this.servizi = servizi;
         this.cliente = cliente;
         this.albergo = albergo;
         this.ente = ente;
@@ -88,12 +84,12 @@ public class Prenotazione {
         this.dataPartenza = dataPartenza;
     }
 
-    public List<Integer> getServiziRichiestiIds() {
-        return serviziRichiestiIds;
+    public List<Servizi> getServizi() {
+        return servizi;
     }
 
-    public void setServiziRichiestiIds(List<Integer> serviziRichiestiIds) {
-        this.serviziRichiestiIds = serviziRichiestiIds;
+    public void setServizi(List<Servizi> servizi) {
+        this.servizi = servizi;
     }
 
     public boolean isActive() {

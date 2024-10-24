@@ -14,7 +14,6 @@ public class Ente extends Utente{
 
     //Parametri
     private String nome;
-    private List<Integer> serviziEnumIds;
     private String citta;
     private String linkWeb;
     private Long ratingAVG;
@@ -22,16 +21,18 @@ public class Ente extends Utente{
     private boolean isActive = true; // campo per l'eliminazione logica
     @OneToMany(mappedBy = "ente")
     private List<Prenotazione> prenotazioni;
+    @OneToMany(mappedBy = "ente")
+    private List<Servizi> servizi;
 
     //Costruttori
     public Ente(){}
 
     public Ente(Long id, String email, String password, String contattoTelefonico,
-                String nome, List<Integer> serviziEnumIds, String citta, String linkWeb,
-                Long ratingAVG, List<Prenotazione> prenotazioni) {
+                String nome, String citta, String linkWeb,
+                Long ratingAVG, List<Prenotazione> prenotazioni, List<Servizi> servizi) {
         super(id, email, password, contattoTelefonico);
         this.nome = nome;
-        this.serviziEnumIds = serviziEnumIds;
+        this.servizi = servizi;
         this.citta = citta;
         this.linkWeb = linkWeb;
         this.ratingAVG = ratingAVG;
@@ -45,14 +46,6 @@ public class Ente extends Utente{
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public List<Integer> getServiziEnumIds() {
-        return serviziEnumIds;
-    }
-
-    public void setServiziEnumIds(List<Integer> serviziEnumIds) {
-        this.serviziEnumIds = serviziEnumIds;
     }
 
     public String getCitta() {
@@ -93,5 +86,13 @@ public class Ente extends Utente{
 
     public void setPrenotazioni(List<Prenotazione> prenotazioni) {
         this.prenotazioni = prenotazioni;
+    }
+
+    public List<Servizi> getServizi() {
+        return servizi;
+    }
+
+    public void setServizi(List<Servizi> servizi) {
+        this.servizi = servizi;
     }
 }

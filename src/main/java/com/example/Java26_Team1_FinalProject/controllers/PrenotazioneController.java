@@ -103,45 +103,6 @@ public class PrenotazioneController {
         return ResponseEntity.noContent().build();
     }
 
-    // Metodi per le liste
-
-    @Operation(summary = "Aggiunge un servizio.", description = "Quando gli si dà l'id di una prenotazione e l'id di un servizio aggiunge il servizio alla lista di servizi contenuti nella prenotazione con l'id corrispondente.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Il servizio è stato aggiunto correttamente alla lista nella prenotazione."),
-            @ApiResponse(responseCode = "404", description = "L'id della prenotazione non è tra quelli delle prenotazioni nel database.")
-    })
-    @PostMapping("{idPrenotazione}/add-servizio/{idServizio}")
-    public ResponseEntity<Prenotazione> addServizio(
-            @Parameter(name = "idPrenotazione", description = "id della prenotazione a cui aggiungere il servizio.") @PathVariable Long idPrenotazione,
-            @Parameter(name = "idServizio", description = "id del servizio da aggiungere alla prenotazione.") @PathVariable Integer idServizio
-    ) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneService.addServizio(idPrenotazione, idServizio);
-        // controllo se il metodo del service è andato a buon fine
-        if (optionalPrenotazione.isPresent()) {
-            return ResponseEntity.ok().body(optionalPrenotazione.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @Operation(summary = "Rimuove un servizio.", description = "Quando gli si dà l'id di una prenotazione e l'id di un servizio rimuove il servizio dalla lista di servizi contenuti nella prenotazione con l'id corrispondente.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Il servizio è stato rimosso correttamente dalla lista nella prenotazione."),
-            @ApiResponse(responseCode = "404", description = "L'id della prenotazione non è tra quelli delle prenotazioni nel database.")
-    })
-    @DeleteMapping("{idPrenotazione}/remove-servizio/{idServizio}")
-    public ResponseEntity<Prenotazione> removeServizio(
-            @Parameter(name = "idPrenotazione", description = "id della prenotazione da cui rimuovere il servizio.") @PathVariable Long idPrenotazione,
-            @Parameter(name = "idServizio", description = "id del servizio da rimuovere dalla prenotazione.") @PathVariable Integer idServizio
-    ) {
-        Optional<Prenotazione> optionalPrenotazione = prenotazioneService.removeServizio(idPrenotazione, idServizio);
-        // controllo se il metodo del service è andato a buon fine
-        if (optionalPrenotazione.isPresent()) {
-            return ResponseEntity.ok().body(optionalPrenotazione.get());
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
     // Metodi per le relazioni
 

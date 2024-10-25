@@ -20,7 +20,7 @@ public class ServiziController {
 
     // METODO CRUD
     // POST
-    @PostMapping("/newservizio")
+    @PostMapping("/new-servizio")
     public ResponseEntity<Servizi> newServizio(@RequestBody Servizi servizio) {
         Servizi newServizio = services.createService(servizio);
         return ResponseEntity.ok(newServizio);
@@ -39,7 +39,7 @@ public class ServiziController {
     }
 
     // GET
-    @GetMapping("/elencoServizi")
+    @GetMapping("/elenco-servizi")
     public ResponseEntity<List<Servizi>> elencoServizi() {
         return ResponseEntity.ok(services.elencoServizi());
     }
@@ -67,22 +67,22 @@ public class ServiziController {
     // metodi per le relazione
 
     // aggiungere relazione tra prenotazione e servizio
-    @PutMapping("/relazionePrenotazione/{idservizio}/{idprenotazione}")
-    public ResponseEntity<String> addRelazionePrenotazione(@PathVariable Long idservizio, @PathVariable Long idprenotazione) {
-        String addPrenotazione = services.addPrenotazione(idprenotazione, idservizio);
+    @PutMapping("/relazione-prenotazione/{idServizio}/{idPrenotazione}")
+    public ResponseEntity<String> addRelazionePrenotazione(@PathVariable Long idServizio, @PathVariable Long idPrenotazione) {
+        String addPrenotazione = services.addPrenotazione(idPrenotazione, idServizio);
         return ResponseEntity.ok(addPrenotazione);
     }
 
     // rimuovere relazione tra prenotazione e servizio
-    @PutMapping("/relazionePrenotazione/{idservizio}/{idprenotazione}")
-    public ResponseEntity<String> removeRelazionePrenotazione(@PathVariable Long idservizio, @PathVariable Long idprenotazione) {
-        String removedPrenotazione = services.removePrenotazioneById(idservizio, idprenotazione);
+    @PutMapping("/relazione-prenotazione/{idServizio}/{idPrenotazione}")
+    public ResponseEntity<String> removeRelazionePrenotazione(@PathVariable Long idServizio, @PathVariable Long idPrenotazione) {
+        String removedPrenotazione = services.removePrenotazioneById(idServizio, idPrenotazione);
         return ResponseEntity.ok(removedPrenotazione);
     }
 
     // metodi per creare una relazione tra Ente e servizio
-    @PostMapping("/createServizioEnte/{id}")
-    public ResponseEntity<Servizi> removeRelazioneServizioEnte(@PathVariable Long idEnte, @RequestBody Servizi servizio) {
+    @PostMapping("/create-servizio-ente/{id}")
+    public ResponseEntity<Servizi> addRelazioneServizioEnte(@PathVariable Long idEnte, @RequestBody Servizi servizio) {
         Optional<Servizi> serviziOptional = services.createFromEnte(idEnte, servizio);
         if (serviziOptional.isPresent()) {
             return ResponseEntity.ok().build();
@@ -93,7 +93,7 @@ public class ServiziController {
 
 
     // metodo per creare una relazione tra albergo e servizio
-    @PostMapping("/createServizioAlbergo/{id}")
+    @PostMapping("/create-servizio-albergo/{id}")
     public ResponseEntity<Servizi> addRelazioneServizioAlbergo(@PathVariable Long idAlbergo, @RequestBody Servizi servizio) {
         Optional<Servizi> serviziOptional = services.createFromAlbergo(idAlbergo, servizio);
         if (serviziOptional.isPresent()) {

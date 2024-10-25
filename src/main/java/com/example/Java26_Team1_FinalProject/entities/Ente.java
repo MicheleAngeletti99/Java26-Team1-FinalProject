@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -20,6 +21,7 @@ public class Ente extends Utente{
     @Column(name = "is_active")
     private boolean isActive = true; // campo per l'eliminazione logica
     @OneToMany(mappedBy = "ente")
+    @JsonIgnore
     private List<Prenotazione> prenotazioni;
     @OneToMany(mappedBy = "ente")
     private List<Servizi> servizi;

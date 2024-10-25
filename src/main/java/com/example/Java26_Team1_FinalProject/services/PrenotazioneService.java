@@ -71,11 +71,7 @@ public class PrenotazioneService {
      */
     public Optional<Prenotazione> readById(Long id) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(id);
-        if (optionalPrenotazione.isPresent()) {
-            return optionalPrenotazione;
-        } else {
-            return Optional.empty();
-        }
+        return optionalPrenotazione;
     }
 
     /**
@@ -95,7 +91,7 @@ public class PrenotazioneService {
             updatePrenotazione.setDataPartenza(prenotazione.getDataPartenza());
             updatePrenotazione.setServizi(prenotazione.getServizi());
             updatePrenotazione.setActive(prenotazione.isActive());
-            updatePrenotazione.setConfermaPagamento(prenotazione.isConfermaPagamento());
+            updatePrenotazione.setPayd(prenotazione.isPayd());
             updatePrenotazione.setCostoTotale(prenotazione.getCostoTotale());
             updatePrenotazione.setCliente(prenotazione.getCliente());
             updatePrenotazione.setAlbergo(prenotazione.getAlbergo());
@@ -119,6 +115,119 @@ public class PrenotazioneService {
 
     // Metodi per la lettura dei dati
 
+    /**
+     * Cerca tutte le prenotazioni attive nel database di uno specifico cliente, anche se il cliente è stato cancellato (disattivato).
+     *
+     * @param idCliente l'id del cliente di cui si cercano le prenotazioni fatte, deve non essere null.
+     * @return un Optional con una List delle prenotazioni del cliente, se il cliente non esiste nel database un Optional vuoto.
+     */
+    public Optional<List<Prenotazione>> findByCliente(Long idCliente) {
+        Boolean isThere = clienteRepository.existsById(idCliente);
+        // controllo se il cliente è nel database
+        if (isThere) {
+            // se il cliente è presente nel database restituisco la lista di prenotazioni in un Optional
+            List<Prenotazione> prenotazioni = prenotazioneRepository.findActiveByCliente(idCliente);
+            return Optional.of(prenotazioni);
+        } else {
+            // se il cliente non è presente nel database restituisco un Optional vuoto
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Cerca tutte le prenotazioni attive nel database di uno specifico albergo, anche se l'albergo è stato cancellato (disattivato).
+     *
+     * @param idAlbergo l'id dell'albergo di cui si cercano le prenotazioni ricevute, deve non essere null.
+     * @return un Optional con una List delle prenotazioni dell'albergo, se l'albergo non esiste nel database un Optional vuoto.
+     */
+    public Optional<List<Prenotazione>> findByAlbergo(Long idAlbergo) {
+        Boolean isThere = albergoRepository.existsById(idAlbergo);
+        // controllo se l'albergo è nel database
+        if (isThere) {
+            // se l'albergo è presente nel database restituisco la lista di prenotazioni in un Optional
+            List<Prenotazione> prenotazioni = prenotazioneRepository.findActiveByAlbergo(idAlbergo);
+            return Optional.of(prenotazioni);
+        } else {
+            // se l'albergo non è presente nel database restituisco un Optional vuoto
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Cerca tutte le prenotazioni attive nel database di uno specifico ente, anche se l'ente è stato cancellato (disattivato).
+     *
+     * @param idEnte l'id dell'ente di cui si cercano le prenotazioni ricevute, deve non essere null.
+     * @return un Optional con una List delle prenotazioni dell'ente, se l'ente non esiste nel database un Optional vuoto.
+     */
+    public Optional<List<Prenotazione>> findByEnte(Long idEnte) {
+        Boolean isThere = enteRepository.existsById(idEnte);
+        // controllo se l'ente è nel database
+        if (isThere) {
+            // se l'ente è presente nel database restituisco la lista di prenotazioni in un Optional
+            List<Prenotazione> prenotazioni = prenotazioneRepository.findActiveByEnte(idEnte);
+            return Optional.of(prenotazioni);
+        } else {
+            // se l'ente non è presente nel database restituisco un Optional vuoto
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Calcola quanto un cliente ha speso tramite l'applicazione, anche per un cliente che è stato cancellato (disattivato).
+     *
+     * @param idCliente l'id del cliente di cui si vuole calcolare la spesa, deve non essere null.
+     * @return un Optional con la spesa totale, se il cliente non esiste nel database un Optional vuoto.
+     */
+    public Optional<Double> spesaTotaleCliente(Long idCliente) {
+        Boolean isThere = clienteRepository.existsById(idCliente);
+        // controllo se il cliente è nel database
+        if (isThere) {
+            // se il cliente è presente nel database restituisco un Optional con la spesa totale
+            Double spesaTotale = prenotazioneRepository.spesaTotaleCliente(idCliente);
+            return Optional.of(spesaTotale);
+        } else {
+            // se il cliente non è presente nel database restituisco un Optional vuoto
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Calcola quanto un albergo ha guadagnato tramite l'applicazione, anche per un albergo che è stato cancellato (disattivato).
+     *
+     * @param idAlbergo l'id dell'albergo di cui si vuole calcolare il guadagno, deve non essere null.
+     * @return un Optional con il guadagno totale, se l'albergo non esiste nel database un Optional vuoto.
+     */
+    public Optional<Double> guadagnoTotaleAlbergo(Long idAlbergo) {
+        Boolean isThere = albergoRepository.existsById(idAlbergo);
+        // controllo se l'albergo è nel database
+        if (isThere) {
+            // se l'albergo è presente nel database restituisco un Optional con il guadagno totale
+            Double guadagnoTotale = prenotazioneRepository.guadagnoTotaleAlbergo(idAlbergo);
+            return Optional.of(guadagnoTotale);
+        } else {
+            // se l'albergo non è presente nel database restituisco un Optional vuoto
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Calcola quanto un ente ha guadagnato tramite l'applicazione, anche per un ente che è stato cancellato (disattivato).
+     *
+     * @param idEnte l'id dell'ente di cui si vuole calcolare il guadagno, deve non essere null.
+     * @return un Optional con il guadagno totale, se l'ente non esiste nel database un Optional vuoto.
+     */
+    public Optional<Double> guadagnoTotaleEnte(Long idEnte) {
+        Boolean isThere = enteRepository.existsById(idEnte);
+        // controllo se l'ente è nel database
+        if (isThere) {
+            // se l'ente è presente nel database restituisco un Optional con il guadagno totale
+            Double guadagnoTotale = prenotazioneRepository.guadagnoTotaleEnte(idEnte);
+            return Optional.of(guadagnoTotale);
+        } else {
+            // se l'ente non è presente nel database restituisco un Optional vuoto
+            return Optional.empty();
+        }
+    }
 
     // Metodi per le relazioni
 
@@ -210,10 +319,10 @@ public class PrenotazioneService {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneRepository.findActiveById(idPrenotazione);
         if (optionalPrenotazione.isPresent()){
             Prenotazione prenotazione = optionalPrenotazione.get();
-            if (prenotazione.isConfermaPagamento()){
+            if (prenotazione.isPayd()){
                 return false;
             } else {
-                prenotazione.setConfermaPagamento(true);
+                prenotazione.setPayd(true);
                 prenotazioneRepository.save(prenotazione);
                 return true;
             }

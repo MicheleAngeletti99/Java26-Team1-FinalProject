@@ -81,8 +81,7 @@ public class PrenotazioneController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Prenotazione> updateById(
             @Parameter(name = "id", description = "id della prenotazione da aggiornare.") @PathVariable Long id,
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "la prenotazione con i dati che servono per aggiornare.") @RequestBody Prenotazione prenotazione
-    ) {
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "la prenotazione con i dati che servono per aggiornare.") @RequestBody Prenotazione prenotazione) {
         Optional<Prenotazione> optionalPrenotazione = prenotazioneService.updateById(id, prenotazione);
         // controllo se il metodo del service è andato a buon fine
         if (optionalPrenotazione.isPresent()) {
@@ -103,6 +102,109 @@ public class PrenotazioneController {
         return ResponseEntity.noContent().build();
     }
 
+    // Metodi per la lettura dei dati
+
+    @Operation(summary = "Cerca le prenotazioni di un cliente.", description = "Quando gli si dà un id di un cliente, anche di uno eliminato (disattivato), cerca tutte le prenotazioni effettuate da quel cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Le prenotazioni sono state trovate correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id del cliente non esiste nel database.")
+    })
+    @GetMapping("/cliente/{idCliente}")
+    public ResponseEntity<List<Prenotazione>> readByCliente(
+            @Parameter(name = "idCliente", description = "id del cliente di cui si cercano le prenotazioni effettuate.") @PathVariable Long idCliente) {
+        Optional<List<Prenotazione>> optionalPrenotazioni = prenotazioneService.findByCliente(idCliente);
+        // controllo se il metodo del service è andato a buon fine
+        if (optionalPrenotazioni.isPresent()) {
+            return ResponseEntity.ok().body(optionalPrenotazioni.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Cerca le prenotazioni di un albergo.", description = "Quando gli si dà un id di un albergo, anche di uno eliminato (disattivato), cerca tutte le prenotazioni ricevute da quell'albergo.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Le prenotazioni sono state trovate correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id dell'albergo non esiste nel database.")
+    })
+    @GetMapping("/albergo/{idAlbergo}")
+    public ResponseEntity<List<Prenotazione>> readByAlbergo(
+            @Parameter(name = "idAlbergo", description = "id dell'albergo di cui si cercano le prenotazioni ricevute") @PathVariable Long idAlbergo) {
+        Optional<List<Prenotazione>> optionalPrenotazioni = prenotazioneService.findByAlbergo(idAlbergo);
+        // controllo se il metodo del service è andato a buon fine
+        if (optionalPrenotazioni.isPresent()) {
+            return ResponseEntity.ok().body(optionalPrenotazioni.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Cerca le prenotazioni di un ente.", description = "Quando gli si dà un id di un ente, anche di uno eliminato (disattivato), cerca tutte le prenotazioni ricevute da quell'ente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Le prenotazioni sono state trovate correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id dell'ente non esiste nel database.")
+    })
+    @GetMapping("/ente/{idEnte}")
+    public ResponseEntity<List<Prenotazione>> readByEnte(
+            @Parameter(name = "idEnte", description = "id dell'ente di cui si cercano le prenotazioni ricevute") @PathVariable Long idEnte) {
+        Optional<List<Prenotazione>> optionalPrenotazioni = prenotazioneService.findByEnte(idEnte);
+        // controllo se il metodo del service è andato a buon fine
+        if (optionalPrenotazioni.isPresent()) {
+            return ResponseEntity.ok().body(optionalPrenotazioni.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Calcola la spesa totale di un cliente.", description = "Quando gli si dà un id di un cliente, anche di uno eliminato (disattivato), calcola la spesa totale di tutte le prenotazioni effettuate da quel cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Il totale è stato calcolato correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id del cliente non esiste nel database.")
+    })
+    @GetMapping("/spesa-cliente/{idCliente}")
+    public ResponseEntity<Double> spesaTotaleCliente(
+            @Parameter(name = "idCliente", description = "id del cliente di cui si cerca la spesa totale.") @PathVariable Long idCliente) {
+        Optional<Double> optionalSpesa = prenotazioneService.spesaTotaleCliente(idCliente);
+        // controllo se il metodo del service è andato a buon fine
+        if (optionalSpesa.isPresent()) {
+            return ResponseEntity.ok().body(optionalSpesa.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Calcola il guadagno totale di un albergo.", description = "Quando gli si dà un id di un albergo, anche di uno eliminato (disattivato), calcola il guadagno totale di tutte le prenotazioni ricevute da quell'albergo.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Il totale è stato calcolato correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id dell'albergo non esiste nel database.")
+    })
+    @GetMapping("/guadagno-albergo/{idAlbergo}")
+    public ResponseEntity<Double> guadagnoTotaleAlbergo(
+            @Parameter(name = "idAlbergo", description = "id dell'albergo di cui si cerca il guadagno totale.") @PathVariable Long idAlbergo) {
+        Optional<Double> optionalGuadagno = prenotazioneService.guadagnoTotaleAlbergo(idAlbergo);
+        // controllo se il metodo del service è andato a buon fine
+        if (optionalGuadagno.isPresent()) {
+            return ResponseEntity.ok().body(optionalGuadagno.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Operation(summary = "Calcola il guadagno totale di un ente.", description = "Quando gli si dà un id di un ente, anche di uno eliminato (disattivato), calcola il guadagno totale di tutte le prenotazioni ricevute da quell'ente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Il totale è stato calcolato correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id dell'ente non esiste nel database.")
+    })
+    @GetMapping("/guadagno-ente/{idEnte}")
+    public ResponseEntity<Double> guadagnoTotaleEnte(
+            @Parameter(name = "idEnte", description = "id dell'ente di cui si cerca il guadagno totale.") @PathVariable Long idEnte) {
+        Optional<Double> optionalGuadagno = prenotazioneService.guadagnoTotaleEnte(idEnte);
+        // controllo se il metodo del service è andato a buon fine
+        if (optionalGuadagno.isPresent()) {
+            return ResponseEntity.ok().body(optionalGuadagno.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     // Metodi per le relazioni
 

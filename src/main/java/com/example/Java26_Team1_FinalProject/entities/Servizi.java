@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,11 +18,14 @@ public class Servizi {
     private boolean isActive = true; // campo per l'eliminazione logica
     @ManyToOne
     @JoinColumn(name = "id_albergo")
+    @JsonIgnore
     private Albergo albergo;
     @ManyToOne
     @JoinColumn(name = "id_ente")
+    @JsonIgnore
     private Ente ente;
     @ManyToMany(mappedBy = "servizi")
+    @JsonIgnore
     private List<Prenotazione> prenotazioni;
 
     // empty constructor

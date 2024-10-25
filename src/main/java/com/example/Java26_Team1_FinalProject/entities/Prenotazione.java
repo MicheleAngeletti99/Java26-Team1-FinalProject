@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -16,14 +17,14 @@ public class Prenotazione {
     private Integer numeroPersone;
     private LocalDateTime dataArrivo;
     private LocalDateTime dataPartenza;
-    private List<Integer> serviziRichiestiIds;
     @Column(name = "is_active")
     private boolean isActive = true; // campo per l'eliminazione logica
-    private boolean confermaPagamento = false;
+    private boolean isPayd = false;
     private Double costoTotale = 0.00;
     // chiavi esterne
     @ManyToOne
     @JoinColumn(name = "id_cliente")
+    @JsonIgnore
     private Cliente cliente;
     @ManyToOne
     @JoinColumn(name = "id_albergo")
@@ -100,12 +101,12 @@ public class Prenotazione {
         isActive = active;
     }
 
-    public boolean isConfermaPagamento() {
-        return confermaPagamento;
+    public boolean isPayd() {
+        return isPayd;
     }
 
-    public void setConfermaPagamento(boolean confermaPagamento) {
-        this.confermaPagamento = confermaPagamento;
+    public void setPayd(boolean payd) {
+        this.isPayd = payd;
     }
 
     public Double getCostoTotale() {

@@ -67,14 +67,14 @@ public class ServiziController {
     // metodi per le relazione
 
     // aggiungere relazione tra prenotazione e servizio
-    @PutMapping("/relazione-prenotazione/{idServizio}/{idPrenotazione}")
+    @PutMapping("/add-relazione-prenotazione/{idServizio}/{idPrenotazione}")
     public ResponseEntity<String> addRelazionePrenotazione(@PathVariable Long idServizio, @PathVariable Long idPrenotazione) {
         String addPrenotazione = services.addPrenotazione(idPrenotazione, idServizio);
         return ResponseEntity.ok(addPrenotazione);
     }
 
     // rimuovere relazione tra prenotazione e servizio
-    @PutMapping("/relazione-prenotazione/{idServizio}/{idPrenotazione}")
+    @PutMapping("/remove-relazione-prenotazione/{idServizio}/{idPrenotazione}")
     public ResponseEntity<String> removeRelazionePrenotazione(@PathVariable Long idServizio, @PathVariable Long idPrenotazione) {
         String removedPrenotazione = services.removePrenotazioneById(idServizio, idPrenotazione);
         return ResponseEntity.ok(removedPrenotazione);

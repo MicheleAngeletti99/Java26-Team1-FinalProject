@@ -40,4 +40,16 @@ public interface ServiziRepository extends JpaRepository<Servizi, Long> {
      */
     @Query(value = "select * from servizi s where s.is_active = true and s.id = :id", nativeQuery = true)
     Optional<Servizi> findActiveById(@Param("id") Long id);
+
+    // custom query per AGGIUNGERE un relazione tra un prenotazione e un servizio tramite la terza tabella prenotazione_servizi
+    @Transactional
+    @Modifying
+    @Query(value = "insert into prenotazioni_servizi(id_prenotazione, id_servizio) values(:idPrenotazione,:idServizio)", nativeQuery = true)
+    void createRelationPrenotazioneEServizio(@Param("idPrenotazione") Long idPrenotazione, @Param("idServizio") Long idServizio);
+
+    // custom query per RIMUOVERE un relazione tra un prenotazione e un servizio tramite la terza tabella prenotazione_servizi
+    @Transactional
+    @Modifying
+    @Query(value = "delete from prenotazioni_servizi where id_prenotazione = :idPrenotazione AND id_servizio = :idServizio", nativeQuery = true)
+    void deleteRelationPrenotazioneEServizio(@Param("idPrenotazione") Long idPrenotazione, @Param("idServizio") Long idServizio);
 }

@@ -34,8 +34,8 @@ public class Prenotazione {
     @ManyToMany
     @JoinTable(
             name = "prenotazioni_servizi",
-            joinColumns = @JoinColumn(name = "prenotazioni_id"),
-            inverseJoinColumns = @JoinColumn(name = "servizi_id")
+            joinColumns = @JoinColumn(name = "id_prenotazione"),
+            inverseJoinColumns = @JoinColumn(name = "id_servizio")
     )
     private List<Servizi> servizi;
 

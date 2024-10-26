@@ -46,7 +46,7 @@ public class ServiziController {
 
     //PUT
     @PutMapping("/{id}")
-    public ResponseEntity<Servizi> modificareServizio(@PathVariable Long id, Servizi servizio) {
+    public ResponseEntity<Servizi> modificareServizio(@PathVariable Long id,@RequestBody Servizi servizio) {
         Optional<Servizi> serviziOptional = services.modificareServizi(id, servizio);
         if (serviziOptional.isPresent()) {
             return ResponseEntity.ok(serviziOptional.get());
@@ -57,11 +57,8 @@ public class ServiziController {
     //DELETE
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteServizio(@PathVariable Long id) {
-        Optional<Servizi> serviziOptional = services.eliminareServizio(id);
-        if (serviziOptional.isPresent()) {
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
+        services.eliminareServizio(id);
+        return ResponseEntity.ok().build();
     }
 
     // metodi per le relazione
@@ -81,11 +78,11 @@ public class ServiziController {
     }
 
     // metodi per creare una relazione tra Ente e servizio
-    @PostMapping("/create-servizio-ente/{id}")
+    @PostMapping("/create-servizio-ente/{idEnte}")
     public ResponseEntity<Servizi> addRelazioneServizioEnte(@PathVariable Long idEnte, @RequestBody Servizi servizio) {
         Optional<Servizi> serviziOptional = services.createFromEnte(idEnte, servizio);
         if (serviziOptional.isPresent()) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(serviziOptional.get());
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -93,11 +90,11 @@ public class ServiziController {
 
 
     // metodo per creare una relazione tra albergo e servizio
-    @PostMapping("/create-servizio-albergo/{id}")
+    @PostMapping("/create-servizio-albergo/{idAlbergo}")
     public ResponseEntity<Servizi> addRelazioneServizioAlbergo(@PathVariable Long idAlbergo, @RequestBody Servizi servizio) {
         Optional<Servizi> serviziOptional = services.createFromAlbergo(idAlbergo, servizio);
         if (serviziOptional.isPresent()) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(serviziOptional.get());
         }
         return ResponseEntity.notFound().build();
     }

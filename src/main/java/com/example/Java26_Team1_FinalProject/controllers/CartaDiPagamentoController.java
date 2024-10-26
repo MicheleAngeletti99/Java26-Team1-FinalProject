@@ -51,7 +51,7 @@ public class CartaDiPagamentoController {
             @ApiResponse(responseCode = "200", description = "Carta di pagamento trovata."),
             @ApiResponse(responseCode = "404", description = "Carta di pagamento non trovata.")
     })
-    @GetMapping("/{id}/cliente")
+    @GetMapping("/{id}/carta")
     public ResponseEntity<CartaDiPagamento> findByid(@PathVariable Long id) {
         Optional<CartaDiPagamento> optionalCartaDiPagamento = cartaDiPagamentoService.findCartaById(id);
         if (optionalCartaDiPagamento.isPresent()) {

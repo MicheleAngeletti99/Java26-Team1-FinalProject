@@ -27,7 +27,7 @@ public interface EnteRepository extends JpaRepository<Ente,Long> {
      *
      * @return una lista degli enti attivi presenti nel database.
      */
-    @Query(value = "select * from enti e where e.is_active = true", nativeQuery = true)
+    @Query(value = "select * from ente e where e.is_active = true", nativeQuery = true)
     List<Ente> findAllActive();
 
     /**

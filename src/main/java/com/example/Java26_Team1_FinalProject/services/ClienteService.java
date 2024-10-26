@@ -81,8 +81,6 @@ public class ClienteService {
             clienteToUpdate.setCognomeCliente(cliente.getCognomeCliente());
             clienteToUpdate.setDataDiNascita(cliente.getDataDiNascita());
             clienteToUpdate.setLivelloAbbonamento(cliente.getLivelloAbbonamento());
-            clienteToUpdate.setCarteDiPagamento(cliente.getCarteDiPagamento());
-            clienteToUpdate.setPrenotazioni(cliente.getPrenotazioni());
             clienteToUpdate.setActive(cliente.isActive());
 
             //ritorna e salva il cliente aggiornato nel database

@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "cliente")
+@Table(name = "clienti")
 public class Cliente extends Utente{
     private String nomeCliente;
     private String cognomeCliente;

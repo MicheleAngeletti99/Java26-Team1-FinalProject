@@ -89,13 +89,9 @@ public class PrenotazioneService {
             updatePrenotazione.setNumeroPersone(prenotazione.getNumeroPersone());
             updatePrenotazione.setDataArrivo(prenotazione.getDataArrivo());
             updatePrenotazione.setDataPartenza(prenotazione.getDataPartenza());
-            updatePrenotazione.setServizi(prenotazione.getServizi());
             updatePrenotazione.setActive(prenotazione.isActive());
             updatePrenotazione.setPayd(prenotazione.isPayd());
             updatePrenotazione.setCostoTotale(prenotazione.getCostoTotale());
-            updatePrenotazione.setCliente(prenotazione.getCliente());
-            updatePrenotazione.setAlbergo(prenotazione.getAlbergo());
-            updatePrenotazione.setEnte(prenotazione.getEnte());
             // faccio l'update nel database e ritorno un Optional
             Prenotazione savedPrenotazione = prenotazioneRepository.save(updatePrenotazione);
             return Optional.of(savedPrenotazione);
@@ -183,8 +179,13 @@ public class PrenotazioneService {
         // controllo se il cliente è nel database
         if (isThere) {
             // se il cliente è presente nel database restituisco un Optional con la spesa totale
-            Double spesaTotale = prenotazioneRepository.spesaTotaleCliente(idCliente);
-            return Optional.of(spesaTotale);
+            Optional<Double> spesaTotale = prenotazioneRepository.spesaTotaleCliente(idCliente);
+            // se la spesa totale è 0 la variabile spesaTotale è un Optional vuoto
+            if (spesaTotale.isPresent()) {
+                return spesaTotale;
+            } else {
+                return Optional.of(0D);
+            }
         } else {
             // se il cliente non è presente nel database restituisco un Optional vuoto
             return Optional.empty();
@@ -202,8 +203,13 @@ public class PrenotazioneService {
         // controllo se l'albergo è nel database
         if (isThere) {
             // se l'albergo è presente nel database restituisco un Optional con il guadagno totale
-            Double guadagnoTotale = prenotazioneRepository.guadagnoTotaleAlbergo(idAlbergo);
-            return Optional.of(guadagnoTotale);
+            Optional<Double> guadagnoTotale = prenotazioneRepository.guadagnoTotaleAlbergo(idAlbergo);
+            // se il guadagno totale è 0 la variabile guadagnoTotale è un Optional vuoto
+            if (guadagnoTotale.isPresent()) {
+                return guadagnoTotale;
+            } else {
+                return Optional.of(0D);
+            }
         } else {
             // se l'albergo non è presente nel database restituisco un Optional vuoto
             return Optional.empty();
@@ -221,8 +227,13 @@ public class PrenotazioneService {
         // controllo se l'ente è nel database
         if (isThere) {
             // se l'ente è presente nel database restituisco un Optional con il guadagno totale
-            Double guadagnoTotale = prenotazioneRepository.guadagnoTotaleEnte(idEnte);
-            return Optional.of(guadagnoTotale);
+            Optional<Double> guadagnoTotale = prenotazioneRepository.guadagnoTotaleEnte(idEnte);
+            // se il guadagno totale è 0 la variabile guadagnoTotale è un Optional vuoto
+            if (guadagnoTotale.isPresent()) {
+                return guadagnoTotale;
+            } else {
+                return Optional.of(0D);
+            }
         } else {
             // se l'ente non è presente nel database restituisco un Optional vuoto
             return Optional.empty();

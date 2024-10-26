@@ -50,9 +50,8 @@ public class AlbergoService {
                     albergoDaModificare.setCancellazionePrenotazioneGratuita(albergo.getCancellazionePrenotazioneGratuita());
                     albergoDaModificare.setInfoOrari(albergo.getInfoOrari());
                     albergoDaModificare.setCitta(albergo.getCitta());
+                    albergoDaModificare.setPrezzoPersona(albergo.getPrezzoPersona());
                     albergoDaModificare.setRatingMedio(albergo.getRatingMedio());
-                    albergoDaModificare.setServices(albergo.getServices());
-                    albergoDaModificare.setPrenotazioni(albergo.getPrenotazioni());
                     albergoDaModificare.setActive(albergo.isActive());
                     return Optional.of( albergoRepository.save(albergoDaModificare));
                 }

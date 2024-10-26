@@ -65,7 +65,6 @@ public class CartaDiPagamentoService {
             cartaTrovata.setDataDiScadenza(cartaDiPagamento.getDataDiScadenza());
             cartaTrovata.setCvv(cartaDiPagamento.getCvv());
             cartaTrovata.setCircuito(cartaDiPagamento.getCircuito());
-            cartaTrovata.setCliente(cartaDiPagamento.getCliente());
 
             return Optional.of(cartaDiPagamentoRepository.save(cartaTrovata));
         }

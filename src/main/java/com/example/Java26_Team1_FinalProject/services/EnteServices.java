@@ -47,10 +47,8 @@ public class EnteServices {
             enteDaModificare.setNome(ente.getNome());
             enteDaModificare.setCitta(ente.getCitta());
             enteDaModificare.setLinkWeb(ente.getLinkWeb());
-            enteDaModificare.setServizi(ente.getServizi());
             enteDaModificare.setRatingAVG(ente.getRatingAVG());
             enteDaModificare.setActive(ente.isActive());
-            enteDaModificare.setPrenotazioni(ente.getPrenotazioni());
 
             return Optional.of(enteRepository.save(enteDaModificare));
         }

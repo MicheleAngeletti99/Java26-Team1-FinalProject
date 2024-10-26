@@ -23,7 +23,7 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     @Modifying // indica che il metodo va a modificare i dati del database
     @Transactional
     // indica che il metodo viene fatto in una transazione, se la transazione va a buon fine i cambiamenti vengono salvati nel database
-    @Query(value = "update cliente set is_active = false where id = :id", nativeQuery = true)
+    @Query(value = "update clienti set is_active = false where id = :id", nativeQuery = true)
     void logicDeleteById(@Param("id") Long id);
 
     /**

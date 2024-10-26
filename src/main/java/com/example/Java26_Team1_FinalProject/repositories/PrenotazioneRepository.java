@@ -72,26 +72,26 @@ public interface PrenotazioneRepository extends JpaRepository<Prenotazione, Long
      * Calcola quanto un cliente ha speso tramite l'applicazione.
      *
      * @param idCliente l'id del cliente di cui si vuole trovare la spesa totale, deve non essere null.
-     * @return un Double con la spesa totale.
+     * @return un Optional con la spesa totale, un Optional vuoto se la spesa totale è 0.
      */
     @Query(value = "select sum(p.costo_totale) from prenotazioni p where p.is_payd = true and p.id_cliente = :id", nativeQuery = true)
-    Double spesaTotaleCliente(@Param("id") Long idCliente);
+    Optional<Double> spesaTotaleCliente(@Param("id") Long idCliente);
 
     /**
      * Calcola quanto un albergo ha guadagnato tramite l'applicazione.
      *
      * @param idAlbergo l'id dell'albergo di cui si vuole trovare il guadagno totale, deve non essere null.
-     * @return un Double con il guadagno totale.
+     * @return un Optional con il guadagno totale, un Optional vuoto se il guadagno totale è 0.
      */
     @Query(value = "select sum(p.costo_totale) from prenotazioni p where p.is_payd = true and p.id_albergo = :id", nativeQuery = true)
-    Double guadagnoTotaleAlbergo(@Param("id") Long idAlbergo);
+    Optional<Double> guadagnoTotaleAlbergo(@Param("id") Long idAlbergo);
 
     /**
      * Calcola quanto un ente ha guadagnato tramite l'applicazione.
      *
      * @param idEnte l'id dell'ente di cui si vuole trovare il guadagno totale, deve non essere null.
-     * @return un Double con il guadagno totale.
+     * @return un Optional con il guadagno totale, un Optional vuoto se il guadagno totale è 0.
      */
     @Query(value = "select sum(p.costo_totale) from prenotazioni p where p.is_payd = true and p.id_ente = :id", nativeQuery = true)
-    Double guadagnoTotaleEnte(@Param("id") Long idEnte);
+    Optional<Double> guadagnoTotaleEnte(@Param("id") Long idEnte);
 }

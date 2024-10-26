@@ -24,7 +24,6 @@ public class Prenotazione {
     // chiavi esterne
     @ManyToOne
     @JoinColumn(name = "id_cliente")
-    @JsonIgnore
     private Cliente cliente;
     @ManyToOne
     @JoinColumn(name = "id_albergo")

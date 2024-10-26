@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,6 +13,7 @@ public class Recensione {
     private String descrizione;
     @OneToOne
     @JoinColumn(name = "id_prenotazione")
+    @JsonIgnore
     private Prenotazione prenotazione;
 
     public Recensione() {

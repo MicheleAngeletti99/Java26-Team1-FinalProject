@@ -62,9 +62,6 @@ public class ServiziServices {
             Servizi updatedServizio = serviziOptional.get();
             updatedServizio.setName(servizio.getName());
             updatedServizio.setPrezzo(servizio.getPrezzo());
-            updatedServizio.setPrenotazioni(servizio.getPrenotazioni());
-            updatedServizio.setAlbergo(servizio.getAlbergo());
-            updatedServizio.setEnte(servizio.getEnte());
             updatedServizio.setActive(servizio.isActive());
             return Optional.of(serviziRepository.save(updatedServizio));
         }

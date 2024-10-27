@@ -164,6 +164,22 @@ public class CartaDiPagamentoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @Operation(summary = "Cerca le carte di un cliente.", description = "Quando gli si dà l'id di un cliente cerca tutte le carte di pagamento di quel cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Le carte sono state trovate correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id del cliente non è nel database.")
+    })
+    @GetMapping("/cliente/{idCliente}")
+    public ResponseEntity<List<CartaDiPagamento>> readByCliente(@PathVariable Long idCliente) {
+         Optional<List<CartaDiPagamento>> optionalCarte = cartaDiPagamentoService.readByCliente(idCliente);
+         // controllo che il metodo del service sia andato a buon fine
+        if (optionalCarte.isPresent()) {
+            return ResponseEntity.ok().body(optionalCarte.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
 
 

@@ -52,4 +52,40 @@ public interface ServiziRepository extends JpaRepository<Servizi, Long> {
     @Modifying
     @Query(value = "delete from prenotazioni_servizi where id_prenotazione = :idPrenotazione AND id_servizio = :idServizio", nativeQuery = true)
     void deleteRelationPrenotazioneEServizio(@Param("idPrenotazione") Long idPrenotazione, @Param("idServizio") Long idServizio);
+
+    /**
+     * Cerca tutti i servizi attivi nel database il cui nome contiene quello dato.
+     *
+     * @param nome il nome per cercare i servizi.
+     * @return una List dei servizi trovati.
+     */
+    @Query(value = "select * from servizi s where s.is_active = true and s.name like %:nome%", nativeQuery = true)
+    List<Servizi> findByNome(@Param("nome") String nome);
+
+    /**
+     * Cerca tutti i servizi di una prenotazione dato l'id, anche quelli eliminati (disattivati).
+     *
+     * @param idPrenotazione l'id della prenotazione di cui si cercano i servizi, deve non essere null.
+     * @return una List dei servizi della prenotazione.
+     */
+    @Query(value = "select s.* from servizi s join prenotazioni_servizi ps on s.id = ps.id_servizio where ps.id_prenotazione = :id", nativeQuery = true)
+    List<Servizi> findByPrenotazione(@Param("id") Long idPrenotazione);
+
+    /**
+     * Cerca tutti i servizi di un albergo dato l'id.
+     *
+     * @param idAlbergo l'id dell'albergo di cui si cercano i servizi, deve non essere null.
+     * @return una List dei servizi dell'albergo.
+     */
+    @Query(value = "select * from servizi s where s.is_active = true and s.id_albergo = :id", nativeQuery = true)
+    List<Servizi> findByAlbergo(@Param("id") Long idAlbergo);
+
+    /**
+     * Cerca tutti i servizi di un ente dato l'id.
+     *
+     * @param idEnte l'id dell'ente di cui si cercano i servizi, deve non essere null.
+     * @return una List dei servizi dell'ente.
+     */
+    @Query(value = "select * from servizi s where s.is_active = true and s.id_ente = :id", nativeQuery = true)
+    List<Servizi> findByEnte(@Param("id") Long idEnte);
 }

@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.services;
 
+import com.example.Java26_Team1_FinalProject.entities.Albergo;
 import com.example.Java26_Team1_FinalProject.entities.Ente;
 import com.example.Java26_Team1_FinalProject.repositories.EnteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +56,27 @@ public class EnteServices {
         return Optional.empty();
     }
 
+    // Metodi per la lettura dei dati
 
+    /**
+     * Cerca tutti gli enti attivi nel database con un nome che contiene quello dato.
+     *
+     * @param nome il nome per cercare l'ente, deve non essere null.
+     * @return una List degli enti trovati.
+     */
+    public List<Ente> readByNome(String nome) {
+        List<Ente> entiTrovati = enteRepository.findActiveByNome(nome);
+        return entiTrovati;
+    }
+
+    /**
+     * Cerca tutti gli enti attivi nel database di una specifica città.
+     *
+     * @param citta la città in cui si cerca l'ente, deve non essere null.
+     * @return una List degli enti trovati.
+     */
+    public List<Ente> readByCitta(String citta) {
+        List<Ente> entiTrovati = enteRepository.findActiveByCitta(citta);
+        return entiTrovati;
+    }
 }

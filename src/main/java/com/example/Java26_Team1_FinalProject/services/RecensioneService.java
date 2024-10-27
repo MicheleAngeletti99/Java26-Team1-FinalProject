@@ -1,8 +1,7 @@
 package com.example.Java26_Team1_FinalProject.services;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
 import com.example.Java26_Team1_FinalProject.entities.Recensione;
-import com.example.Java26_Team1_FinalProject.repositories.PrenotazioneRepository;
-import com.example.Java26_Team1_FinalProject.repositories.RecensioniRepository;
+import com.example.Java26_Team1_FinalProject.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +19,13 @@ public class RecensioneService {
     private RecensioniRepository recensioniRepository;
     @Autowired
     private PrenotazioneRepository prenotazioneRepository;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private AlbergoRepository albergoRepository;
+    @Autowired
+    private EnteRepository enteRepository;
+
     /**
      * Crea una nuova prenotazione nel database.
      *
@@ -93,5 +99,72 @@ public class RecensioneService {
         }
     }
 
+    // Metodi per la lettura dei dati
+
+    /**
+     * Cerca la recensione collegata ad una pernotazione data tramite l'id.
+     *
+     * @param idPrenotazione l'id della prenotazione di cui si cerca la recensione, deve non essere null.
+     * @return un Optional contenente la recensione della prenotazione, un Optional vuoto se non è stata trovata la prenotazione e/o la recensione.
+     */
+    public Optional<Recensione> readByPrenotazione(Long idPrenotazione) {
+        boolean isThere = prenotazioneRepository.existsById(idPrenotazione);
+        if (isThere) {
+            Optional<Recensione> optionalRecensione = recensioniRepository.findByPrenotazione(idPrenotazione);
+            if (optionalRecensione.isPresent()) {
+                return optionalRecensione;
+            }
+        }
+        // se non sono state trovate sia la prenotazione che la recensione restituisco un Optional vuoto
+        return Optional.empty();
     }
+
+    /**
+     * Cerca tutte le recensioni scritte da un cliente dato l'id.
+     *
+     * @param idCliente l'id del cliente di cui si cercano le recensioni, deve non essere null.
+     * @return un Optional con le recensioni scritte dal cliente, un Optional vuoto se il cliente non è nel database.
+     */
+    public Optional<List<Recensione>> readByCliente(Long idCliente) {
+        boolean isThere = clienteRepository.existsById(idCliente);
+        if (isThere) {
+            List<Recensione> recensioniTrovate = recensioniRepository.findByCliente(idCliente);
+            return Optional.of(recensioniTrovate);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Cerca tutte le recensioni ricevute da un albergo dato l'id.
+     *
+     * @param idAlbergo l'id dell'albergo di cui si cercano le recensioni, deve non essere null.
+     * @return un Optional con le recensioni ricevute dall'albergo, un Optional vuoto se l'albergo non è nel database.
+     */
+    public Optional<List<Recensione>> readByAlbergo(Long idAlbergo) {
+        boolean isThere = albergoRepository.existsById(idAlbergo);
+        if (isThere) {
+            List<Recensione> recensioniTrovate = recensioniRepository.findByAlbergo(idAlbergo);
+            return Optional.of(recensioniTrovate);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Cerca tutte le recensioni ricevute da un ente dato l'id.
+     *
+     * @param idEnte l'id dell'ente di cui si cercano le recensioni, deve non essere null.
+     * @return un Optional con le recensioni ricevute dall'ente, un Optional vuoto se l'ente non è nel database.
+     */
+    public Optional<List<Recensione>> readByEnte(Long idEnte) {
+        boolean isThere = enteRepository.existsById(idEnte);
+        if (isThere) {
+            List<Recensione> recensioniTrovate = recensioniRepository.findByEnte(idEnte);
+            return Optional.of(recensioniTrovate);
+        } else {
+            return Optional.empty();
+        }
+    }
+}
 

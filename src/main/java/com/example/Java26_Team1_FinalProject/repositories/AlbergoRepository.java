@@ -40,4 +40,22 @@ public interface AlbergoRepository extends JpaRepository<Albergo,Long> {
      */
     @Query(value = "select * from albergo a where a.is_active = true and a.id = :id", nativeQuery = true)
     Optional<Albergo> findActiveById(@Param("id") Long id);
+
+    /**
+     * Cerca tutti gli alberghi attivi nel database con un nome che contiene quello dato.
+     *
+     * @param nome il nome per cercare l'albergo, deve non essere null.
+     * @return una List degli alberghi trovati.
+     */
+    @Query(value = "select * from albergo a where a.is_active = true and a.nome like %:nome%", nativeQuery = true)
+    List<Albergo> findActiveByNome(@Param("nome") String nome);
+
+    /**
+     * Cerca tutti gli alberghi attivi nel database di una specifica città.
+     *
+     * @param citta la città in cui si cerca l'albergo, deve non essere null.
+     * @return una List degli alberghi trovati.
+     */
+    @Query(value = "select * from albergo a where a.is_active = true and a.citta like :citta", nativeQuery = true)
+    List<Albergo> findActiveByCitta(@Param("citta") String citta);
 }

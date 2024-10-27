@@ -58,4 +58,27 @@ public class AlbergoService {
                  return Optional.empty();
     }
 
+    // Metodi per la lettura dei dati
+
+    /**
+     * Cerca tutti gli alberghi attivi nel database con un nome che contiene quello dato.
+     *
+     * @param nome il nome per cercare l'albergo, deve non essere null.
+     * @return una List degli alberghi trovati.
+     */
+    public List<Albergo> readByNome(String nome) {
+        List<Albergo> alberghiTrovati = albergoRepository.findActiveByNome(nome);
+        return alberghiTrovati;
+    }
+
+    /**
+     * Cerca tutti gli alberghi attivi nel database di una specifica città.
+     *
+     * @param citta la città in cui si cerca l'albergo, deve non essere null.
+     * @return una List degli alberghi trovati.
+     */
+    public List<Albergo> readByCitta(String citta) {
+        List<Albergo> alberghiTrovati = albergoRepository.findActiveByCitta(citta);
+        return alberghiTrovati;
+    }
 }

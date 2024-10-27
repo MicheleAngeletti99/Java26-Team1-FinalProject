@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface CartaDiPagamentoRepository extends JpaRepository<CartaDiPagamento,Long> {
 
     /**
@@ -18,4 +20,12 @@ public interface CartaDiPagamentoRepository extends JpaRepository<CartaDiPagamen
     @Query(value = "delete from carta_di_pagamento where cliente_id = :id", nativeQuery = true)
     void deleteByCliente(@Param("id") Long idCliente);
 
+    /**
+     * Cerca tutte le carte di pagamento di un cliente nel database tramite il suo id.
+     *
+     * @param idCliente l'id del cliente di cui si cercano le carte di pagamento, deve non essere null.
+     * @return una List con le carte di pagamento del cliente.
+     */
+    @Query(value = "select * from carta_di_pagamento ca where ca.cliente_id = :id", nativeQuery = true)
+    List<CartaDiPagamento> findByCliente(@Param("id") Long idCliente);
 }

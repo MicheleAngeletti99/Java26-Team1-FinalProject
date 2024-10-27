@@ -87,4 +87,25 @@ public class AlbergoController {
           return ResponseEntity.notFound().build();
     }
 
+    // Metodi per la lettura dei dati
+
+    @Operation(summary = "Cerca gli alberghi con un nome.", description = "Quando gli si dà un nome cerca gli alberghi il cui nome contiene quello dato.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Gli alberghi sono stati trovati correttamente."),
+    })
+    @GetMapping("/nome")
+    public ResponseEntity<List<Albergo>> readByNome(@RequestParam String nome) {
+        List<Albergo> alberghi = albergoService.readByNome(nome);
+        return ResponseEntity.ok(alberghi);
+    }
+
+    @Operation(summary = "Cerca gli alberghi di una città.", description = "Quando gli si dà una città cerca gli alberghi di quella città.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Gli alberghi sono stati trovati correttamente."),
+    })
+    @GetMapping("/citta")
+    public ResponseEntity<List<Albergo>> readByCitta(@RequestParam String citta) {
+        List<Albergo> alberghi = albergoService.readByCitta(citta);
+        return ResponseEntity.ok(alberghi);
+    }
 }

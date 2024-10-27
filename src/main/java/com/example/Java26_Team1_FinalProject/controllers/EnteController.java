@@ -1,4 +1,5 @@
 package com.example.Java26_Team1_FinalProject.controllers;
+import com.example.Java26_Team1_FinalProject.entities.Albergo;
 import com.example.Java26_Team1_FinalProject.entities.Ente;
 import com.example.Java26_Team1_FinalProject.services.EnteServices;
 import io.swagger.v3.oas.annotations.Operation;
@@ -84,5 +85,25 @@ public class EnteController {
         return ResponseEntity.notFound().build();
     }
 
+    // Metodi per la lettura dei dati
 
+    @Operation(summary = "Cerca gli enti con un nome.", description = "Quando gli si dà un nome cerca gli enti il cui nome contiene quello dato.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Gli enti sono stati trovati correttamente."),
+    })
+    @GetMapping("/nome")
+    public ResponseEntity<List<Ente>> readByNome(@RequestParam String nome) {
+        List<Ente> enti = enteServices.readByNome(nome);
+        return ResponseEntity.ok(enti);
+    }
+
+    @Operation(summary = "Cerca gli enti di una città.", description = "Quando gli si dà una città cerca gli enti di quella città.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Gli enti sono stati trovati correttamente."),
+    })
+    @GetMapping("/citta")
+    public ResponseEntity<List<Ente>> readByCitta(@RequestParam String citta) {
+        List<Ente> enti = enteServices.readByCitta(citta);
+        return ResponseEntity.ok(enti);
+    }
 }

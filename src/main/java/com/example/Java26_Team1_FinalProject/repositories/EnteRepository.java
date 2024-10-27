@@ -1,5 +1,6 @@
 package com.example.Java26_Team1_FinalProject.repositories;
 
+import com.example.Java26_Team1_FinalProject.entities.Albergo;
 import com.example.Java26_Team1_FinalProject.entities.Ente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,4 +39,22 @@ public interface EnteRepository extends JpaRepository<Ente,Long> {
      */
     @Query(value = "select * from ente e where e.is_active = true and e.id = :id", nativeQuery = true)
     Optional<Ente> findActiveById(@Param("id") Long id);
+
+    /**
+     * Cerca tutti gli enti attivi nel database con un nome che contiene quello dato.
+     *
+     * @param nome il nome per cercare l'ente, deve non essere null.
+     * @return una List degli enti trovati.
+     */
+    @Query(value = "select * from ente e where e.is_active = true and e.nome like %:nome%", nativeQuery = true)
+    List<Ente> findActiveByNome(@Param("nome") String nome);
+
+    /**
+     * Cerca tutti gli enti attivi nel database di una specifica città.
+     *
+     * @param citta la città in cui si cerca l'ente, deve non essere null.
+     * @return una List degli enti trovati.
+     */
+    @Query(value = "select * from ente e where e.is_active = true and e.citta like :citta", nativeQuery = true)
+    List<Ente> findActiveByCitta(@Param("citta") String citta);
 }

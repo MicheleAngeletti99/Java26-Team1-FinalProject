@@ -147,4 +147,64 @@ public class ServiziServices {
         }
     }
 
+    // Metodi per la lettura dei dati
+
+    /**
+     * Cerca tutti i servizi attivi nel database il cui nome contiene quello dato.
+     *
+     * @param nome il nome per cercare i servizi.
+     * @return una List dei servizi trovati.
+     */
+    public List<Servizi> readByNome(String nome) {
+        List<Servizi> serviziTrovati = serviziRepository.findByNome(nome);
+        return serviziTrovati;
+    }
+
+    /**
+     * Cerca tutti i servizi di una prenotazione dato l'id, anche quelli eliminati (disattivati).
+     *
+     * @param idPrenotazione l'id della prenotazione di cui si cercano i servizi, deve non essere null.
+     * @return un Optional con i servizi della prenotazione, un Optional vuoto se la prenotazione non è nel database.
+     */
+    public Optional<List<Servizi>> readByPrenotazione(Long idPrenotazione) {
+        boolean isThere = prenotazioneRepository.existsById(idPrenotazione);
+        if (isThere) {
+            List<Servizi> serviziTrovati = serviziRepository.findByPrenotazione(idPrenotazione);
+            return Optional.of(serviziTrovati);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Cerca tutti i servizi attivi di un albergo attivo dato l'id.
+     *
+     * @param idAlbergo l'id dell'albergo di cui si cercano i servizi, deve non essere null.
+     * @return un Optional con i servizi dell'albergo, un Optional vuoto se l'albergo non è nel database.
+     */
+    public Optional<List<Servizi>> readByAlbergo(Long idAlbergo) {
+        Optional<Albergo> optionalAlbergo = albergoRepository.findActiveById(idAlbergo);
+        if (optionalAlbergo.isPresent()) {
+            List<Servizi> serviziTrovati = serviziRepository.findByAlbergo(idAlbergo);
+            return Optional.of(serviziTrovati);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    /**
+     * Cerca tutti i servizi attivi di un ente attivo dato l'id.
+     *
+     * @param idEnte l'id dell'ente di cui si cercano i servizi, deve non essere null.
+     * @return un Optional con i servizi dell'ente, un Optional vuoto se l'ente non è nel database.
+     */
+    public Optional<List<Servizi>> readByEnte(Long idEnte) {
+        Optional<Ente> optionalEnte = enteRepository.findActiveById(idEnte);
+        if (optionalEnte.isPresent()) {
+            List<Servizi> serviziTrovati = serviziRepository.findByEnte(idEnte);
+            return Optional.of(serviziTrovati);
+        } else {
+            return Optional.empty();
+        }
+    }
 }

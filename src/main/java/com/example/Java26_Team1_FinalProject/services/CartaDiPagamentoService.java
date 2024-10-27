@@ -128,4 +128,20 @@ public class CartaDiPagamentoService {
         }
         return false;
     }
+
+    /**
+     * Cerca tutte le carte di pagamento di un cliente nel database tramite il suo id.
+     *
+     * @param idCliente l'id del cliente di cui si cercano le carte di pagamento, deve non essere null.
+     * @return un Optional con le carte trovate, un Optional vuoto se l'id del cliente non è nel database.
+     */
+    public Optional<List<CartaDiPagamento>> readByCliente(Long idCliente) {
+        boolean isThere = clienteRepository.existsById(idCliente);
+        if (isThere) {
+            List<CartaDiPagamento> carteTrovate = cartaDiPagamentoRepository.findByCliente(idCliente);
+            return Optional.of(carteTrovate);
+        } else {
+            return Optional.empty();
+        }
+    }
 }

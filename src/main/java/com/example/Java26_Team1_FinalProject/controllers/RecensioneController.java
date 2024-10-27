@@ -129,8 +129,67 @@ public class RecensioneController {
         }
     }
 
-
+    @GetMapping("/prenotazione/{idPrenotazione}")
+    @Operation(summary = "Cerca una recensione dalla prenotazione.", description = "Quando gli si dà l'id di una prenotazione cerca la recensione collegata a quella prenotazione.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recensione trovata correttamente."),
+            @ApiResponse(responseCode = "404", description = "La prenotazione e/o la recensione non sono nel database.")
+    })
+    public ResponseEntity<Recensione> readByPrenotazione(@PathVariable Long idPrenotazione) {
+        Optional<Recensione> optionalRecensione = recensioneService.readByPrenotazione(idPrenotazione);
+        // controllo che il metodo del service sia andato a buon fine
+        if (optionalRecensione.isPresent()) {
+            return ResponseEntity.ok().body(optionalRecensione.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+    @GetMapping("/cliente/{idCliente}")
+    @Operation(summary = "Cerca tutte le recensioni di un cliente.", description = "Quando gli si dà l'id di un cliente cerca tutte le recensioni scritte da quel cliente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recensioni trovate correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id del cliente non è nel database.")
+    })
+    public ResponseEntity<List<Recensione>> readByCliente(@PathVariable Long idCliente) {
+        Optional<List<Recensione>> optionalRecensioni = recensioneService.readByCliente(idCliente);
+        // controllo che il metodo del service sia andato a buon fine
+        if (optionalRecensioni.isPresent()) {
+            return ResponseEntity.ok().body(optionalRecensioni.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    @GetMapping("/albergo/{idAlbergo}")
+    @Operation(summary = "Cerca tutte le recensioni di un albergo.", description = "Quando gli si dà l'id di un albergo cerca tutte le recensioni ricevute da quell'albergo.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recensioni trovate correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id dell'albergo non è nel database.")
+    })
+    public ResponseEntity<List<Recensione>> readByAlbergo(@PathVariable Long idAlbergo) {
+        Optional<List<Recensione>> optionalRecensioni = recensioneService.readByAlbergo(idAlbergo);
+        // controllo che il metodo del service sia andato a buon fine
+        if (optionalRecensioni.isPresent()) {
+            return ResponseEntity.ok().body(optionalRecensioni.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
+    @GetMapping("/ente/{idEnte}")
+    @Operation(summary = "Cerca tutte le recensioni di un ente.", description = "Quando gli si dà l'id di un ente cerca tutte le recensioni ricevute da quell'ente.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Recensioni trovate correttamente."),
+            @ApiResponse(responseCode = "404", description = "L'id dell'ente non è nel database.")
+    })
+    public ResponseEntity<List<Recensione>> readByEnte(@PathVariable Long idEnte) {
+        Optional<List<Recensione>> optionalRecensioni = recensioneService.readByEnte(idEnte);
+        // controllo che il metodo del service sia andato a buon fine
+        if (optionalRecensioni.isPresent()) {
+            return ResponseEntity.ok().body(optionalRecensioni.get());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}

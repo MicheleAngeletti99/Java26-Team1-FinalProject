@@ -1,6 +1,7 @@
 package com.example.Java26_Team1_FinalProject.services;
 
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
+import com.example.Java26_Team1_FinalProject.enums.LivelloAbbonamentoEnum;
 import com.example.Java26_Team1_FinalProject.repositories.AlbergoRepository;
 import com.example.Java26_Team1_FinalProject.repositories.CartaDiPagamentoRepository;
 import com.example.Java26_Team1_FinalProject.repositories.ClienteRepository;
@@ -48,6 +49,16 @@ public class ClienteService {
      */
     public Optional<Cliente> getClienteById(Long id) {
         return clienteRepository.findActiveById(id);
+    }
+
+    /**
+     * Ricerca i clienti in base al tipo di abbonamento
+     *
+     * @param tipoAbbonamento l'abbonamento da cercare collegato ai clienti
+     * @return ritorna i clienti collegati al tipo di abbonamento cercato
+     */
+    public List<Cliente> findClienteByAbbonamento(LivelloAbbonamentoEnum tipoAbbonamento){
+        return clienteRepository.findByAbbonamento(tipoAbbonamento);
     }
 
     /**

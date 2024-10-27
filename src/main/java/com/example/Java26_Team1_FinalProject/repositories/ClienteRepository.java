@@ -2,6 +2,7 @@ package com.example.Java26_Team1_FinalProject.repositories;
 
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
 import com.example.Java26_Team1_FinalProject.entities.Prenotazione;
+import com.example.Java26_Team1_FinalProject.enums.LivelloAbbonamentoEnum;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -42,4 +43,12 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
      */
     @Query(value = "select * from clienti c where c.is_active = true and c.id = :id", nativeQuery = true)
     Optional<Cliente> findActiveById(@Param("id") Long id);
+
+    /**
+     * Cerca un cliente nel database in base al tipo di abbonamento.
+     *
+     * @param livelloAbbonamento tipo di abbonamento da cercare
+     */
+    @Query(value = "SELECT c FROM Cliente c WHERE c.livelloAbbonamento = :livelloAbbonamento")
+    List<Cliente> findByAbbonamento(@Param("livelloAbbonamento") LivelloAbbonamentoEnum livelloAbbonamento);
 }

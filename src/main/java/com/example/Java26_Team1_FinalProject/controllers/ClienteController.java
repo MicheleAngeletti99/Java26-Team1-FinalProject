@@ -1,6 +1,7 @@
 package com.example.Java26_Team1_FinalProject.controllers;
 
 import com.example.Java26_Team1_FinalProject.entities.Cliente;
+import com.example.Java26_Team1_FinalProject.enums.LivelloAbbonamentoEnum;
 import com.example.Java26_Team1_FinalProject.services.CartaDiPagamentoService;
 import com.example.Java26_Team1_FinalProject.services.ClienteService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,6 +65,22 @@ public class ClienteController {
             return ResponseEntity.ok(optionalCliente.get());
         }
         return ResponseEntity.notFound().build();
+    }
+
+    /**
+     * Trova una lista di clienti in base al tipo di abbonamento.
+     * @param tipoAbbonamento L'abbonamento da cercare collegato ai clienti.
+     * @return ResponseEntity con una lista di clienti se trovati,
+     */
+    @GetMapping("/abbonamento/{tipoAbbonamento}")
+    @Operation(summary = "Ricerca clienti per tipo di abbonamento",
+            description = "Restituisce una lista di clienti che hanno il tipo di abbonamento specificato.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista di clienti trovati"),
+            @ApiResponse(responseCode = "204", description = "Nessun cliente trovato per il tipo di abbonamento specificato")
+    })
+    public ResponseEntity<List<Cliente>> getClientiByTipoAbbonamento(@PathVariable LivelloAbbonamentoEnum tipoAbbonamento) {
+        return ResponseEntity.ok(clienteService.findClienteByAbbonamento(tipoAbbonamento));
     }
 
     /**

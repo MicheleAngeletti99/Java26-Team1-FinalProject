@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.example</groupId>
 	<artifactId>Java26-Team1-FinalProject</artifactId>
-	<version>1.0.1-SNAPSHOT</version>
+	<version>2.0.1-SNAPSHOT</version>
 	<name>Java26-Team1-FinalProject</name>
 	<description>Un&apos;applicazione web per prenotazioni agli hotel</description>
 	<url/>

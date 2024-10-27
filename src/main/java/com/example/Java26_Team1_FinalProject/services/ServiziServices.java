@@ -28,14 +28,6 @@ public class ServiziServices {
     private PrenotazioneRepository prenotazioneRepository;
     // Methodi per CRUD di base
 
-    /**
-     *
-     * @param newService
-     * @return
-     */
-    public Servizi createService(Servizi newService){
-        return serviziRepository.save(newService);
-    }
 
     /**
      *

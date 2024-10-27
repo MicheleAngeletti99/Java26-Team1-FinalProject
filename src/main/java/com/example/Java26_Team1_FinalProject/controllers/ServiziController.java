@@ -22,12 +22,6 @@ public class ServiziController {
 
 
     // METODO CRUD
-    // POST
-    @PostMapping("/new-servizio")
-    public ResponseEntity<Servizi> newServizio(@RequestBody Servizi servizio) {
-        Servizi newServizio = services.createService(servizio);
-        return ResponseEntity.ok(newServizio);
-    }
 
     //GET  by ID
     // using an optional in the controller because you're checking whether the entity was found

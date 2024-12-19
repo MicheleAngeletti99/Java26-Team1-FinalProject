@@ -24,12 +24,6 @@ public class ClienteService {
     private ClienteRepository clienteRepository;
 
     @Autowired
-    private PrenotazioneRepository prenotazioneRepository;
-
-    @Autowired
-    private AlbergoRepository albergoRepository;
-
-    @Autowired
     private CartaDiPagamentoRepository cartaDiPagamentoRepository;
 
     /**
